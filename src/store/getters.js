@@ -1,1 +1,2 @@
-export const foo = state => state.foo;
+export const weather = state => state.weather;
+export const rainProb = state => state.rainProb;

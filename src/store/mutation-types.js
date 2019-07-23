@@ -1,1 +1,2 @@
-export const UPDATE_FOO = 'UPDATE_FOO';
+export const CURRENT_WEATHER = 'CURRENT_WEATHER';
+export const RAIN_PROPBABILITY = 'RAIN_PROBABILITY';

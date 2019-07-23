@@ -9,7 +9,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    foo: 'bar',
+    weather: null,
+    rainProb: null,
   },
   getters,
   mutations,
