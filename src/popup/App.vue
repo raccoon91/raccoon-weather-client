@@ -25,10 +25,12 @@
 
 <script>
 import Weather from '../components/Weather.vue';
+import RainProb from '../components/RainProb.vue';
 
 export default {
   components: {
     Weather,
+    RainProb,
   },
 
   data() {
