@@ -11,6 +11,10 @@ export default new Vuex.Store({
   state: {
     weather: null,
     rainProb: null,
+    humidity: null,
+    temp: null,
+    categories: null,
+    condition: null,
   },
   getters,
   mutations,

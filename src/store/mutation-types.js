@@ -1,2 +1,6 @@
 export const CURRENT_WEATHER = 'CURRENT_WEATHER';
 export const RAIN_PROPBABILITY = 'RAIN_PROBABILITY';
+export const HUMIDITY = 'HUMIDITY';
+export const TEMPERATURE = 'TEMPERATURE';
+export const CATEGORIES = 'CATEGORIES';
+export const CONDITION = 'CONDITION';
