@@ -9,6 +9,7 @@
         </div>
         <div class="yesterday">어제{{weather.yesterday_temp}}</div>
         <div class="rain-prop">강수확률 {{weather.pop}}%</div>
+        <div class="humidity">습도 {{weather.humidity}}</div>
         <div class="airpollution-container">
           <div class="text">미세먼지</div>
           <div class="air">{{weather.pm10}}</div>
@@ -54,7 +55,7 @@ export default {
     .main {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
       font-size: 22px;
       font-weight: bold;
 

@@ -14,7 +14,7 @@
 import Apexcharts from 'vue-apexcharts';
 
 export default {
-  name: 'RainProb',
+  name: 'Humidity',
 
   components: {
     Apexcharts,
@@ -27,8 +27,8 @@ export default {
     series() {
       return [
         {
-          name: 'Rain Probability',
-          data: this.$store.getters.rainProb,
+          name: 'Humidity',
+          data: this.$store.getters.humidity,
         },
       ];
     },
@@ -57,24 +57,19 @@ export default {
           enabled: true,
           x: {
             show: false,
-            format: 'dd MMM',
-            formatter: undefined,
           },
           y: {
             formatter: function(val) {
               return `${val}%`;
             },
             title: {
-              formatter: () => 'rain-prob',
+              formatter: () => 'humidity',
             },
           },
         },
         colors: ['#77B6EA'],
         dataLabels: {
           enabled: true,
-          formatter: function(val) {
-            return `${val}%`;
-          },
         },
         stroke: {
           curve: 'smooth',
@@ -109,7 +104,6 @@ export default {
         },
         legend: {
           show: true,
-          position: 'top',
         },
       };
     },

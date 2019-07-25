@@ -1,6 +1,6 @@
 <template>
   <div class="rain-container">
-    <img src="/assets/icon/close.png" class="close" />
+    <img src="/assets/icon/close.png" class="close" @click="close" />
     <apexcharts type="line" height="100" :options="options" :series="series" />
     <div class="icon-wrapper">
       <div v-for="(con, index) in condition" :key="index">
@@ -14,7 +14,7 @@
 import Apexcharts from 'vue-apexcharts';
 
 export default {
-  name: 'RainProb',
+  name: 'Temperature',
 
   components: {
     Apexcharts,
@@ -27,8 +27,8 @@ export default {
     series() {
       return [
         {
-          name: 'Rain Probability',
-          data: this.$store.getters.rainProb,
+          name: 'Temperature',
+          data: this.$store.getters.temp,
         },
       ];
     },
@@ -57,24 +57,19 @@ export default {
           enabled: true,
           x: {
             show: false,
-            format: 'dd MMM',
-            formatter: undefined,
           },
           y: {
             formatter: function(val) {
-              return `${val}%`;
+              return `${val}`;
             },
             title: {
-              formatter: () => 'rain-prob',
+              formatter: () => 'temp',
             },
           },
         },
         colors: ['#77B6EA'],
         dataLabels: {
           enabled: true,
-          formatter: function(val) {
-            return `${val}%`;
-          },
         },
         stroke: {
           curve: 'smooth',
@@ -116,6 +111,9 @@ export default {
   },
 
   methods: {
+    close() {
+      this.$emit('closeForecast');
+    },
     iconPath(con) {
       const [sky, pty] = con;
 
@@ -159,10 +157,8 @@ export default {
   right: 3px;
   width: 10px;
   height: 10px;
-
-  &:hover {
-    cursor: pointer;
-  }
+  cursor: pointer;
+  z-index: 10;
 }
 .icon-wrapper {
   position: absolute;

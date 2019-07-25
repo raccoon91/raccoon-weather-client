@@ -10,13 +10,15 @@
     </div>
 
     <div class="main-contents">
-      <component :is="dispaly" />
+      <component :is="dispaly" @closeForecast="closeForecast" />
     </div>
 
     <div class="select-mode">
       <div class="text">시간대별</div>
       <div class="mode-wrapper">
-        <div class="mode" @click="changeMode">강수</div>
+        <div :class="modeClass('Temperature')" @click="changeMode('Temperature')">온도</div>
+        <div :class="modeClass('RainProb')" @click="changeMode('RainProb')">강수</div>
+        <div :class="modeClass('Humidity')" @click="changeMode('Humidity')">습도</div>
       </div>
     </div>
     <div class="location">현재 위치</div>
@@ -26,11 +28,15 @@
 <script>
 import Weather from '../components/Weather.vue';
 import RainProb from '../components/RainProb.vue';
+import Temperature from '../components/Temperature.vue';
+import Humidity from '../components/Humidity.vue';
 
 export default {
   components: {
     Weather,
     RainProb,
+    Temperature,
+    Humidity,
   },
 
   data() {
@@ -41,8 +47,18 @@ export default {
   },
 
   methods: {
-    changeMode() {
-      this.dispaly = 'RainProb';
+    changeMode(mode) {
+      this.dispaly = mode;
+    },
+    closeForecast() {
+      this.dispaly = 'Weather';
+    },
+    modeClass(mode) {
+      if (mode === this.dispaly) {
+        return 'mode select';
+      } else {
+        return 'mode';
+      }
     },
   },
 };
@@ -51,7 +67,6 @@ export default {
 <style lang="scss" scoped>
 .container {
   width: 400px;
-  border-top: 1px solid #f1f1f1;
   border-bottom: 1px solid #f1f1f1;
   font-family: 'Sunflower', sans-serif;
 }
@@ -68,7 +83,7 @@ export default {
       width: 50px;
       height: 30px;
       margin: 0 auto;
-      color: #f1f1f1;
+      color: darkgray;
       font-size: 16px;
       line-height: 30px;
       text-align: center;
@@ -76,7 +91,7 @@ export default {
     }
 
     .selected {
-      color: blue;
+      color: #0074d9;
       font-weight: bold;
       border-bottom: 2px solid #0074d9;
     }
@@ -87,6 +102,7 @@ export default {
 }
 .select-mode {
   height: 30px;
+  padding: 0 10px;
   line-height: 30px;
   border-top: 1px solid #f1f1f1;
 
@@ -95,11 +111,24 @@ export default {
   }
 
   .mode-wrapper {
+    display: flex;
     float: right;
+
+    .mode {
+      margin-left: 10px;
+      color: darkgray;
+      cursor: pointer;
+    }
+
+    .select {
+      color: black;
+      font-weight: blod;
+    }
   }
 }
 .location {
   height: 30px;
+  padding: 0 10px;
   line-height: 30px;
   border-top: 1px solid #f1f1f1;
 }
