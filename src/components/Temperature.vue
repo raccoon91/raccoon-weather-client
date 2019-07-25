@@ -1,10 +1,10 @@
 <template>
   <div class="rain-container">
-    <img src="/assets/icon/close.png" class="close" @click="close" />
+    <img src="/assets/icon/close.png" class="close" @click="clickCloseButton" />
     <apexcharts type="line" height="100" :options="options" :series="series" />
     <div class="icon-wrapper">
-      <div v-for="(con, index) in condition" :key="index">
-        <img :src="iconPath(con)" class="icon" />
+      <div v-for="(condition, index) in conditionList" :key="index">
+        <img :src="iconPath(condition)" class="icon" />
       </div>
     </div>
   </div>
@@ -21,7 +21,7 @@ export default {
   },
 
   computed: {
-    condition() {
+    conditionList() {
       return this.$store.getters.condition;
     },
     series() {
@@ -111,11 +111,11 @@ export default {
   },
 
   methods: {
-    close() {
+    clickCloseButton() {
       this.$emit('closeForecast');
     },
-    iconPath(con) {
-      const [sky, pty] = con;
+    iconPath(condition) {
+      const [sky, pty] = condition;
 
       if (pty === 0) {
         switch (sky) {
