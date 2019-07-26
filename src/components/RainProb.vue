@@ -38,16 +38,6 @@ export default {
           height: 100,
           animations: {
             enabled: false,
-            // easing: 'easeinout',
-            // speed: 800,
-            // animateGradually: {
-            //   enabled: true,
-            //   delay: 150,
-            // },
-            // dynamicAnimation: {
-            //   enabled: true,
-            //   speed: 350,
-            // },
           },
           toolbar: {
             show: false,
@@ -97,9 +87,6 @@ export default {
           },
         },
         yaxis: {
-          // labels: {
-          //   show: false,
-          // },
           axisBorder: {
             show: false,
           },
