@@ -21,7 +21,14 @@
         <div :class="modeClass('Humidity')" @click="changeMode('Humidity')">습도</div>
       </div>
     </div>
-    <div class="location">현재 위치</div>
+    <div class="location-container">
+      <div class="text">현재 위치</div>
+      <div class="location-wrapper">
+        <div class="location">{{location.r1}}</div>
+        <div class="location">{{location.r2}}</div>
+        <div class="location">{{location.r3}}</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -44,6 +51,12 @@ export default {
       dispaly: 'Weather',
       date: 'today',
     };
+  },
+
+  computed: {
+    location() {
+      return this.$store.getters.location || {};
+    },
   },
 
   methods: {
@@ -126,10 +139,23 @@ export default {
     }
   }
 }
-.location {
+.location-container {
   height: 30px;
   padding: 0 10px;
   line-height: 30px;
   border-top: 1px solid #f1f1f1;
+
+  .text {
+    float: left;
+  }
+
+  .location-wrapper {
+    float: right;
+    display: flex;
+
+    .location {
+      margin-left: 7px;
+    }
+  }
 }
 </style>
