@@ -59,7 +59,7 @@ export default {
             },
           },
         },
-        colors: ['#77B6EA'],
+        colors: ['gray'],
         dataLabels: {
           enabled: true,
           formatter: function(val) {
@@ -71,7 +71,8 @@ export default {
           width: 2,
         },
         markers: {
-          size: 6,
+          colors: '#0074d9',
+          size: 4,
         },
         xaxis: {
           categories: this.$store.getters.categories,

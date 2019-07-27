@@ -28,7 +28,6 @@ export default {
   computed: {
     weather() {
       return this.$store.getters.weather;
-      mainmain;
     },
   },
 
