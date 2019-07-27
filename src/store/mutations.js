@@ -1,6 +1,9 @@
 import * as types from './mutation-types';
 
 export default {
+  [types.LOCATION](state, payload) {
+    state.location = payload;
+  },
   [types.CURRENT_WEATHER](state, payload) {
     state.weather = payload;
   },

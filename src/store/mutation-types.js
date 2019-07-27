@@ -1,3 +1,4 @@
+export const LOCATION = 'LOCATION';
 export const CURRENT_WEATHER = 'CURRENT_WEATHER';
 export const RAIN_PROPBABILITY = 'RAIN_PROBABILITY';
 export const HUMIDITY = 'HUMIDITY';
