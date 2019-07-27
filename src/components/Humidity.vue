@@ -44,22 +44,19 @@ export default {
           },
         },
         tooltip: {
-          enabled: true,
-          x: {
-            show: false,
-          },
-          y: {
-            formatter: function(val) {
-              return `${val}%`;
-            },
-            title: {
-              formatter: () => 'humidity',
-            },
-          },
+          enabled: false,
         },
         colors: ['gray'],
         dataLabels: {
           enabled: true,
+          formatter: function(val) {
+            return `${val}%`;
+          },
+          style: {
+            fontSize: '12px',
+            fontFamily: 'Sunflower, sans-serif',
+            colors: ['black'],
+          },
         },
         stroke: {
           curve: 'smooth',

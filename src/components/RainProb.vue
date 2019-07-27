@@ -44,26 +44,18 @@ export default {
           },
         },
         tooltip: {
-          enabled: true,
-          x: {
-            show: false,
-            format: 'dd MMM',
-            formatter: undefined,
-          },
-          y: {
-            formatter: function(val) {
-              return `${val}%`;
-            },
-            title: {
-              formatter: () => 'rain-prob',
-            },
-          },
+          enabled: false,
         },
         colors: ['gray'],
         dataLabels: {
           enabled: true,
           formatter: function(val) {
             return `${val}%`;
+          },
+          style: {
+            fontSize: '12px',
+            fontFamily: 'Sunflower, sans-serif',
+            colors: ['black'],
           },
         },
         stroke: {
