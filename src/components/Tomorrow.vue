@@ -101,6 +101,7 @@ export default {
           },
           labels: {
             show: true,
+            offsetY: 5,
           },
         },
         yaxis: {
@@ -123,11 +124,11 @@ export default {
 <style lang="scss" scoped>
 .tomorrow-container {
   position: relative;
-  height: 200px;
+  height: 220px;
 }
 .icon-wrapper {
   position: absolute;
-  bottom: -15px;
+  bottom: 0;
   display: flex;
   justify-content: space-between;
   width: 100%;

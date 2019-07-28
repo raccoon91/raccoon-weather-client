@@ -37,6 +37,7 @@ export default {
     series() {
       return [
         {
+          name: '온도',
           data: this.$store.getters[this.mode],
         },
       ];
@@ -72,7 +73,6 @@ export default {
           },
         },
         stroke: {
-          curve: 'smooth',
           width: 2,
         },
         markers: {
@@ -101,8 +101,8 @@ export default {
           show: false,
         },
         legend: {
-          show: true,
           position: 'top',
+          horizontalAlign: 'left',
         },
       };
     },

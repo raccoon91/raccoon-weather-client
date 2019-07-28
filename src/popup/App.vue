@@ -2,27 +2,18 @@
   <div class="container">
     <div class="date-container">
       <div class="date-wrapper">
-        <div class="date tody selected">오늘</div>
+        <div :class="dateClass('today')" @click="changeDate('today')">오늘</div>
       </div>
       <div class="date-wrapper">
-        <div class="date tomorrow">내일</div>
+        <div :class="dateClass('tomorrow')" @click="changeDate('tomorrow')">내일</div>
       </div>
     </div>
 
-    <div class="main-contents">
-      <!-- <component :is="dispaly" @closeForecast="closeForecast" /> -->
-      <weather v-if="dispaly==='weather'" :city="location.city" />
-      <forecast v-else @closeForecast="closeForecast" :mode="dispaly" />
+    <div :class="['main-contents', mainClass()]">
+      <today v-if="date === 'today'" />
+      <tomorrow v-else />
     </div>
 
-    <div class="select-mode">
-      <div class="text">시간대별</div>
-      <div class="mode-wrapper">
-        <div :class="modeClass('temp')" @click="changeMode('temp')">온도</div>
-        <div :class="modeClass('rainProb')" @click="changeMode('rainProb')">강수</div>
-        <div :class="modeClass('humidity')" @click="changeMode('humidity')">습도</div>
-      </div>
-    </div>
     <div class="location-container">
       <div class="text">현재 위치</div>
       <div class="location-wrapper">
@@ -35,18 +26,17 @@
 </template>
 
 <script>
-import Weather from '../components/Weather.vue';
-import Forecast from '../components/Forecast.vue';
+import Today from '../components/Today.vue';
+import Tomorrow from '../components/Tomorrow.vue';
 
 export default {
   components: {
-    Weather,
-    Forecast,
+    Today,
+    Tomorrow,
   },
 
   data() {
     return {
-      dispaly: 'weather',
       date: 'today',
     };
   },
@@ -58,17 +48,19 @@ export default {
   },
 
   methods: {
-    changeMode(mode) {
-      this.dispaly = mode;
+    changeDate(date) {
+      this.date = date;
     },
-    closeForecast() {
-      this.dispaly = 'weather';
-    },
-    modeClass(mode) {
-      if (mode === this.dispaly) {
-        return 'mode select';
+    dateClass(date) {
+      if (date === this.date) {
+        return 'date selected';
       } else {
-        return 'mode';
+        return 'date';
+      }
+    },
+    mainClass() {
+      if (this.date === 'tomorrow') {
+        return 'tomorrow';
       }
     },
   },
@@ -99,6 +91,7 @@ export default {
       line-height: 30px;
       text-align: center;
       box-sizing: border-box;
+      cursor: pointer;
     }
 
     .selected {
@@ -109,46 +102,21 @@ export default {
   }
 }
 .main-contents {
-  height: 130px;
+  height: 160px;
+  transition: height 0.3s ease-out;
 }
-.select-mode {
-  height: 30px;
-  padding: 0 10px;
-  line-height: 30px;
-  border-top: 1px solid #f1f1f1;
-
-  .text {
-    float: left;
-  }
-
-  .mode-wrapper {
-    display: flex;
-    float: right;
-
-    .mode {
-      margin-left: 10px;
-      color: darkgray;
-      cursor: pointer;
-    }
-
-    .select {
-      color: black;
-      font-weight: blod;
-    }
-  }
+.tomorrow {
+  height: 220px;
 }
 .location-container {
+  display: flex;
+  justify-content: space-between;
   height: 30px;
   padding: 0 10px;
   line-height: 30px;
   border-top: 1px solid #f1f1f1;
 
-  .text {
-    float: left;
-  }
-
   .location-wrapper {
-    float: right;
     display: flex;
 
     .location {
