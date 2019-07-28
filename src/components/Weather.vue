@@ -1,20 +1,45 @@
 <template>
   <div>
     <div class="weather-container">
-      <img src="/assets/images/sun-morning.png" />
+      <img :src="iconPath([weather.sky, weather.pty])" />
       <div class="contents">
-        <div class="main">
-          <div class="city">{{weather.city}}</div>
-          <div class="temp">{{weather.temp}}℃</div>
+        <div class="content-wrapper bold">
+          <div class="city">{{city}}</div>
+          <div class="temp">
+            {{weather.temp}}
+            <span class="bold-mark">℃</span>
+          </div>
         </div>
-        <div class="yesterday">어제{{weather.yesterday_temp}}</div>
-        <div class="rain-prop">강수확률 {{weather.pop}}%</div>
-        <div class="humidity">습도 {{weather.humidity}}</div>
-        <div class="airpollution-container">
-          <div class="text">미세먼지</div>
-          <div class="air">{{weather.pm10}}</div>
-          <div class="text">초미세먼지</div>
-          <div class="air">{{weather.pm25}}</div>
+        <div class="content-wrapper">
+          <div class="content-title">어제</div>
+          <div class="content">
+            {{weather.yesterday_temp}}
+            <span class="mark">℃</span>
+          </div>
+        </div>
+        <div class="content-container">
+          <div class="content-wrapper margin-right">
+            <div class="content-title">강수확률</div>
+            <div class="content">
+              {{weather.pop}}
+              <span class="mark">%</span>
+            </div>
+          </div>
+          <div class="content-wrapper">
+            <div class="content-title">습도</div>
+            <div class="content">
+              {{weather.humidity}}
+              <span class="mark">%</span>
+            </div>
+          </div>
+        </div>
+        <div class="content-wrapper">
+          <div class="content-title">미세먼지</div>
+          <airpollution type="pm10" :value="Number(weather.pm10)" />
+        </div>
+        <div class="content-wrapper">
+          <div class="content-title">초미세먼지</div>
+          <airpollution type="pm25" :value="Number(weather.pm25)" />
         </div>
       </div>
     </div>
@@ -22,8 +47,24 @@
 </template>
 
 <script>
+import icon from './weatherIcon.js';
+import Airpollution from './Airpollution.vue';
+
 export default {
   name: 'Weather',
+
+  mixins: [icon],
+
+  components: {
+    Airpollution,
+  },
+
+  props: {
+    city: {
+      type: String,
+      required: true,
+    },
+  },
 
   computed: {
     weather() {
@@ -51,16 +92,39 @@ export default {
     padding: 10px 30px;
     font-size: 14px;
 
-    .main {
+    .content-container {
+      display: flex;
+    }
+
+    .content-wrapper {
       display: flex;
       align-items: center;
+    }
+
+    .margin-right {
+      margin-right: 10px;
+    }
+
+    .content-title {
+      margin-right: 7px;
+    }
+
+    .bold {
       margin-bottom: 5px;
       font-size: 22px;
       font-weight: bold;
+    }
 
-      .city {
-        margin-right: 10px;
-      }
+    .city {
+      margin-right: 10px;
+    }
+
+    .bold-mark {
+      font-size: 18px;
+    }
+
+    .mark {
+      font-size: 12px;
     }
   }
 

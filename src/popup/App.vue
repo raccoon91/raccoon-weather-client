@@ -10,15 +10,17 @@
     </div>
 
     <div class="main-contents">
-      <component :is="dispaly" @closeForecast="closeForecast" />
+      <!-- <component :is="dispaly" @closeForecast="closeForecast" /> -->
+      <weather v-if="dispaly==='weather'" :city="location.city" />
+      <forecast v-else @closeForecast="closeForecast" :mode="dispaly" />
     </div>
 
     <div class="select-mode">
       <div class="text">시간대별</div>
       <div class="mode-wrapper">
-        <div :class="modeClass('Temperature')" @click="changeMode('Temperature')">온도</div>
-        <div :class="modeClass('RainProb')" @click="changeMode('RainProb')">강수</div>
-        <div :class="modeClass('Humidity')" @click="changeMode('Humidity')">습도</div>
+        <div :class="modeClass('temp')" @click="changeMode('temp')">온도</div>
+        <div :class="modeClass('rainProb')" @click="changeMode('rainProb')">강수</div>
+        <div :class="modeClass('humidity')" @click="changeMode('humidity')">습도</div>
       </div>
     </div>
     <div class="location-container">
@@ -34,21 +36,17 @@
 
 <script>
 import Weather from '../components/Weather.vue';
-import RainProb from '../components/RainProb.vue';
-import Temperature from '../components/Temperature.vue';
-import Humidity from '../components/Humidity.vue';
+import Forecast from '../components/Forecast.vue';
 
 export default {
   components: {
     Weather,
-    RainProb,
-    Temperature,
-    Humidity,
+    Forecast,
   },
 
   data() {
     return {
-      dispaly: 'Weather',
+      dispaly: 'weather',
       date: 'today',
     };
   },
@@ -64,7 +62,7 @@ export default {
       this.dispaly = mode;
     },
     closeForecast() {
-      this.dispaly = 'Weather';
+      this.dispaly = 'weather';
     },
     modeClass(mode) {
       if (mode === this.dispaly) {
