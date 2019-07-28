@@ -5,3 +5,4 @@ export const humidity = state => state.humidity;
 export const temp = state => state.temp;
 export const categories = state => state.categories;
 export const condition = state => state.condition;
+export const tomorrow = state => state.tomorrow;

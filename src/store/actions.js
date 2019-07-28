@@ -17,3 +17,9 @@ export const setForecast = async ({ commit }) => {
   commit(types.HUMIDITY, response.data.humidityData);
   commit(types.CONDITION, response.data.condition);
 };
+
+export const setTomorrow = async ({ commit }) => {
+  const response = await axios.get('http://localhost:3000/weather/tomorrow');
+
+  commit(types.TOMORROW_WEATHER, response.data);
+};

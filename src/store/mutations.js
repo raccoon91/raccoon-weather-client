@@ -22,4 +22,7 @@ export default {
   [types.CONDITION](state, payload) {
     state.condition = payload;
   },
+  [types.TOMORROW_WEATHER](state, payload) {
+    state.tomorrow = payload;
+  },
 };

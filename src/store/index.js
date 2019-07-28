@@ -16,6 +16,7 @@ export default new Vuex.Store({
     temp: null,
     categories: null,
     condition: null,
+    tomorrow: null,
   },
   getters,
   mutations,

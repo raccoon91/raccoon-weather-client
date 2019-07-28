@@ -5,3 +5,4 @@ export const HUMIDITY = 'HUMIDITY';
 export const TEMPERATURE = 'TEMPERATURE';
 export const CATEGORIES = 'CATEGORIES';
 export const CONDITION = 'CONDITION';
+export const TOMORROW_WEATHER = 'TOMORROW_WEATHER';
