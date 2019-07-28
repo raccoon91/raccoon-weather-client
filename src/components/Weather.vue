@@ -81,11 +81,11 @@ export default {
 <style lang="scss" scoped>
 .weather-container {
   display: flex;
-  height: 130px;
+  height: 150px;
 
   img {
-    width: 130px;
-    height: 130px;
+    width: 150px;
+    height: 150px;
   }
 
   .contents {
@@ -99,6 +99,7 @@ export default {
     .content-wrapper {
       display: flex;
       align-items: center;
+      margin-bottom: 5px;
     }
 
     .margin-right {

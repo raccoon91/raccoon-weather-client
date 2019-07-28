@@ -102,7 +102,7 @@ export default {
   }
 }
 .main-contents {
-  height: 160px;
+  height: 180px;
   transition: height 0.3s ease-out;
 }
 .tomorrow {

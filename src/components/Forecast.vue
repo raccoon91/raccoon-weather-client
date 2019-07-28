@@ -1,5 +1,6 @@
 <template>
   <div class="rain-container">
+    <div class="title">{{title()}}</div>
     <img src="/assets/icon/close.png" class="close" @click="clickCloseButton" />
     <apexcharts type="line" height="100" :options="options" :series="series" />
     <div class="icon-wrapper">
@@ -47,7 +48,7 @@ export default {
         chart: {
           height: 100,
           animations: {
-            enabled: false,
+            enabled: true,
           },
           toolbar: {
             show: false,
@@ -93,9 +94,7 @@ export default {
           },
         },
         yaxis: {
-          axisBorder: {
-            show: false,
-          },
+          show: false,
         },
         grid: {
           show: false,
@@ -112,6 +111,16 @@ export default {
     clickCloseButton() {
       this.$emit('closeForecast');
     },
+    title() {
+      switch (this.mode) {
+        case 'temp':
+          return '온도 (℃)';
+        case 'rainProb':
+          return '강수확률 (%)';
+        default:
+          return '습도 (%)';
+      }
+    },
   },
 
   created() {
@@ -123,7 +132,14 @@ export default {
 <style lang="scss" scoped>
 .rain-container {
   position: relative;
-  height: 130px;
+  height: 150px;
+}
+.title {
+  height: 20px;
+  margin-top: 3px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 20px;
 }
 .close {
   position: absolute;

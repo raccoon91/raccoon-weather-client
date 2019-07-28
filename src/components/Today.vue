@@ -59,7 +59,7 @@ export default {
 
 <style lang="scss" scoped>
 .today-container {
-  height: 160px;
+  height: 180px;
 }
 
 .select-mode {
