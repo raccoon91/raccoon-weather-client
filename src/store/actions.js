@@ -2,14 +2,14 @@ import axios from 'axios';
 import * as types from './mutation-types';
 
 export const setWeather = async ({ commit }) => {
-  const response = await axios.get('http://localhost:3000/weather');
+  const response = await axios.get('http://52.192.38.17:3000/weather');
 
   commit(types.CURRENT_WEATHER, response.data.weather);
   commit(types.LOCATION, response.data.location);
 };
 
 export const setForecast = async ({ commit }) => {
-  const response = await axios.get('http://localhost:3000/weather/forecast');
+  const response = await axios.get('http://52.192.38.17:3000/weather/forecast');
 
   commit(types.CATEGORIES, response.data.categories);
   commit(types.RAIN_PROPBABILITY, response.data.rainProbData);
@@ -19,7 +19,7 @@ export const setForecast = async ({ commit }) => {
 };
 
 export const setTomorrow = async ({ commit }) => {
-  const response = await axios.get('http://localhost:3000/weather/tomorrow');
+  const response = await axios.get('http://52.192.38.17:3000/weather/tomorrow');
 
   commit(types.TOMORROW_WEATHER, response.data);
 };
