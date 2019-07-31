@@ -52,7 +52,7 @@ export default {
       return {
         chart: {
           animations: {
-            // enabled: false,
+            enabled: true,
           },
           toolbar: {
             show: false,

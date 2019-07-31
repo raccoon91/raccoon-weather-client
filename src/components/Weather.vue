@@ -1,19 +1,19 @@
 <template>
   <div>
-    <div class="weather-container">
+    <div v-if="weather" class="weather-container">
       <img :src="iconPath([weather.sky, weather.pty])" />
       <div class="contents">
         <div class="content-wrapper bold">
-          <div class="city">{{city}}</div>
+          <div class="city">{{ city }}</div>
           <div class="temp">
-            {{weather.temp}}
+            {{ weather.temp }}
             <span class="bold-mark">℃</span>
           </div>
         </div>
         <div class="content-wrapper">
           <div class="content-title">어제</div>
           <div class="content">
-            {{weather.yesterday_temp}}
+            {{ weather.yesterday_temp }}
             <span class="mark">℃</span>
           </div>
         </div>
@@ -21,14 +21,14 @@
           <div class="content-wrapper margin-right">
             <div class="content-title">강수확률</div>
             <div class="content">
-              {{weather.pop}}
+              {{ weather.pop }}
               <span class="mark">%</span>
             </div>
           </div>
           <div class="content-wrapper">
             <div class="content-title">습도</div>
             <div class="content">
-              {{weather.humidity}}
+              {{ weather.humidity }}
               <span class="mark">%</span>
             </div>
           </div>
@@ -43,12 +43,16 @@
         </div>
       </div>
     </div>
+    <div v-else>
+      <loading />
+    </div>
   </div>
 </template>
 
 <script>
 import icon from './weatherIcon.js';
 import Airpollution from './Airpollution.vue';
+import Loading from './Loading.vue';
 
 export default {
   name: 'Weather',
@@ -57,6 +61,7 @@ export default {
 
   components: {
     Airpollution,
+    Loading,
   },
 
   props: {
@@ -70,10 +75,6 @@ export default {
     weather() {
       return this.$store.getters.weather;
     },
-  },
-
-  created() {
-    this.$store.dispatch('setWeather');
   },
 };
 </script>

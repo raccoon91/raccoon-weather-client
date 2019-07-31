@@ -1,6 +1,6 @@
 <template>
   <div class="today-container">
-    <weather v-if="display==='weather'" :city="location.city" />
+    <weather v-if="display === 'weather'" :city="location.city" />
     <forecast v-else @closeForecast="closeForecast" :mode="display" />
 
     <div class="select-mode">
@@ -29,7 +29,6 @@ export default {
   data() {
     return {
       display: 'weather',
-      date: 'today',
     };
   },
 

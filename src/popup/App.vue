@@ -17,9 +17,9 @@
     <div class="location-container">
       <div class="text">현재 위치</div>
       <div class="location-wrapper">
-        <div class="location">{{location.r1}}</div>
-        <div class="location">{{location.r2}}</div>
-        <div class="location">{{location.r3}}</div>
+        <div class="location">{{ location.r1 }}</div>
+        <div class="location">{{ location.r2 }}</div>
+        <div class="location">{{ location.r3 }}</div>
       </div>
     </div>
   </div>
@@ -63,6 +63,10 @@ export default {
         return 'tomorrow';
       }
     },
+  },
+
+  created() {
+    this.$store.dispatch('setWeather');
   },
 };
 </script>
