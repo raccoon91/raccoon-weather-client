@@ -13,6 +13,5 @@
   },
   "background": {
     "scripts": ["background.js"]
-  },
-  "permissions": ["cookies", "http://*/*"]
+  }
 }
