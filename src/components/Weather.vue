@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="weather" class="weather-container">
-      <img :src="iconPath([weather.sky, weather.pty])" />
+      <img :src="iconPath([weather.sky, weather.pty], weather.hour)" />
       <div class="contents">
         <div class="content-wrapper bold">
           <div class="city">{{ city }}</div>

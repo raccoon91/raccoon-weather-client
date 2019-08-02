@@ -1,11 +1,11 @@
 <template>
   <div class="rain-container">
-    <div class="title">{{title()}}</div>
+    <div class="title">{{ title() }}</div>
     <img src="/assets/icon/close.png" class="close" @click="clickCloseButton" />
     <apexcharts type="line" height="100" :options="options" :series="series" />
     <div class="icon-wrapper">
       <div v-for="(condition, index) in conditionList" :key="index">
-        <img :src="iconPath(condition)" class="icon" />
+        <img :src="iconPath(condition, hours[index])" class="icon" />
       </div>
     </div>
   </div>
@@ -32,14 +32,19 @@ export default {
   },
 
   computed: {
+    hours() {
+      return this.$store.getters.categories || [];
+    },
     conditionList() {
-      return this.$store.getters.condition;
+      return this.$store.getters.condition || [];
     },
     series() {
+      const data = this.$store.getters[this.mode] || [];
+
       return [
         {
           name: '온도',
-          data: this.$store.getters[this.mode],
+          data,
         },
       ];
     },
@@ -81,7 +86,7 @@ export default {
           size: 4,
         },
         xaxis: {
-          categories: this.$store.getters.categories,
+          categories: this.hours,
           axisBorder: {
             show: false,
           },

@@ -19,7 +19,7 @@ export const setForecast = async ({ commit }) => {
 };
 
 export const setTomorrow = async ({ commit }) => {
-  const response = await axios.get('http://52.192.38.17:3000/weather/tomorrow');
+  const response = await axios.get('http://localhost:3000/weather/tomorrow');
 
   commit(types.TOMORROW_WEATHER, response.data);
 };

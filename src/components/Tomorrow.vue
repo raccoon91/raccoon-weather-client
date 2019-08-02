@@ -3,7 +3,7 @@
     <apexcharts type="line" height="180" :options="chartOptions" :series="series" />
     <div class="icon-wrapper">
       <div v-for="(condition, index) in conditionList" :key="index">
-        <img :src="iconPath(condition)" class="icon" />
+        <img :src="iconPath(condition, hours[index])" class="icon" />
       </div>
     </div>
   </div>
@@ -23,6 +23,11 @@ export default {
   },
 
   computed: {
+    hours() {
+      const tomorrow = this.$store.getters.tomorrow || {};
+
+      return tomorrow.categories;
+    },
     conditionList() {
       const tomorrow = this.$store.getters.tomorrow || {};
 
