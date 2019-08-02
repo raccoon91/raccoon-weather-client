@@ -5,6 +5,8 @@
 - Vue.js를 이용한 Chrome Extension
 - 사용자의 ip 주소를 이용해 위치를 판별하고 해당 시, 도의 날씨, 예보를 보여주는 크롬 익스텐션
 
+![](./raccoon_weather.gif)
+
 ### Features
 
 - ip 주소를 이용해 사용자의 위치 판별 (모바일, 핫스팟 미지원)
