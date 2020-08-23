@@ -10,17 +10,16 @@ import {
   line,
   curveBundle,
 } from "d3";
-import "./GlobalAverageTemp.scss";
+import useResizeObserver from "../hooks/useResizeObserver";
 
 const url =
   "https://gist.githubusercontent.com/raccoon91/b9da66f767d228e21729d926c0aefe12/raw/46d8062a215923c5d1d58189374ad1935673feb1/globalTemperature.csv";
 
-const width = 600;
-const height = 240;
-
 const GlobalAverageTemp = () => {
   const [data, setData] = useState(null);
   const svgRef = useRef(null);
+  const wrapperRef = useRef(null);
+  const dimensions = useResizeObserver(wrapperRef);
 
   useEffect(() => {
     csv(url).then((response) => {
@@ -45,6 +44,9 @@ const GlobalAverageTemp = () => {
 
   useEffect(() => {
     if (!data) return;
+
+    const { width, height } =
+      dimensions || wrapperRef.current.getBoundingClientRect();
 
     const svg = select(svgRef.current);
     const content = select(".content");
@@ -76,7 +78,8 @@ const GlobalAverageTemp = () => {
       .attr("class", "line")
       .attr("d", lineGenerator)
       .attr("fill", "none")
-      .attr("stroke", "black")
+      .attr("stroke", "#15dae3")
+      .attr("stroke-width", 4)
       .attr("stroke-dasharray", function () {
         const length = this.getTotalLength();
 
@@ -94,16 +97,15 @@ const GlobalAverageTemp = () => {
       .data(data)
       .join("circle")
       .attr("class", "dot")
-      .attr("r", 1.5)
-      .attr("fill", "none")
-      .attr("stroke", "black")
+      .attr("r", 2)
+      .attr("fill", "#1034a6")
       .attr("opacity", 0)
       .attr("cx", (data) => xScale(data.year))
       .attr("cy", (data) => yScale(data.avg))
       .transition()
       .duration(1000)
       .delay(2000)
-      .attr("opacity", 0.2);
+      .attr("opacity", 0.3);
 
     svg
       .select(".x-axis")
@@ -119,20 +121,22 @@ const GlobalAverageTemp = () => {
       .attr("d", `M 0 ${yScale(0)} H ${width}`)
       .attr("fill", "none")
       .attr("stroke", "darkgrey");
-  }, [data]);
+  }, [data, dimensions]);
 
   return (
-    <svg ref={svgRef} width={width} height={height}>
-      <defs>
-        <clipPath id="global-temp">
-          <rect x="0" y="0" width="100%" height="100%" />
-        </clipPath>
-      </defs>
-      <g className="content" clipPath="url(#global-temp)" />
-      <g className="x-axis" />
-      <g className="y-axis" />
-      <path className="vertical-line" />
-    </svg>
+    <div ref={wrapperRef} className="global-temp-container">
+      <svg ref={svgRef}>
+        <defs>
+          <clipPath id="global-temp">
+            <rect x="0" y="0" width="100%" height="100%" />
+          </clipPath>
+        </defs>
+        <g className="content" clipPath="url(#global-temp)" />
+        <g className="x-axis" />
+        <g className="y-axis" />
+        <path className="vertical-line" />
+      </svg>
+    </div>
   );
 };
 
