@@ -1,9 +1,0 @@
-#root {
-  display: flex;
-  justify-content: center;
-}
-
-svg {
-  overflow: visible;
-  background-color: #eee;
-}

@@ -1,0 +1,22 @@
+/*
+  https://css-tricks.com/box-sizing/
+*/
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+@import "theme";
+
+.app-container {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: $space;
+}
