@@ -11,9 +11,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "react-scripts build"
+  },
+  "devDependencies": {
+    "node-sass": "^4.14.1"
   },
   "eslintConfig": {
     "extends": "react-app"
