@@ -1,0 +1,26 @@
+.geo-path-container {
+  svg {
+    overflow: hidden;
+
+    .country {
+      stroke: black;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .legends {
+      rect {
+        width: 20;
+        height: 20;
+        stroke: black;
+        stroke-width: 1;
+      }
+
+      text {
+        font-size: 12px;
+      }
+    }
+  }
+}
