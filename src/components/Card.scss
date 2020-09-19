@@ -1,0 +1,26 @@
+.card-container {
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
+  background-color: #fff;
+  border: 1px solid #e6e9ed;
+
+  .card-title-wrapper {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: 0 10px;
+    border-bottom: 1px solid #e6e9ed;
+
+    .card-title {
+      margin: 0;
+      color: #73879c;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+
+  .svg-wrapper {
+    height: calc(100% - 50px);
+  }
+}
