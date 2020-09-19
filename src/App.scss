@@ -13,75 +13,53 @@ body {
 
 @import "theme";
 
-$gap: 50px;
-$height: calc((100% - (#{$gap} * 2)) / 3);
+$gap: 20px;
+$height: calc((100vh - (#{$gap} * 2)) / 3);
 
 .app-container {
   overflow: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100vw;
   height: 100vh;
-  padding: 60px 100px;
-  background-color: $black;
+  padding: 20px 80px 60px;
+  background-color: #f7f7f7;
 
-  .app-left {
+  .app-top {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100px;
+    margin-bottom: 30px;
+  }
+
+  .app-bottom {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    width: calc(60% - #{$gap});
-    height: 100%;
 
-    .geo {
-      height: calc(#{$height} * 2 + #{$gap});
-    }
+    .app-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: calc(60% - #{$gap});
+      height: 100vh;
 
-    .global {
-      height: $height;
+      .geo-section {
+        height: calc(((100vh - (#{$gap} * 2)) / 3) * 2 + #{$gap});
+      }
 
-      svg {
-        overflow: visible;
+      .global-section {
+        height: $height;
       }
     }
-  }
 
-  .app-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 40%;
-    height: 100%;
+    .app-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 40%;
+      height: 100vh;
 
-    .temp {
-      height: $height;
-    }
-  }
-
-  .card {
-    position: relative;
-    width: 100%;
-    padding: 30px 40px;
-    background-color: $white;
-    border-radius: 5px;
-
-    > h2 {
-      position: absolute;
-      top: -32px;
-      left: 5px;
-      margin: 0;
-      color: white;
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    > div {
-      width: 100%;
-      height: 100%;
-
-      svg {
-        width: 100%;
-        height: 100%;
+      .climate-section {
+        height: $height;
       }
     }
   }
