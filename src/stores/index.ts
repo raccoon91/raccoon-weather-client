@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import publicIp from "public-ip";
 import { observable, action } from "mobx";
 import { json } from "d3";
 
@@ -72,11 +73,12 @@ export class WeatherStore {
   @observable climate: { [key: string]: IClimate } | null = null;
 
   @action getCurrentWeather = async () => {
+    const ip = await publicIp.v4();
     const response: AxiosResponse<ICurrentWeatherResponseData> = await axios({
       url: "http://localhost:4000/current",
       method: "get",
       headers: {
-        "x-client-ip": "221.150.22.26",
+        "x-client-ip": ip,
       },
     });
 
@@ -104,16 +106,8 @@ export class WeatherStore {
   };
 
   @action getClimate = async (city?: string) => {
-    let url;
-
-    if (city) {
-      url = `http://localhost:4000/climate/${city}`;
-    } else {
-      url = "http://localhost:4000/climate/전국";
-    }
-
     const response: AxiosResponse<{ [key: string]: IClimate }> = await axios({
-      url,
+      url: "http://localhost:4000/climate/geo",
       method: "get",
     });
 
