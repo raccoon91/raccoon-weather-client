@@ -9,6 +9,7 @@ import {
   line,
   curveBundle,
 } from "d3";
+import { Card } from "src/components";
 import { useResizeObserver } from "src/hooks";
 
 const url =
@@ -72,7 +73,7 @@ export const GlobalAverageTemp = () => {
       .join("circle")
       .attr("class", "dot")
       .attr("r", 2)
-      .attr("fill", "darkgray")
+      .attr("fill", "#cccccc")
       .attr("cx", (data) => xScale(Number(data.YEAR)))
       .attr("cy", (data) => yScale(Number(data.VALUE)));
 
@@ -114,18 +115,20 @@ export const GlobalAverageTemp = () => {
   }, [data, dimensions]);
 
   return (
-    <div ref={wrapperRef} className="svg-wrapper">
-      <svg ref={svgRef}>
-        <defs>
-          <clipPath id="global-temp">
-            <rect x="0" y="0" width="100%" height="100%" />
-          </clipPath>
-        </defs>
-        <g className="x-axis" />
-        <g className="y-axis" />
-        <path className="vertical-line" />
-        <g className="content" clipPath="url(#global-temp)" />
-      </svg>
-    </div>
+    <Card title="평균 기온">
+      <div ref={wrapperRef} className="svg-wrapper">
+        <svg ref={svgRef}>
+          <defs>
+            <clipPath id="global-temp">
+              <rect x="0" y="0" width="100%" height="100%" />
+            </clipPath>
+          </defs>
+          <g className="x-axis" />
+          <g className="y-axis" />
+          <path className="vertical-line" />
+          <g className="content" clipPath="url(#global-temp)" />
+        </svg>
+      </div>
+    </Card>
   );
 };
