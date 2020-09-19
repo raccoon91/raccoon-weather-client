@@ -1,9 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
-import { select, geoPath, geoMercator, csv } from "d3";
+import { select, geoPath, geoMercator } from "d3";
 import useResizeObserver from "../hooks/useResizeObserver";
 import data from "../GeoChart.korea.geo.json";
 
-const GeoPath = () => {
+const margin = { top: 10, right: 10, bottom: 10, left: 10 };
+
+export const GeoPath = () => {
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
@@ -12,10 +14,19 @@ const GeoPath = () => {
   useEffect(() => {
     if (!data) return;
 
+    const { width: innerWidth, height: innerHeight } =
+      dimensions || wrapperRef.current.getBoundingClientRect();
+
+    const width = innerWidth - margin.right - margin.left;
+    const height = innerHeight - margin.top - margin.bottom;
+
     const svg = select(svgRef.current);
 
-    const { width, height } =
-      dimensions || wrapperRef.current.getBoundingClientRect();
+    svg
+      .attr("overflow", "hidden")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("transform", `translate(${margin.left},${margin.top})`);
 
     const projection = geoMercator()
       .fitSize([width, height], selectedCountry || data)
@@ -45,13 +56,11 @@ const GeoPath = () => {
       .text((feature) => feature && feature.properties.CTP_KOR_NM)
       .attr("x", 5)
       .attr("y", 15);
-  }, [data, dimensions, selectedCountry]);
+  }, [dimensions, selectedCountry]);
 
   return (
-    <div ref={wrapperRef} className="geo-path-container">
+    <div ref={wrapperRef} className="svg-wrapper">
       <svg ref={svgRef}></svg>
     </div>
   );
 };
-
-export default GeoPath;
