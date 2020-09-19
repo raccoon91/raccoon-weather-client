@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Status, GeoPath, GlobalAverageTemp } from "./components";
 import "./App.scss";
 
-const App = () => {
+export const App = () => {
   return (
     <div className="app-container">
       <div className="app-top">
@@ -12,6 +12,7 @@ const App = () => {
         <Status title="습도" value="80"></Status>
         <Status title="미세먼지" value="30"></Status>
       </div>
+
       <div className="app-bottom">
         <div className="app-left">
           <div className="geo-section">
@@ -25,6 +26,7 @@ const App = () => {
             </Card>
           </div>
         </div>
+
         <div className="app-right">
           <div className="climate-section">
             <Card title="기온"></Card>
@@ -40,5 +42,3 @@ const App = () => {
     </div>
   );
 };
-
-export default App;

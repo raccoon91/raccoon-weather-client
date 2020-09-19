@@ -1,18 +1,22 @@
 import React, { useRef, useEffect, useState } from "react";
-import { select, geoPath, geoMercator } from "d3";
-import useResizeObserver from "../hooks/useResizeObserver";
-import data from "../GeoChart.korea.geo.json";
+import { json, select, geoPath, geoMercator } from "d3";
+import { useResizeObserver } from "src/hooks";
 
 const margin = { top: 10, right: 10, bottom: 10, left: 10 };
 
 export const GeoPath = () => {
-  const svgRef = useRef();
-  const wrapperRef = useRef();
+  const svgRef = useRef(null);
+  const wrapperRef = useRef(null);
   const dimensions = useResizeObserver(wrapperRef);
+  const [geoData, setGeoData] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
 
   useEffect(() => {
-    if (!data) return;
+    json("./GeoChart.korea.geo.json").then(setGeoData);
+  }, []);
+
+  useEffect(() => {
+    if (!geoData) return;
 
     const { width: innerWidth, height: innerHeight } =
       dimensions || wrapperRef.current.getBoundingClientRect();
@@ -29,14 +33,14 @@ export const GeoPath = () => {
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
     const projection = geoMercator()
-      .fitSize([width, height], selectedCountry || data)
+      .fitSize([width, height], selectedCountry || geoData)
       .precision(100);
 
     const pathGenerator = geoPath().projection(projection);
 
     svg
       .selectAll(".country")
-      .data(data.features)
+      .data(geoData.features)
       .join("path")
       .on("click", (feature) => {
         setSelectedCountry(selectedCountry === feature ? null : feature);
@@ -56,7 +60,7 @@ export const GeoPath = () => {
       .text((feature) => feature && feature.properties.CTP_KOR_NM)
       .attr("x", 5)
       .attr("y", 15);
-  }, [dimensions, selectedCountry]);
+  }, [geoData, dimensions, selectedCountry]);
 
   return (
     <div ref={wrapperRef} className="svg-wrapper">

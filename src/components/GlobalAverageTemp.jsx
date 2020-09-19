@@ -9,7 +9,7 @@ import {
   line,
   curveBundle,
 } from "d3";
-import useResizeObserver from "../hooks/useResizeObserver";
+import { useResizeObserver } from "src/hooks";
 
 const url =
   "https://gist.githubusercontent.com/raccoon91/b9da66f767d228e21729d926c0aefe12/raw/0d0f47ecc775a443efc45bbedf2d804dcc1bfb75/globalAnnuallyTemperature.csv";
@@ -72,9 +72,7 @@ export const GlobalAverageTemp = () => {
       .join("circle")
       .attr("class", "dot")
       .attr("r", 2)
-      .attr("fill", "none")
-      .attr("stroke", "darkgray")
-      .attr("stroke-width", 1)
+      .attr("fill", "darkgray")
       .attr("cx", (data) => xScale(Number(data.YEAR)))
       .attr("cy", (data) => yScale(Number(data.VALUE)));
 

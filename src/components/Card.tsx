@@ -1,7 +1,12 @@
-import React from "react";
+import React, { FC } from "react";
 import "./Card.scss";
 
-export const Card = ({ title, children }) => {
+interface ICardProps {
+  title: string;
+  children?: JSX.Element;
+}
+
+export const Card: FC<ICardProps> = ({ title, children }) => {
   return (
     <div className="card-container">
       <div className="card-title-wrapper">
