@@ -3,7 +3,7 @@ import { useObserver } from "mobx-react";
 import { useStores } from "src/hooks";
 import { Card, ClimateChart } from "src/components";
 
-const useWeatherData = () => {
+const useStoreData = () => {
   const {
     store: { climateStore },
   } = useStores();
@@ -24,7 +24,7 @@ export const Climates: FC = () => {
     climateTempList,
     climateRainList,
     climateHumidList,
-  } = useWeatherData();
+  } = useStoreData();
 
   useEffect(() => {
     getLocalClimate();

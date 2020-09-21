@@ -3,7 +3,7 @@ import { useObserver } from "mobx-react";
 import { useStores } from "src/hooks";
 import { Status } from "src/components";
 
-const useWeatherStore = () => {
+const useStoreData = () => {
   const {
     store: { weatherStore },
   } = useStores();
@@ -15,7 +15,7 @@ const useWeatherStore = () => {
 };
 
 export const Header: FC = () => {
-  const { getCurrentWeather, currentWeather } = useWeatherStore();
+  const { getCurrentWeather, currentWeather } = useStoreData();
 
   useEffect(() => {
     getCurrentWeather();

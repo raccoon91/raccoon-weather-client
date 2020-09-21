@@ -10,7 +10,7 @@ import {
   VerticalAxis,
 } from "src/components/chart";
 
-const useWeatherData = () => {
+const useStoreData = () => {
   const {
     store: { weatherStore },
   } = useStores();
@@ -31,7 +31,7 @@ export const GlobalTemperatureChart: FC = () => {
     globalTempYearList,
     globalTempDataList,
     globalTempChartDataList,
-  } = useWeatherData();
+  } = useStoreData();
 
   const width = dimensions?.width || 0;
   const height = dimensions?.height || 0;
