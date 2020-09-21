@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { select, min, max, scaleLinear, line, curveBundle } from "d3";
 
-export const Line = ({ width, height, lineColor, lineData }) => {
+export const Line = ({ chartId, width, height, lineColor, lineData }) => {
   const contentRef = useRef(null);
 
   useEffect(() => {
@@ -50,5 +50,14 @@ export const Line = ({ width, height, lineColor, lineData }) => {
       .attr("stroke-dashoffset", 0);
   }, [width, height, lineData, lineColor]);
 
-  return <g ref={contentRef}></g>;
+  return (
+    <>
+      <defs>
+        <clipPath id={chartId}>
+          <rect x="0" y="0" width="100%" height="100%" />
+        </clipPath>
+      </defs>
+      <g ref={contentRef} className="content" clipPath={`url(#${chartId})`} />
+    </>
+  );
 };
