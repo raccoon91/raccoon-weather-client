@@ -41,7 +41,7 @@ export const GlobalTemperatureChart: FC = () => {
   }, [getGlobalTemperature]);
 
   return (
-    <Card title="온도">
+    <Card title="전세계 평균 온도">
       <div
         ref={wrapperRef}
         style={{ height: "180px", padding: "10px 10px 25px 20px" }}
