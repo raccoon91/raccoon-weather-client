@@ -1,4 +1,7 @@
-.geo-path-container {
+.map-chart-container {
+  height: 430px;
+  padding: 10px;
+
   svg {
     overflow: hidden;
 
@@ -21,6 +24,19 @@
       text {
         font-size: 12px;
       }
+    }
+  }
+}
+
+.map-chart-option-wrapper {
+  .map-chart-option {
+    margin-left: 6px;
+    color: #73879c;
+    font-size: 14px;
+    font-weight: bold;
+
+    &:hover {
+      cursor: pointer;
     }
   }
 }

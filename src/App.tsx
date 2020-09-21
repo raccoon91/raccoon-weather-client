@@ -1,7 +1,7 @@
 import React from "react";
 import {
   Header,
-  GeoPath,
+  MapChart,
   Climates,
   GlobalTemperatureChart,
 } from "src/components";
@@ -16,7 +16,7 @@ export const App = () => {
 
       <div className="app-bottom">
         <div className="app-left">
-          {/* <GeoPath /> */}
+          <MapChart />
           <GlobalTemperatureChart />
         </div>
 

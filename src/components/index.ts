@@ -1,6 +1,6 @@
 export * from "./Card";
 export * from "./Status";
-export * from "./GeoPath";
+export * from "./MapChart";
 export * from "./Header";
 export * from "./Climates";
 export * from "./ClimateChart";
