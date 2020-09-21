@@ -5,7 +5,7 @@ export const Line = ({ chartId, width, height, lineColor, lineData }) => {
   const contentRef = useRef(null);
 
   useEffect(() => {
-    if (!lineData) return;
+    if (!lineData || !lineData.length) return;
 
     const content = select(contentRef.current);
 
@@ -40,14 +40,15 @@ export const Line = ({ chartId, width, height, lineColor, lineData }) => {
       .attr("stroke-dasharray", function () {
         const length = this.getTotalLength();
 
-        return `${length} ${length}`;
-      })
-      .attr("stroke-dashoffset", function () {
-        return this.getTotalLength();
+        return `0, ${length}`;
       })
       .transition()
       .duration(3000)
-      .attr("stroke-dashoffset", 0);
+      .attr("stroke-dasharray", function () {
+        const length = this.getTotalLength();
+
+        return `${length}, ${length}`;
+      });
   }, [width, height, lineData, lineColor]);
 
   return (
