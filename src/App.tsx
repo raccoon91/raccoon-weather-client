@@ -16,7 +16,7 @@ export const App = () => {
 
       <div className="app-bottom">
         <div className="app-left">
-          <GeoPath />
+          {/* <GeoPath /> */}
           <GlobalTemperatureChart />
         </div>
 

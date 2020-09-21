@@ -1,32 +1,31 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useObserver } from "mobx-react";
 import { useStores } from "src/hooks";
 import { Status } from "src/components";
 
 const useWeatherStore = () => {
-  const { store } = useStores();
+  const {
+    store: { weatherStore },
+  } = useStores();
 
   return useObserver(() => ({
-    currentWeather: store.currentWeather,
+    getCurrentWeather: weatherStore.getCurrentWeather,
+    currentWeather: weatherStore.currentWeather,
   }));
 };
 
 export const Header: FC = () => {
-  const { currentWeather } = useWeatherStore();
-  const {
-    city,
-    r2,
-    r3,
-    t1h,
-    yesterday_temp,
-    pop,
-    reh,
-    pm10,
-    pm25,
-  } = currentWeather;
+  const { getCurrentWeather, currentWeather } = useWeatherStore();
+
+  useEffect(() => {
+    getCurrentWeather();
+  }, [getCurrentWeather]);
+
+  const { city, r2, r3, t1h, yesterday_temp, pop, reh, pm10, pm25 } =
+    currentWeather || {};
 
   const subLocation = r2 && r3 ? `${r2} ${r3}` : "-";
-  const subTemp = yesterday_temp ? yesterday_temp : "-";
+  const subTemp = yesterday_temp || "-";
 
   return (
     <>
