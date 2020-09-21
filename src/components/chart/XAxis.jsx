@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { select, min, max, scaleLinear, axisBottom } from "d3";
 
-export const Xaxis = ({ width, height, axisDatalist }) => {
+export const XAxis = ({ width, height, axisDatalist }) => {
   const axisRef = useRef();
 
   useEffect(() => {
-    if (!axisDatalist) return;
+    if (!axisDatalist || !axisDatalist.length) return;
 
     const xScale = scaleLinear()
       .domain([
