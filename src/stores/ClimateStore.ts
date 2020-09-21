@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { observable, action, runInAction } from "mobx";
 import { json } from "d3";
+import { cityToAbbreviation } from "src/utils";
 
 interface IGeoFeature {
   type: string;
@@ -35,6 +36,7 @@ export class ClimateStore {
   @observable geoJson: IGeoJson | null = null;
   @observable selectedCity: string | null = null;
   @observable selectedCountry: IGeoFeature | null = null;
+  @observable selectedCategory: string = "rn1";
 
   @observable geoClimateData: { [key: string]: IClimate } | null = null;
 
@@ -72,8 +74,9 @@ export class ClimateStore {
 
   @action getLocalClimate = async () => {
     try {
-      // const city = this.selectedCity || "전국";
-      const city = "전국";
+      const city = this.selectedCity
+        ? cityToAbbreviation[this.selectedCity]
+        : "전국";
 
       const response: AxiosResponse<{
         [key: string]: IClimate[];
@@ -120,7 +123,7 @@ export class ClimateStore {
     }
   };
 
-  @action selectGeoCountry = (feature: IGeoFeature) => {
+  @action selectGeoCountry = async (feature: IGeoFeature) => {
     const city = feature.properties.CTP_KOR_NM;
 
     if (this.selectedCity === city) {
@@ -129,6 +132,16 @@ export class ClimateStore {
     } else {
       this.selectedCity = city;
       this.selectedCountry = feature;
+    }
+
+    await this.getLocalClimate();
+  };
+
+  @action selectCategory = (category?: string) => {
+    if (!category) return;
+
+    if (this.selectedCategory !== category) {
+      this.selectedCategory = category;
     }
   };
 }
