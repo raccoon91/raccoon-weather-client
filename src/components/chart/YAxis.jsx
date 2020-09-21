@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from "react";
 import { select, min, max, scaleLinear, axisLeft } from "d3";
 
-export const YAxis = ({ width, height, axisDatalist }) => {
+export const YAxis = ({ width, height, axisDataList }) => {
   const axisRef = useRef();
 
   useEffect(() => {
-    if (!axisDatalist || !axisDatalist.length) return;
+    if (!axisDataList || !axisDataList.length) return;
 
     const yScale = scaleLinear()
       .domain([
-        min(axisDatalist, (data) => data),
-        max(axisDatalist, (data) => data),
+        min(axisDataList, (data) => data),
+        max(axisDataList, (data) => data),
       ])
       .range([height, 0]);
 
@@ -23,7 +23,7 @@ export const YAxis = ({ width, height, axisDatalist }) => {
       .call(yAxis)
       .selectAll("line")
       .attr("display", "none");
-  }, [width, height, axisDatalist]);
+  }, [width, height, axisDataList]);
 
   return <g ref={axisRef} />;
 };

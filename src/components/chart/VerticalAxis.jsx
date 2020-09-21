@@ -1,16 +1,16 @@
 import React, { useRef, useEffect } from "react";
 import { select, min, max, scaleLinear } from "d3";
 
-export const VerticalAxis = ({ width, height, axisDatalist }) => {
+export const VerticalAxis = ({ width, height, axisDataList }) => {
   const contentRef = useRef(null);
 
   useEffect(() => {
-    if (!axisDatalist || !axisDatalist.length) return;
+    if (!axisDataList || !axisDataList.length) return;
 
     const yScale = scaleLinear()
       .domain([
-        min(axisDatalist, (data) => data),
-        max(axisDatalist, (data) => data),
+        min(axisDataList, (data) => data),
+        max(axisDataList, (data) => data),
       ])
       .range([height, 0]);
 
@@ -18,7 +18,7 @@ export const VerticalAxis = ({ width, height, axisDatalist }) => {
       .attr("d", `M 0 ${yScale(0)} H ${width}`)
       .attr("stroke", "darkgray")
       .attr("shape-rendering", "crispedges");
-  }, [width, height, axisDatalist]);
+  }, [width, height, axisDataList]);
 
   return <path ref={contentRef} className="vertical-axis" />;
 };

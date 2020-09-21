@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from "react";
 import { select, min, max, scaleLinear, axisBottom } from "d3";
 
-export const XAxis = ({ width, height, axisDatalist }) => {
+export const XAxis = ({ width, height, axisDataList }) => {
   const axisRef = useRef();
 
   useEffect(() => {
-    if (!axisDatalist || !axisDatalist.length) return;
+    if (!axisDataList || !axisDataList.length) return;
 
     const xScale = scaleLinear()
       .domain([
-        min(axisDatalist, (data) => data),
-        max(axisDatalist, (data) => data),
+        min(axisDataList, (data) => data),
+        max(axisDataList, (data) => data),
       ])
       .range([0, width]);
 
@@ -24,7 +24,7 @@ export const XAxis = ({ width, height, axisDatalist }) => {
       .call(xAxis)
       .selectAll("line")
       .attr("display", "none");
-  }, [width, height, axisDatalist]);
+  }, [width, height, axisDataList]);
 
   return <g ref={axisRef} />;
 };
