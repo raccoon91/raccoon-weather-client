@@ -43,7 +43,7 @@ export const Line = ({ chartId, width, height, lineColor, lineData }) => {
         return `0, ${length}`;
       })
       .transition()
-      .duration(3000)
+      .duration(2000)
       .attr("stroke-dasharray", function () {
         const length = this.getTotalLength();
 
