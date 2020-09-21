@@ -1,5 +1,10 @@
 import React from "react";
-import { Card, Header, GeoPath, GlobalAverageTemp } from "src/components";
+import {
+  Header,
+  GeoPath,
+  Climates,
+  GlobalTemperatureChart,
+} from "src/components";
 import "./App.scss";
 
 export const App = () => {
@@ -11,24 +16,12 @@ export const App = () => {
 
       <div className="app-bottom">
         <div className="app-left">
-          <div className="geo-section">
-            <GeoPath />
-          </div>
-          <div className="global-section">
-            <GlobalAverageTemp />
-          </div>
+          <GeoPath />
+          <GlobalTemperatureChart />
         </div>
 
         <div className="app-right">
-          <div className="climate-section">
-            <Card title="기온"></Card>
-          </div>
-          <div className="climate-section">
-            <Card title="강수량"></Card>
-          </div>
-          <div className="climate-section">
-            <Card title="습도"></Card>
-          </div>
+          <Climates />
         </div>
       </div>
     </div>

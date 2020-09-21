@@ -14,7 +14,7 @@ body {
 @import "theme";
 
 $gap: 20px;
-$height: calc((100vh - (#{$gap} * 2)) / 3);
+$height: 230px;
 
 .app-container {
   overflow: auto;
@@ -34,21 +34,14 @@ $height: calc((100vh - (#{$gap} * 2)) / 3);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 730px;
 
     .app-left {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       width: calc(60% - #{$gap});
-      height: 100vh;
-
-      .geo-section {
-        height: calc(((100vh - (#{$gap} * 2)) / 3) * 2 + #{$gap});
-      }
-
-      .global-section {
-        height: $height;
-      }
+      height: 100%;
     }
 
     .app-right {
@@ -56,11 +49,7 @@ $height: calc((100vh - (#{$gap} * 2)) / 3);
       flex-direction: column;
       justify-content: space-between;
       width: 40%;
-      height: 100vh;
-
-      .climate-section {
-        height: $height;
-      }
+      height: 100%;
     }
   }
 }
