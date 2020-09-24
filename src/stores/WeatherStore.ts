@@ -1,9 +1,10 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { observable, action, runInAction } from "mobx";
 import publicIp from "public-ip";
 import { csv, DSVRowArray } from "d3";
+import { requestWeatherApi } from "src/lib";
 
-const GLOBAL_TEMP_URL = process.env.REACT_APP_GLOBAL_TEMPERATURE_URL as string;
+const { REACT_APP_GLOBAL_TEMPERATURE_URL } = process.env;
 
 interface IWeatherResponseData {
   city: string;
@@ -56,13 +57,15 @@ export class WeatherStore {
     try {
       const ip = await publicIp.v4();
 
-      const response: AxiosResponse<ICurrentWeatherResponseData> = await axios({
-        url: "https://api.dev-raccoon.site/weather",
-        method: "get",
-        headers: {
-          "x-client-ip": ip,
-        },
-      });
+      const response: AxiosResponse<ICurrentWeatherResponseData> = await requestWeatherApi(
+        {
+          method: "get",
+          url: "weather",
+          headers: {
+            "x-client-ip": ip,
+          },
+        }
+      );
 
       const { weather, location } = response.data;
       const { t1h, yesterday_temp, pop, reh, pm10, pm25 } = weather;
@@ -89,7 +92,9 @@ export class WeatherStore {
   @action
   getGlobalTemperature = async () => {
     try {
-      const response: DSVRowArray = await csv(GLOBAL_TEMP_URL);
+      const response: DSVRowArray = await csv(
+        REACT_APP_GLOBAL_TEMPERATURE_URL as string
+      );
 
       const chartDataList: IGlobalTempData[] = [];
 

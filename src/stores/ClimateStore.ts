@@ -1,6 +1,7 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { observable, action, runInAction } from "mobx";
 import { json } from "d3";
+import { requestWeatherApi } from "src/lib";
 import { cityToAbbreviation } from "src/utils";
 
 interface IGeoFeature {
@@ -63,9 +64,11 @@ export class ClimateStore {
 
   @action getGeoClimateData = async () => {
     try {
-      const response: AxiosResponse<{ [key: string]: IClimate }> = await axios({
-        url: "https://api.dev-raccoon.site/climate/geo",
+      const response: AxiosResponse<{
+        [key: string]: IClimate;
+      }> = await requestWeatherApi({
         method: "get",
+        url: "climate/geo",
       });
 
       runInAction(() => {
@@ -84,9 +87,9 @@ export class ClimateStore {
 
       const response: AxiosResponse<{
         [key: string]: IClimate[];
-      }> = await axios({
-        url: `https://api.dev-raccoon.site/climate/local/${city}`,
+      }> = await requestWeatherApi({
         method: "get",
+        url: `climate/local/${city}`,
       });
 
       const climateData = response.data;
