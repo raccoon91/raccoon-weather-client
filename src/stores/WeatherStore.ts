@@ -41,14 +41,15 @@ interface ICurrentWeather {
   pm25?: string | null;
 }
 
+interface IGlobalTempData {
+  value: number;
+  x: number;
+}
+
 export class WeatherStore {
   @observable currentWeather: ICurrentWeather | null = null;
 
-  @observable globalTempYearList: number[] | null = null;
-  @observable globalTempDataList: number[] | null = null;
-  @observable globalTempChartDataList:
-    | { x: number; value: number }[]
-    | null = null;
+  @observable globalTempChartDataList: IGlobalTempData[] | null = null;
 
   @action
   getCurrentWeather = async () => {
@@ -56,7 +57,7 @@ export class WeatherStore {
       const ip = await publicIp.v4();
 
       const response: AxiosResponse<ICurrentWeatherResponseData> = await axios({
-        url: "http://localhost:4000/weather",
+        url: "https://api.dev-raccoon.site/weather",
         method: "get",
         headers: {
           "x-client-ip": ip,
@@ -90,22 +91,16 @@ export class WeatherStore {
     try {
       const response: DSVRowArray = await csv(GLOBAL_TEMP_URL);
 
-      const dataList: number[] = [];
-      const yearList: number[] = [];
-      const chartDataList: { x: number; value: number }[] = [];
+      const chartDataList: IGlobalTempData[] = [];
 
       response.forEach((data) => {
         const x = Number(data.YEAR);
         const value = Number(data.VALUE);
 
-        dataList.push(value);
-        yearList.push(x);
-        chartDataList.push({ x, value });
+        chartDataList.push({ value, x });
       });
 
       runInAction(() => {
-        this.globalTempDataList = dataList;
-        this.globalTempYearList = yearList;
         this.globalTempChartDataList = chartDataList;
       });
     } catch (err) {

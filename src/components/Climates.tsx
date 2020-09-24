@@ -10,20 +10,18 @@ const useStoreData = () => {
 
   return useObserver(() => ({
     getLocalClimate: climateStore.getLocalClimate,
-    climateYearList: climateStore.climateYearList?.slice(),
-    climateTempList: climateStore.climateTempList?.slice(),
-    climateRainList: climateStore.climateRainList?.slice(),
-    climateHumidList: climateStore.climateHumidList?.slice(),
+    tempDataList: climateStore.tempDataList?.slice(),
+    rainDataList: climateStore.rainDataList?.slice(),
+    humidDataList: climateStore.humidDataList?.slice(),
   }));
 };
 
 export const Climates: FC = () => {
   const {
     getLocalClimate,
-    climateYearList,
-    climateTempList,
-    climateRainList,
-    climateHumidList,
+    tempDataList,
+    rainDataList,
+    humidDataList,
   } = useStoreData();
 
   useEffect(() => {
@@ -34,26 +32,26 @@ export const Climates: FC = () => {
     <>
       <Card title="기온">
         <ClimateChart
-          chartId="temp-chart"
+          chartId="climate-temp-chart"
           lineColor="#31a354"
-          chartDataList={climateTempList}
-          axisDataList={climateYearList}
+          chartDataList={tempDataList}
+          tooltip
         />
       </Card>
       <Card title="강수량">
         <ClimateChart
-          chartId="rainProb-chart"
+          chartId="climate-rainProb-chart"
           lineColor="#3182bd"
-          chartDataList={climateRainList}
-          axisDataList={climateYearList}
+          chartDataList={rainDataList}
+          tooltip
         />
       </Card>
       <Card title="습도">
         <ClimateChart
-          chartId="humidity-chart"
+          chartId="climate-humidity-chart"
           lineColor="#636363"
-          chartDataList={climateHumidList}
-          axisDataList={climateYearList}
+          chartDataList={humidDataList}
+          tooltip
         />
       </Card>
     </>

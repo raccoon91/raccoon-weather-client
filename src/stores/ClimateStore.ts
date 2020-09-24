@@ -32,6 +32,11 @@ interface IClimate {
   weather_date: string;
 }
 
+interface IChartData {
+  value: number;
+  x: number;
+}
+
 export class ClimateStore {
   @observable geoJson: IGeoJson | null = null;
   @observable selectedCity: string | null = null;
@@ -40,10 +45,9 @@ export class ClimateStore {
 
   @observable geoClimateData: { [key: string]: IClimate } | null = null;
 
-  @observable climateYearList: number[] | null = null;
-  @observable climateTempList: number[] | null = null;
-  @observable climateRainList: number[] | null = null;
-  @observable climateHumidList: number[] | null = null;
+  @observable tempDataList: IChartData[] | null = null;
+  @observable rainDataList: IChartData[] | null = null;
+  @observable humidDataList: IChartData[] | null = null;
 
   @action getGeoJson = async () => {
     try {
@@ -60,7 +64,7 @@ export class ClimateStore {
   @action getGeoClimateData = async () => {
     try {
       const response: AxiosResponse<{ [key: string]: IClimate }> = await axios({
-        url: "http://localhost:4000/climate/geo",
+        url: "https://api.dev-raccoon.site/climate/geo",
         method: "get",
       });
 
@@ -81,17 +85,16 @@ export class ClimateStore {
       const response: AxiosResponse<{
         [key: string]: IClimate[];
       }> = await axios({
-        url: `http://localhost:4000/climate/local/${city}`,
+        url: `https://api.dev-raccoon.site/climate/local/${city}`,
         method: "get",
       });
 
       const climateData = response.data;
       const yearList = Object.keys(climateData);
 
-      const climateYearList: number[] = [];
-      const climateTempList: number[] = [];
-      const climateRainList: number[] = [];
-      const climateHumidList: number[] = [];
+      const tempDataList: IChartData[] = [];
+      const rainDataList: IChartData[] = [];
+      const humidDataList: IChartData[] = [];
 
       yearList.forEach((year) => {
         const climateDataList = climateData[year];
@@ -106,17 +109,19 @@ export class ClimateStore {
           stack.count += 1;
         });
 
-        climateYearList.push(Number(year));
-        climateTempList.push(Number((stack.temp / stack.count).toFixed(1)));
-        climateRainList.push(Number((stack.rn1 / stack.count).toFixed(1)));
-        climateHumidList.push(Number((stack.reh / stack.count).toFixed(1)));
+        const tempData = Number((stack.temp / stack.count).toFixed(1));
+        const rainData = Number((stack.rn1 / stack.count).toFixed(1));
+        const humidData = Number((stack.reh / stack.count).toFixed(1));
+
+        tempDataList.push({ value: tempData, x: Number(year) });
+        rainDataList.push({ value: rainData, x: Number(year) });
+        humidDataList.push({ value: humidData, x: Number(year) });
       });
 
       runInAction(() => {
-        this.climateYearList = climateYearList;
-        this.climateTempList = climateTempList;
-        this.climateRainList = climateRainList;
-        this.climateHumidList = climateHumidList;
+        this.tempDataList = tempDataList;
+        this.rainDataList = rainDataList;
+        this.humidDataList = humidDataList;
       });
     } catch (err) {
       console.error("local climate request failed");

@@ -3,6 +3,7 @@ import { useObserver } from "mobx-react";
 import { useStores, useResizeObserver } from "src/hooks";
 import { Card } from "src/components";
 import {
+  Chart,
   GradientLine,
   Dot,
   XAxis,
@@ -17,8 +18,6 @@ const useStoreData = () => {
 
   return useObserver(() => ({
     getGlobalTemperature: weatherStore.getGlobalTemperature,
-    globalTempYearList: weatherStore.globalTempYearList?.slice(),
-    globalTempDataList: weatherStore.globalTempDataList?.slice(),
     globalTempChartDataList: weatherStore.globalTempChartDataList?.slice(),
   }));
 };
@@ -26,12 +25,7 @@ const useStoreData = () => {
 export const GlobalTemperatureChart: FC = () => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const dimensions = useResizeObserver(wrapperRef);
-  const {
-    getGlobalTemperature,
-    globalTempYearList,
-    globalTempDataList,
-    globalTempChartDataList,
-  } = useStoreData();
+  const { getGlobalTemperature, globalTempChartDataList } = useStoreData();
 
   const width = dimensions?.width || 0;
   const height = dimensions?.height || 0;
@@ -46,37 +40,18 @@ export const GlobalTemperatureChart: FC = () => {
         ref={wrapperRef}
         style={{ height: "180px", padding: "10px 10px 25px 20px" }}
       >
-        <svg width={width} height={height} overflow="visible">
-          <Dot
-            dotColor="#cccccc"
-            width={width}
-            height={height}
-            lineData={globalTempChartDataList}
-          />
-          <VerticalAxis
-            width={width}
-            height={height}
-            axisDataList={globalTempDataList}
-          />
-          <GradientLine
-            chartId="global-temp-chart"
-            startColor="#3182bd"
-            endColor="#de2d26"
-            width={width}
-            height={height}
-            lineData={globalTempChartDataList}
-          />
-          <XAxis
-            width={width}
-            height={height}
-            axisDataList={globalTempYearList}
-          />
-          <YAxis
-            width={width}
-            height={height}
-            axisDataList={globalTempDataList}
-          />
-        </svg>
+        <Chart
+          chartId="global-temp-line"
+          width={width}
+          height={height}
+          chartDataList={globalTempChartDataList}
+        >
+          <Dot dotColor="#cccccc" />
+          <VerticalAxis position="0" />
+          <GradientLine startColor="#3182bd" endColor="#de2d26" />
+          <XAxis />
+          <YAxis />
+        </Chart>
       </div>
     </Card>
   );
