@@ -1,30 +1,32 @@
 import React, { useEffect, useRef } from "react";
 import { select, min, max, scaleLinear, axisBottom } from "d3";
 
-export const XAxis = ({ width, height, axisDataList }) => {
+export const XAxis = (props) => {
+  const { width, height, chartDataList } = props;
   const axisRef = useRef();
 
   useEffect(() => {
-    if (!axisDataList || !axisDataList.length) return;
+    if (!chartDataList || !chartDataList.length) return;
 
     const xScale = scaleLinear()
       .domain([
-        min(axisDataList, (data) => data),
-        max(axisDataList, (data) => data),
+        min(chartDataList, (data) => data.x),
+        max(chartDataList, (data) => data.x),
       ])
-      .range([0, width]);
+      .range([0, width])
+      .nice();
 
     const xAxis = axisBottom(xScale)
-      .ticks(5)
+      .ticks(width / 60)
       .tickSizeOuter(0)
-      .tickFormat((value) => value);
+      .tickFormat((data) => String(data));
 
     select(axisRef.current)
       .attr("transform", `translate(0, ${height})`)
       .call(xAxis)
       .selectAll("line")
       .attr("display", "none");
-  }, [width, height, axisDataList]);
+  }, [width, height, chartDataList]);
 
   return <g ref={axisRef} />;
 };

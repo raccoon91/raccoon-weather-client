@@ -1,33 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
 import { select, min, max, scaleLinear, line, curveBundle } from "d3";
 
-export const GradientLine = ({
-  chartId,
-  width,
-  height,
-  startColor,
-  endColor,
-  lineData,
-}) => {
+export const GradientLine = (props) => {
+  const { chartId, width, height, startColor, endColor, chartDataList } = props;
   const contentRef = useRef(null);
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
-    if (!lineData || !lineData.length) return;
+    if (!chartDataList || !chartDataList.length) return;
 
     const content = select(contentRef.current);
 
     const xScale = scaleLinear()
       .domain([
-        min(lineData, (data) => data.x),
-        max(lineData, (data) => data.x),
+        min(chartDataList, (data) => data.x),
+        max(chartDataList, (data) => data.x),
       ])
       .range([0, width]);
 
     const yScale = scaleLinear()
       .domain([
-        min(lineData, (data) => data.value),
-        max(lineData, (data) => data.value),
+        min(chartDataList, (data) => data.value),
+        max(chartDataList, (data) => data.value),
       ])
       .range([height, 0]);
 
@@ -40,10 +34,11 @@ export const GradientLine = ({
       .y((data) => yScale(data.value))
       .curve(curveBundle.beta(1));
 
-    content
-      .selectAll(".line")
-      .data([lineData])
-      .join("path")
+    const gradientChart = content.selectAll(".line").data([chartDataList]);
+
+    gradientChart
+      .enter()
+      .append("path")
       .attr("class", "line")
       .attr("d", lineGenerator)
       .attr("fill", "none")
@@ -55,18 +50,22 @@ export const GradientLine = ({
         return `0, ${length}`;
       })
       .transition()
-      .duration(3000)
+      .duration(2000)
       .attr("stroke-dasharray", function () {
         const length = this.getTotalLength();
 
         return `${length}, ${length}`;
       });
-  }, [width, height, lineData, chartId]);
+
+    gradientChart.transition().duration(1000).attr("d", lineGenerator);
+
+    gradientChart.exit().remove();
+  }, [width, height, chartDataList, chartId]);
 
   return (
     <>
       <defs>
-        <clipPath id={chartId}>
+        <clipPath id={`${chartId}-gradient-line`}>
           <rect x="0" y="0" width="100%" height="100%" />
         </clipPath>
         <linearGradient
@@ -77,7 +76,11 @@ export const GradientLine = ({
           <stop offset={`${offset}%`} stopColor={startColor} />
         </linearGradient>
       </defs>
-      <g ref={contentRef} className="content" clipPath={`url(#${chartId})`} />
+      <g
+        ref={contentRef}
+        className="content"
+        clipPath={`url(#${chartId}-gradient-line)`}
+      />
     </>
   );
 };

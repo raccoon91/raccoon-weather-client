@@ -1,18 +1,20 @@
 import React, { useEffect, useRef } from "react";
 import { select, min, max, scaleLinear, axisLeft } from "d3";
 
-export const YAxis = ({ width, height, axisDataList }) => {
+export const YAxis = (props) => {
+  const { width, height, chartDataList } = props;
   const axisRef = useRef();
 
   useEffect(() => {
-    if (!axisDataList || !axisDataList.length) return;
+    if (!chartDataList || !chartDataList.length) return;
 
     const yScale = scaleLinear()
       .domain([
-        min(axisDataList, (data) => data),
-        max(axisDataList, (data) => data),
+        min(chartDataList, (data) => data.value),
+        max(chartDataList, (data) => data.value),
       ])
-      .range([height, 0]);
+      .range([height, 0])
+      .nice();
 
     const yAxis = axisLeft(yScale)
       .ticks(4)
@@ -23,7 +25,7 @@ export const YAxis = ({ width, height, axisDataList }) => {
       .call(yAxis)
       .selectAll("line")
       .attr("display", "none");
-  }, [width, height, axisDataList]);
+  }, [width, height, chartDataList]);
 
   return <g ref={axisRef} />;
 };
