@@ -23,7 +23,6 @@ export const MapChartCategory: FC<IMapChartCategoryProps> = ({
   };
 
   const createClassName = (option: string) => {
-    console.log(selectedCategory);
     if (option === selectedCategory) {
       return `chart-option ${option} selected`;
     } else {

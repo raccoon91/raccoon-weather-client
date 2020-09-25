@@ -66,8 +66,6 @@ export const MapChart: FC = () => {
 
   const { domain, range } = climateCategory[selectedCategory];
 
-  console.log(selectedCity);
-
   return (
     <Card
       title={selectedCity || "전국"}
