@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { select, geoPath, geoMercator, scaleThreshold } from "d3";
+import { select, geoPath, geoMercator, scaleQuantize } from "d3";
 
 export const GeoPath = ({
   width,
@@ -23,9 +23,7 @@ export const GeoPath = ({
 
     const pathGenerator = geoPath().projection(projection);
 
-    const colorScale = scaleThreshold()
-      .domain(colorDomain.slice(1))
-      .range(colorRange);
+    const colorScale = scaleQuantize().domain(colorDomain).range(colorRange);
 
     select(contentRef.current)
       .selectAll(".country")

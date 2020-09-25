@@ -7,19 +7,22 @@ import { GeoPath, Legend } from "src/components/chart";
 import "./MapChart.scss";
 
 const climateCategory: {
-  [key: string]: { domain: number[]; range: string[] };
+  [key: string]: { domain: number[]; range: string[]; unit: string };
 } = {
   temp: {
-    domain: [10, 12, 14, 16, 18, 20],
-    range: ["#ffffff", "#edf8e9", "#bae4b3", "#74c476", "#31a354", "#006d2c"],
+    domain: [12, 17],
+    range: ["#edf8e9", "#bae4b3", "#74c476", "#31a354", "#006d2c"],
+    unit: "°C",
   },
   rn1: {
-    domain: [0, 50, 100, 150, 200, 250],
-    range: ["#ffffff", "#eff3ff", "#bdd7e7", "#6baed6", "#3182bd", "#08519c"],
+    domain: [0, 250],
+    range: ["#eff3ff", "#bdd7e7", "#6baed6", "#3182bd", "#08519c"],
+    unit: "mm",
   },
   reh: {
-    domain: [0, 20, 40, 60, 80, 100],
-    range: ["#ffffff", "#f7f7f7", "#cccccc", "#969696", "#636363", "#252525"],
+    domain: [40, 90],
+    range: ["#f7f7f7", "#cccccc", "#969696", "#636363", "#252525"],
+    unit: "%",
   },
 };
 
@@ -64,7 +67,7 @@ export const MapChart: FC = () => {
     getGeoJson();
   }, [getGeoJson, getGeoClimateData]);
 
-  const { domain, range } = climateCategory[selectedCategory];
+  const { domain, range, unit } = climateCategory[selectedCategory];
 
   return (
     <Card
@@ -89,7 +92,7 @@ export const MapChart: FC = () => {
             colorDomain={domain}
             colorRange={range}
           />
-          <Legend colorDomain={domain} colorRange={range} />
+          <Legend colorDomain={domain} colorRange={range} unit={unit} />
         </svg>
       </div>
     </Card>
