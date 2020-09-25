@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { select, min, max, scaleLinear } from "d3";
 
-export const VerticalAxis = (props) => {
+export const HorizontalAxis = (props) => {
   const { position, width, height, chartDataList } = props;
   const contentRef = useRef(null);
 

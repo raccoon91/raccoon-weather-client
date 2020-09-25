@@ -8,7 +8,7 @@ import {
   Dot,
   XAxis,
   YAxis,
-  VerticalAxis,
+  HorizontalAxis,
 } from "src/components/chart";
 
 const useStoreData = () => {
@@ -47,7 +47,7 @@ export const GlobalTemperatureChart: FC = () => {
           chartDataList={globalTempChartDataList}
         >
           <Dot dotColor="#cccccc" />
-          <VerticalAxis position="0" />
+          <HorizontalAxis position="0" />
           <GradientLine startColor="#3182bd" endColor="#de2d26" />
           <XAxis />
           <YAxis />
