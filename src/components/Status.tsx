@@ -3,9 +3,9 @@ import "./Status.scss";
 
 interface IStatusProps {
   title: string;
-  value?: string;
+  value: string | null;
   unit?: string;
-  subValue?: string;
+  subValue?: string | null;
 }
 
 export const Status: FC<IStatusProps> = ({ title, value, unit, subValue }) => {
