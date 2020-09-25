@@ -1,9 +1,9 @@
 import React, { FC, useRef, useEffect } from "react";
 import { toJS } from "mobx";
 import { useObserver } from "mobx-react";
-import { Card } from "src/components";
-import { GeoPath, Legend } from "src/components/chart";
 import { useStores, useResizeObserver } from "src/hooks";
+import { Card, MapChartCategory } from "src/components";
+import { GeoPath, Legend } from "src/components/chart";
 import "./MapChart.scss";
 
 const climateCategory: {
@@ -66,10 +66,17 @@ export const MapChart: FC = () => {
 
   const { domain, range } = climateCategory[selectedCategory];
 
+  console.log(selectedCity);
+
   return (
     <Card
       title={selectedCity || "전국"}
-      option={<MapChartOption selectCategory={selectCategory} />}
+      option={
+        <MapChartCategory
+          selectCategory={selectCategory}
+          selectedCategory={selectedCategory}
+        />
+      }
     >
       <div ref={wrapperRef} className="map-chart-container">
         <svg width={width} height={height}>
@@ -88,37 +95,5 @@ export const MapChart: FC = () => {
         </svg>
       </div>
     </Card>
-  );
-};
-
-interface IMapChartOptionProps {
-  selectCategory: (category?: string) => void;
-}
-
-const MapChartOption: FC<IMapChartOptionProps> = ({ selectCategory }) => {
-  const handleSelectCategory = (e: React.SyntheticEvent<EventTarget>) => {
-    const { target } = e;
-
-    if (!(target instanceof HTMLSpanElement)) {
-      return;
-    }
-
-    const { category } = target.dataset;
-
-    selectCategory(category);
-  };
-
-  return (
-    <div className="map-chart-option-wrapper" onClick={handleSelectCategory}>
-      <span className="map-chart-option" data-category="temp">
-        온도
-      </span>
-      <span className="map-chart-option" data-category="rn1">
-        강수량
-      </span>
-      <span className="map-chart-option" data-category="reh">
-        습도
-      </span>
-    </div>
   );
 };
