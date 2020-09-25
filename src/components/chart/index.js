@@ -7,3 +7,4 @@ export * from "./GradientLine";
 export * from "./Legend";
 export * from "./GeoPath";
 export * from "./Chart";
+export * from "./Tooltip";
