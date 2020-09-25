@@ -1,19 +1,19 @@
 import React, { FC, useRef } from "react";
 import { useResizeObserver } from "src/hooks";
-import { Chart, Line, XAxis, YAxis } from "src/components/chart";
+import { Chart, Line, XAxis, YAxis, Tooltip } from "src/components/chart";
 
 interface IClimateCartProps {
   chartId: string;
   lineColor: string;
   chartDataList: { value: number; x: number }[];
-  tooltip?: boolean;
+  unit?: string;
 }
 
 export const ClimateChart: FC<IClimateCartProps> = ({
   chartId,
   lineColor,
   chartDataList,
-  tooltip,
+  unit,
 }) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const dimensions = useResizeObserver(wrapperRef);
@@ -32,9 +32,10 @@ export const ClimateChart: FC<IClimateCartProps> = ({
         height={height}
         chartDataList={chartDataList}
       >
-        <Line lineColor={lineColor} tooltip={tooltip} />
+        <Line lineColor={lineColor} />
         <XAxis />
         <YAxis />
+        <Tooltip unit={unit} />
       </Chart>
     </div>
   );

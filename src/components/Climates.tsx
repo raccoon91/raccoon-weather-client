@@ -35,7 +35,7 @@ export const Climates: FC = () => {
           chartId="climate-temp-chart"
           lineColor="#31a354"
           chartDataList={tempDataList}
-          tooltip
+          unit="°C"
         />
       </Card>
       <Card title="강수량">
@@ -43,7 +43,7 @@ export const Climates: FC = () => {
           chartId="climate-rainProb-chart"
           lineColor="#3182bd"
           chartDataList={rainDataList}
-          tooltip
+          unit="mm"
         />
       </Card>
       <Card title="습도">
@@ -51,7 +51,7 @@ export const Climates: FC = () => {
           chartId="climate-humidity-chart"
           lineColor="#636363"
           chartDataList={humidDataList}
-          tooltip
+          unit="%"
         />
       </Card>
     </>
