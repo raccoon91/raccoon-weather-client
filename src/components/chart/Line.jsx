@@ -35,24 +35,35 @@ export const Line = (props) => {
       .enter()
       .append("path")
       .attr("class", "line")
-      .attr("d", lineGenerator)
       .attr("fill", "none")
+      .attr("d", lineGenerator)
       .attr("stroke", lineColor)
       .attr("stroke-width", 3)
       .attr("stroke-dasharray", function () {
         const length = this.getTotalLength();
 
-        return `0, ${length}`;
+        return length;
+      })
+      .attr("stroke-dashoffset", function () {
+        const length = this.getTotalLength();
+
+        return length;
       })
       .transition()
       .duration(2000)
+      .attr("stroke-dashoffset", 0);
+
+    lineChart
+      .transition()
+      .duration(2000)
+      .attr("d", lineGenerator)
       .attr("stroke-dasharray", function () {
-        const length = this.getTotalLength();
+        setTimeout(() => {
+          const length = this.getTotalLength();
 
-        return `${length}, ${length}`;
+          return length;
+        }, 2000);
       });
-
-    lineChart.transition().duration(1000).attr("d", lineGenerator);
 
     lineChart.exit().remove();
   }, [chartId, width, height, chartDataList, lineColor]);

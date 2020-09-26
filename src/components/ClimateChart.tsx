@@ -5,7 +5,7 @@ import { Chart, Line, XAxis, YAxis, Tooltip } from "src/components/chart";
 interface IClimateCartProps {
   chartId: string;
   lineColor: string;
-  chartDataList: { value: number; x: number }[];
+  chartDataList?: { value: number; x: number }[];
   unit?: string;
 }
 
