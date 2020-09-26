@@ -6,3 +6,4 @@ export * from "./Climates";
 export * from "./ClimateChart";
 export * from "./GlobalTemperatureChart";
 export * from "./MapChartCategory";
+export * from "./MapChartYearRange";

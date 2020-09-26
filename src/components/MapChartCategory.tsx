@@ -1,15 +1,22 @@
 import React, { FC } from "react";
+import { useObserver } from "mobx-react";
+import { useStores } from "src/hooks";
 import "./MapChartCategory.scss";
 
-interface IMapChartCategoryProps {
-  selectCategory: (category?: string) => void;
-  selectedCategory: string;
-}
+const useStoreData = () => {
+  const {
+    store: { climateStore },
+  } = useStores();
 
-export const MapChartCategory: FC<IMapChartCategoryProps> = ({
-  selectCategory,
-  selectedCategory,
-}) => {
+  return useObserver(() => ({
+    selectCategory: climateStore.selectCategory,
+    selectedCategory: climateStore.selectedCategory,
+  }));
+};
+
+export const MapChartCategory: FC = () => {
+  const { selectCategory, selectedCategory } = useStoreData();
+
   const handleSelectCategory = (e: React.SyntheticEvent<EventTarget>) => {
     const { target } = e;
 

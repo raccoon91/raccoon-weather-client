@@ -1,0 +1,20 @@
+.map-chart-year-range-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 40px 0;
+
+  .map-chart-year-text {
+    color: #73879c;
+    font-weight: bold;
+  }
+
+  .map-chart-year-input[type="range"] {
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* WebKit */
+    width: 8px;
+    height: 240px;
+    padding: 0 5px;
+  }
+}

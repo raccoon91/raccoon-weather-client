@@ -2,29 +2,9 @@ import React, { FC, useRef, useEffect } from "react";
 import { toJS } from "mobx";
 import { useObserver } from "mobx-react";
 import { useStores, useResizeObserver } from "src/hooks";
-import { Card, MapChartCategory } from "src/components";
+import { Card, MapChartCategory, MapChartYearRange } from "src/components";
 import { GeoPath, Legend } from "src/components/chart";
 import "./MapChart.scss";
-
-const climateCategory: {
-  [key: string]: { domain: number[]; range: string[]; unit: string };
-} = {
-  temp: {
-    domain: [12, 17],
-    range: ["#edf8e9", "#bae4b3", "#74c476", "#31a354", "#006d2c"],
-    unit: "°C",
-  },
-  rn1: {
-    domain: [0, 250],
-    range: ["#eff3ff", "#bdd7e7", "#6baed6", "#3182bd", "#08519c"],
-    unit: "mm",
-  },
-  reh: {
-    domain: [40, 90],
-    range: ["#f7f7f7", "#cccccc", "#969696", "#636363", "#252525"],
-    unit: "%",
-  },
-};
 
 const useStoreData = () => {
   const {
@@ -35,12 +15,12 @@ const useStoreData = () => {
     getGeoJson: climateStore.getGeoJson,
     getGeoClimateData: climateStore.getGeoClimateData,
     selectGeoCountry: climateStore.selectGeoCountry,
-    selectCategory: climateStore.selectCategory,
     geoJson: toJS(climateStore.geoJson),
     selectedCity: climateStore.selectedCity,
     selectedCountry: toJS(climateStore.selectedCountry),
     selectedCategory: climateStore.selectedCategory,
-    geoClimateData: climateStore.geoClimateData,
+    climateOption: climateStore.climateOption,
+    selectedGeoClimateData: climateStore.selectedGeoClimateData,
   }));
 };
 
@@ -51,12 +31,12 @@ export const MapChart: FC = () => {
     getGeoJson,
     getGeoClimateData,
     selectGeoCountry,
-    selectCategory,
     geoJson,
     selectedCity,
     selectedCountry,
     selectedCategory,
-    geoClimateData,
+    climateOption,
+    selectedGeoClimateData,
   } = useStoreData();
 
   const width = dimensions?.width || 0;
@@ -67,25 +47,17 @@ export const MapChart: FC = () => {
     getGeoJson();
   }, [getGeoJson, getGeoClimateData]);
 
-  const { domain, range, unit } = climateCategory[selectedCategory];
+  const { domain, range, unit } = climateOption;
 
   return (
-    <Card
-      title={selectedCity || "전국"}
-      option={
-        <MapChartCategory
-          selectCategory={selectCategory}
-          selectedCategory={selectedCategory}
-        />
-      }
-    >
+    <Card title={selectedCity || "전국"} option={<MapChartCategory />}>
       <div ref={wrapperRef} className="map-chart-container">
         <svg width={width} height={height}>
           <GeoPath
             width={width}
             height={height}
             geoJson={geoJson}
-            geoClimateData={geoClimateData}
+            geoClimateData={selectedGeoClimateData}
             selectGeoCountry={selectGeoCountry}
             selectedCountry={selectedCountry}
             selectedCategory={selectedCategory}
@@ -94,6 +66,7 @@ export const MapChart: FC = () => {
           />
           <Legend colorDomain={domain} colorRange={range} unit={unit} />
         </svg>
+        <MapChartYearRange />
       </div>
     </Card>
   );
