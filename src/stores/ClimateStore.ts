@@ -1,8 +1,28 @@
 import { AxiosResponse } from "axios";
-import { observable, action, runInAction } from "mobx";
+import { observable, action, runInAction, computed } from "mobx";
 import { json } from "d3";
 import { requestWeatherApi } from "src/lib";
 import { cityToAbbreviation } from "src/utils";
+
+const climateCategory: {
+  [key: string]: { domain: number[]; range: string[]; unit: string };
+} = {
+  temp: {
+    domain: [12, 17],
+    range: ["#edf8e9", "#bae4b3", "#74c476", "#31a354", "#006d2c"],
+    unit: "°C",
+  },
+  rn1: {
+    domain: [0, 250],
+    range: ["#eff3ff", "#bdd7e7", "#6baed6", "#3182bd", "#08519c"],
+    unit: "mm",
+  },
+  reh: {
+    domain: [40, 90],
+    range: ["#f7f7f7", "#cccccc", "#969696", "#636363", "#252525"],
+    unit: "%",
+  },
+};
 
 interface IGeoFeature {
   type: string;
@@ -44,11 +64,29 @@ export class ClimateStore {
   @observable selectedCountry: IGeoFeature | null = null;
   @observable selectedCategory: string = "rn1";
 
-  @observable geoClimateData: { [key: string]: IClimate } | null = null;
+  @observable yearList: number[] | null = null;
+  @observable targetYear: number | null = null;
+  @observable geoClimateData: {
+    [key: string]: { [key: string]: IClimate };
+  } | null = null;
 
   @observable tempDataList: IChartData[] | null = null;
   @observable rainDataList: IChartData[] | null = null;
   @observable humidDataList: IChartData[] | null = null;
+
+  @computed get climateOption(): {
+    domain: number[];
+    range: string[];
+    unit: string;
+  } {
+    return climateCategory[this.selectedCategory];
+  }
+
+  @computed get selectedGeoClimateData(): { [key: string]: IClimate } | null {
+    if (!this.targetYear || !this.geoClimateData) return null;
+
+    return this.geoClimateData[this.targetYear];
+  }
 
   @action getGeoJson = async () => {
     try {
@@ -65,14 +103,19 @@ export class ClimateStore {
   @action getGeoClimateData = async () => {
     try {
       const response: AxiosResponse<{
-        [key: string]: IClimate;
+        yearList: number[];
+        geoClimateData: { [key: string]: { [key: string]: IClimate } };
       }> = await requestWeatherApi({
         method: "get",
         url: "climate/geo",
       });
 
+      const { yearList, geoClimateData } = response.data;
+
       runInAction(() => {
-        this.geoClimateData = response.data;
+        this.yearList = yearList;
+        this.targetYear = yearList[0];
+        this.geoClimateData = geoClimateData;
       });
     } catch (err) {
       console.error("geo climate request failed");
@@ -143,6 +186,12 @@ export class ClimateStore {
     }
 
     await this.getLocalClimate();
+  };
+
+  @action selectYear = (year: number) => {
+    if (year && year !== this.targetYear) {
+      this.targetYear = year;
+    }
   };
 
   @action selectCategory = (category?: string) => {
