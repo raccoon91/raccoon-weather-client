@@ -3,8 +3,13 @@ import { useObserver } from "mobx-react";
 import { useStores } from "src/hooks";
 import { Status } from "src/components";
 
-const createTempSubValue = (temp: number, yesterday_temp: number | null) => {
-  if (!yesterday_temp) return null;
+const createTempSubValue = (temp?: number, yesterday_temp?: number | null) => {
+  if (
+    temp === undefined ||
+    yesterday_temp === null ||
+    yesterday_temp === undefined
+  )
+    return null;
 
   const diff = temp - yesterday_temp;
   const value = Math.abs(Number(diff.toFixed(1)));
@@ -18,7 +23,7 @@ const createTempSubValue = (temp: number, yesterday_temp: number | null) => {
   }
 };
 
-const createAirSubValue = (air: string): string | null => {
+const createAirSubValue = (air?: string | null): string | null => {
   if (!air) return null;
 
   const numAir = Number(air);

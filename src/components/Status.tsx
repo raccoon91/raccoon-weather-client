@@ -3,7 +3,7 @@ import "./Status.scss";
 
 interface IStatusProps {
   title: string;
-  value: string | null;
+  value?: number | string | null;
   unit?: string;
   subValue?: string | null;
 }
