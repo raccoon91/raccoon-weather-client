@@ -43,4 +43,35 @@
     font-size: 14px;
     font-weight: bold;
   }
+
+  @media (max-width: 900px) {
+    width: 100px;
+    height: 80px;
+
+    &::before {
+      content: "";
+      height: 45px;
+    }
+
+    .status-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-content {
+      .status-content-value {
+        font-size: 22px;
+        font-weight: normal;
+      }
+
+      .status-content-unit {
+        font-size: 14px;
+      }
+    }
+
+    .status-content-sub-value {
+      display: none;
+    }
+  }
 }

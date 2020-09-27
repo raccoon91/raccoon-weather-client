@@ -2,6 +2,7 @@ import React, { FC, useEffect } from "react";
 import { useObserver } from "mobx-react";
 import { useStores } from "src/hooks";
 import { Status } from "src/components";
+import "./Header.scss";
 
 const createTempSubValue = (temp?: number, yesterday_temp?: number | null) => {
   if (
@@ -68,23 +69,13 @@ export const Header: FC = () => {
   const subPm25 = createAirSubValue(pm25);
 
   return (
-    <>
+    <div className="header-container">
       <Status title="위치" value={city} subValue={subLocation}></Status>
       <Status title="온도" value={t1h} subValue={subTemp} unit="°C"></Status>
       <Status title="강수확률" value={rainProb} unit="%"></Status>
       <Status title="습도" value={humidity} unit="%"></Status>
-      <Status
-        title="미세먼지(pm10)"
-        value={pm10}
-        subValue={subPm10}
-        unit="㎛"
-      ></Status>
-      <Status
-        title="미세먼지(pm25)"
-        value={pm25}
-        subValue={subPm25}
-        unit="㎛"
-      ></Status>
-    </>
+      <Status title="PM10" value={pm10} subValue={subPm10} unit="㎛"></Status>
+      <Status title="PM25" value={pm25} subValue={subPm25} unit="㎛"></Status>
+    </div>
   );
 };

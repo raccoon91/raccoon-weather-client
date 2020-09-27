@@ -52,4 +52,29 @@ $height: 230px;
       height: 100%;
     }
   }
+
+  @media (max-width: 900px) {
+    padding: 20px;
+
+    .app-top {
+      height: unset;
+      margin-bottom: 20px;
+    }
+
+    .app-bottom {
+      flex-direction: column;
+      height: unset;
+
+      .app-left {
+        width: 100%;
+        height: 730px;
+        margin-bottom: 20px;
+      }
+
+      .app-right {
+        width: 100%;
+        height: 730px;
+      }
+    }
+  }
 }
