@@ -27,7 +27,7 @@ export const MapChartYearRange: FC = () => {
     for (let i = 1; i < yearList.length; i++) {
       const timer = setTimeout(() => {
         selectYear(yearList[i]);
-      }, i * 1500);
+      }, i * 1000);
 
       timeouts.push(timer);
     }

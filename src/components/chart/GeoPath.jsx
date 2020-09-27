@@ -34,7 +34,7 @@ export const GeoPath = ({
       })
       .attr("class", "country")
       .transition()
-      .duration(1000)
+      .duration(500)
       .attr("d", (feature) => pathGenerator(feature))
       .attr("fill", (data) => {
         const city = data.properties.CTP_KOR_NM;
