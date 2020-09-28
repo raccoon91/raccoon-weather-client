@@ -1,0 +1,21 @@
+.no-match-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+
+  .no-match-text {
+    margin: 40px 0;
+    color: #73879c;
+    font-size: 30px;
+  }
+
+  .go-to-home {
+    padding: 10px 20px;
+    border: 1px solid #73879c;
+    color: #73879c;
+    font-weight: bold;
+  }
+}
