@@ -92,6 +92,8 @@ export class ClimateStore {
     try {
       const response = await json<IGeoJson>("./GeoChart.korea.geo.json");
 
+      if (!response) return;
+
       runInAction(() => {
         this.geoJson = response;
       });
@@ -111,6 +113,8 @@ export class ClimateStore {
       });
 
       const { yearList, geoClimateData } = response.data;
+
+      if (!yearList || !geoClimateData) return;
 
       runInAction(() => {
         this.yearList = yearList;
@@ -134,6 +138,8 @@ export class ClimateStore {
         method: "get",
         url: `climate/local/${city}`,
       });
+
+      if (!response) return;
 
       const climateData = response.data;
       const yearList = Object.keys(climateData);
