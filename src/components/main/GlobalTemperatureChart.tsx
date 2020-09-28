@@ -1,7 +1,7 @@
 import React, { FC, useRef, useEffect } from "react";
 import { useObserver } from "mobx-react";
 import { useStores, useResizeObserver } from "src/hooks";
-import { Card } from "src/components";
+import { Card } from "src/components/base";
 import {
   Chart,
   GradientLine,

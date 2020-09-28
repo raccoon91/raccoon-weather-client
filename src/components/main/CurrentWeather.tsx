@@ -1,8 +1,8 @@
 import React, { FC, useEffect } from "react";
 import { useObserver } from "mobx-react";
 import { useStores } from "src/hooks";
-import { Status } from "src/components";
-import "./Header.scss";
+import { Status } from "src/components/base";
+import "./CurrentWeather.scss";
 
 const createTempSubValue = (temp?: number, yesterday_temp?: number | null) => {
   if (
@@ -51,7 +51,7 @@ const useStoreData = () => {
   }));
 };
 
-export const Header: FC = () => {
+export const CurrentWeather: FC = () => {
   const { getCurrentWeather, currentWeather } = useStoreData();
 
   useEffect(() => {

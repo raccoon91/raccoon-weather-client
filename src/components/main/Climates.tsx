@@ -1,7 +1,8 @@
 import React, { FC, useEffect } from "react";
 import { useObserver } from "mobx-react";
 import { useStores } from "src/hooks";
-import { Card, ClimateChart } from "src/components";
+import { Card } from "src/components/base";
+import { ClimateChart } from "src/components/main";
 
 const useStoreData = () => {
   const {

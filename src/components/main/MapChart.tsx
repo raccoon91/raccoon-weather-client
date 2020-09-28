@@ -2,8 +2,9 @@ import React, { FC, useRef, useEffect } from "react";
 import { toJS } from "mobx";
 import { useObserver } from "mobx-react";
 import { useStores, useResizeObserver } from "src/hooks";
-import { Card, MapChartCategory, MapChartYearRange } from "src/components";
+import { Card } from "src/components/base";
 import { GeoPath, Legend } from "src/components/chart";
+import { MapChartCategory, MapChartYearRange } from "src/components/main";
 import "./MapChart.scss";
 
 const useStoreData = () => {
