@@ -1,29 +1,18 @@
-import React from "react";
-import {
-  Header,
-  MapChart,
-  Climates,
-  GlobalTemperatureChart,
-} from "src/components";
+import React, { FC } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Main } from "src/pages";
 import "./App.scss";
 
-export const App = () => {
+export const App: FC = () => {
   return (
     <div className="app-container">
-      <div className="app-top">
-        <Header />
-      </div>
-
-      <div className="app-bottom">
-        <div className="app-left">
-          <MapChart />
-          <GlobalTemperatureChart />
-        </div>
-
-        <div className="app-right">
-          <Climates />
-        </div>
-      </div>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Main />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 };
