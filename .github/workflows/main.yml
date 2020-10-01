@@ -30,7 +30,8 @@ jobs:
           --cache-control max-age=86400000,public && \
           aws s3 cp s3://raccoon-weather-client s3://raccoon-weather-client \
           --recursive \
-          --include "*.html" \
+          --exclude "*" \
+          --include "index.html" \
           --metadata-directive REPLACE \
           --acl public-read \
           --cache-control max-age=0,must-revalidate,public \
