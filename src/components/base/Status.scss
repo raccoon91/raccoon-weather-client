@@ -40,8 +40,16 @@
   }
 
   .status-content-sub-value {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     font-size: 14px;
     font-weight: bold;
+
+    svg {
+      width: 14px;
+      margin-right: 5px;
+    }
   }
 
   @media (max-width: 900px) {
