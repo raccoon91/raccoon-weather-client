@@ -65,7 +65,7 @@ export class ClimateStore {
   @observable selectedCategory: string = "rn1";
 
   @observable yearList: number[] | null = null;
-  @observable targetYear: number | null = null;
+  @observable targetYearIndex: number = 0;
   @observable geoClimateData: {
     [key: string]: { [key: string]: IClimate };
   } | null = null;
@@ -83,9 +83,9 @@ export class ClimateStore {
   }
 
   @computed get selectedGeoClimateData(): { [key: string]: IClimate } | null {
-    if (!this.targetYear || !this.geoClimateData) return null;
+    if (!this.yearList || !this.geoClimateData) return null;
 
-    return this.geoClimateData[this.targetYear];
+    return this.geoClimateData[this.yearList[this.targetYearIndex]];
   }
 
   @action getGeoJson = async () => {
@@ -118,7 +118,6 @@ export class ClimateStore {
 
       runInAction(() => {
         this.yearList = yearList;
-        this.targetYear = yearList[0];
         this.geoClimateData = geoClimateData;
       });
     } catch (err) {
@@ -194,9 +193,9 @@ export class ClimateStore {
     await this.getLocalClimate();
   };
 
-  @action selectYear = (year: number) => {
-    if (year && year !== this.targetYear) {
-      this.targetYear = year;
+  @action selectYearIndex = (index: number) => {
+    if (index !== this.targetYearIndex) {
+      this.targetYearIndex = index;
     }
   };
 

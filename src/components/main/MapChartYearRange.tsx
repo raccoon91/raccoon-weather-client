@@ -3,31 +3,39 @@ import { useObserver } from "mobx-react";
 import { useStores } from "src/hooks";
 import "./MapChartYearRange.scss";
 
+import { ReactComponent as Play } from "src/images/play.svg";
+import { ReactComponent as Pause } from "src/images/pause.svg";
+
 const useStoreData = () => {
   const {
     store: { climateStore },
   } = useStores();
 
   return useObserver(() => ({
-    selectYear: climateStore.selectYear,
+    selectYearIndex: climateStore.selectYearIndex,
     yearList: climateStore.yearList,
-    targetYear: climateStore.targetYear,
+    targetYearIndex: climateStore.targetYearIndex,
   }));
 };
 
 export const MapChartYearRange: FC = () => {
-  const { selectYear, yearList, targetYear } = useStoreData();
-  const [isYearChanged, setIsYearChanged] = useState<boolean>(false);
+  const { selectYearIndex, yearList, targetYearIndex } = useStoreData();
+  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [currentYearIndex, setCurrentIndex] = useState<number>(targetYearIndex);
 
   useEffect(() => {
-    if (!yearList || isYearChanged) return;
+    if (!yearList || isPaused) return;
 
     const timeouts: NodeJS.Timeout[] = [];
 
-    for (let i = 1; i < yearList.length; i++) {
+    for (let i = currentYearIndex; i < yearList.length; i++) {
       const timer = setTimeout(() => {
-        selectYear(yearList[i]);
-      }, i * 1000);
+        selectYearIndex(i);
+
+        if (i === yearList.length - 1) {
+          setIsPaused((state) => !state);
+        }
+      }, (i - currentYearIndex) * 1000);
 
       timeouts.push(timer);
     }
@@ -35,27 +43,47 @@ export const MapChartYearRange: FC = () => {
     return () => {
       timeouts.forEach(clearTimeout);
     };
-  }, [yearList, isYearChanged, selectYear]);
+  }, [yearList, currentYearIndex, isPaused, selectYearIndex]);
 
   const handleChangeYearRange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsYearChanged(true);
+    setIsPaused(true);
 
-    const year = e.target.value;
-    selectYear(Number(year));
+    const yearIndex = e.target.value;
+    selectYearIndex(Number(yearIndex));
+  };
+
+  const handleChangeIsPaused = () => {
+    if (isPaused) {
+      if (yearList && targetYearIndex === yearList.length - 1) {
+        selectYearIndex(0);
+        setCurrentIndex(0);
+      } else {
+        setCurrentIndex(targetYearIndex);
+      }
+    }
+
+    setIsPaused((state) => !state);
   };
 
   return (
     <div className="map-chart-year-range-container">
-      <div className="map-chart-year-text">{targetYear}</div>
-      {yearList && targetYear && (
+      {yearList && (
+        <div className="map-chart-year-text">{yearList[targetYearIndex]}</div>
+      )}
+      {yearList && (
         <input
-          className="map-chart-year-input"
+          className="map-chart-year-range"
           type="range"
-          min={yearList[0]}
-          max={yearList[yearList.length - 1]}
-          value={targetYear}
+          min={0}
+          max={yearList.length - 1}
+          value={targetYearIndex}
           onChange={handleChangeYearRange}
         />
+      )}
+      {isPaused ? (
+        <Play onClick={handleChangeIsPaused} />
+      ) : (
+        <Pause onClick={handleChangeIsPaused} />
       )}
     </div>
   );
