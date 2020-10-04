@@ -60,7 +60,7 @@ export class WeatherStore {
     pm25: null,
   };
 
-  @observable globalTempChartDataList: IGlobalTempData[] | null = null;
+  @observable globalTempChartDataList: IGlobalTempData[] = [];
 
   @action
   getCurrentWeather = async () => {
