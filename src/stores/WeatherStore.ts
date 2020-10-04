@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import { observable, action, runInAction } from "mobx";
 import publicIp from "public-ip";
 import { csv, DSVRowArray } from "d3";
-import { requestWeatherApi } from "src/lib";
+import { requestWeatherApi } from "src/api";
 
 const { REACT_APP_GLOBAL_TEMPERATURE_URL } = process.env;
 

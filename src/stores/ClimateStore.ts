@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { observable, action, runInAction, computed } from "mobx";
 import { json } from "d3";
-import { requestWeatherApi } from "src/lib";
+import { requestWeatherApi } from "src/api";
 import { cityToAbbreviation } from "src/utils";
 
 const climateCategory: {
