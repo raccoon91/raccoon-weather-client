@@ -70,9 +70,9 @@ export class ClimateStore {
     [key: string]: { [key: string]: IClimate };
   } | null = null;
 
-  @observable tempDataList: IChartData[] | null = null;
-  @observable rainDataList: IChartData[] | null = null;
-  @observable humidDataList: IChartData[] | null = null;
+  @observable tempDataList: IChartData[] = [];
+  @observable rainDataList: IChartData[] = [];
+  @observable humidDataList: IChartData[] = [];
 
   @computed get climateOption(): {
     domain: number[];
