@@ -31,15 +31,15 @@ interface ICurrentWeatherResponseData {
 }
 
 interface ICurrentWeather {
-  city?: string;
-  r2?: string;
-  r3?: string;
-  t1h?: number;
-  yesterday_temp?: number | null;
-  pop?: number | null;
-  reh?: number;
-  pm10?: string | null;
-  pm25?: string | null;
+  city: string | null;
+  r2: string | null;
+  r3: string | null;
+  t1h: number | null;
+  yesterday_temp: number | null;
+  pop: number | null;
+  reh: number | null;
+  pm10: string | null;
+  pm25: string | null;
 }
 
 interface IGlobalTempData {
@@ -48,7 +48,17 @@ interface IGlobalTempData {
 }
 
 export class WeatherStore {
-  @observable currentWeather: ICurrentWeather | null = null;
+  @observable currentWeather: ICurrentWeather = {
+    city: null,
+    r2: null,
+    r3: null,
+    t1h: null,
+    yesterday_temp: null,
+    pop: null,
+    reh: null,
+    pm10: null,
+    pm25: null,
+  };
 
   @observable globalTempChartDataList: IGlobalTempData[] | null = null;
 
@@ -68,6 +78,9 @@ export class WeatherStore {
       );
 
       const { weather, location } = response.data;
+
+      if (!weather || !location) return;
+
       const { t1h, yesterday_temp, pop, reh, pm10, pm25 } = weather;
       const { city, r2, r3 } = location;
 
