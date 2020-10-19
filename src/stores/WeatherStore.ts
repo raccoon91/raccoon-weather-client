@@ -1,6 +1,5 @@
 import { AxiosResponse } from "axios";
 import { observable, action, runInAction } from "mobx";
-import publicIp from "public-ip";
 import { csv, DSVRowArray } from "d3";
 import { requestWeatherApi } from "src/api";
 
@@ -65,15 +64,10 @@ export class WeatherStore {
   @action
   getCurrentWeather = async () => {
     try {
-      const ip = await publicIp.v4();
-
       const response: AxiosResponse<ICurrentWeatherResponseData> = await requestWeatherApi(
         {
           method: "get",
           url: "weather",
-          headers: {
-            "x-client-ip": ip,
-          },
         }
       );
 
