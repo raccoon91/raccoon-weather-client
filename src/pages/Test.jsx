@@ -7,11 +7,11 @@ export const Test = () => {
     var api = (navigator.contacts || navigator.mozContacts);
       
     if (api && !!api.select) { // new Chrome API
-      api.select(['name', 'email'], {multiple: true})
+      api.select(['name', 'email'], {multiple: false})
         .then(function (contacts) {
           setMessage('Found ' + contacts.length + ' contacts.');
           if (contacts.length) {
-            setMessage('First contact: ' + contacts[0].name + ' (' + contacts[0].email + ')');
+            setMessage('First contact: ' + contacts[0].name + ' (' + contacts[0].tel + ')');
           }
         })
         .catch(function (err) {
