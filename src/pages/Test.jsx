@@ -6,8 +6,8 @@ export const Test = () => {
   const handleClickAddressBook = () => {
     var api = (navigator.contacts || navigator.mozContacts);
       
-    if (api && !!api.select) { // new Chrome API
-      api.select(['name', 'email'], {multiple: false})
+    if (api && !!api.select) {
+      api.select(['name', 'tel'])
         .then(function (contacts) {
           setMessage('Found ' + contacts.length + ' contacts.');
           if (contacts.length) {
@@ -18,26 +18,9 @@ export const Test = () => {
           setMessage('Fetching contacts failed: ' + err.name);
         });
         
-    } else if (api && !!api.find) { // old Firefox OS API
-      var criteria = {
-        sortBy: 'familyName',
-        sortOrder: 'ascending'
-      };
-  
-      api.find(criteria)
-        .then(function (contacts) {
-          setMessage('Found ' + contacts.length + ' contacts.');
-          if (contacts.length) {
-            setMessage('First contact: ' + contacts[0].givenName[0] + ' ' + contacts[0].familyName[0]);
-          }
-        })
-        .catch(function (err) {
-          setMessage('Fetching contacts failed: ' + err.name);
-        });
-        
-    } else {
-      setMessage('Contacts API not supported.');
     }
+
+    setMessage('Contacts API not supported.');
   }
 
   return (
