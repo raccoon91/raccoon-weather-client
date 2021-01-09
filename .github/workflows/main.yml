@@ -16,6 +16,7 @@ jobs:
 
       - name: Build
         env:
+          CI: false
           REACT_APP_GLOBAL_TEMPERATURE_URL: ${{secrets.REACT_APP_GLOBAL_TEMPERATURE_URL}}
           REACT_APP_WEATHER_SERVER_URL: ${{secrets.REACT_APP_WEATHER_SERVER_URL}}
         run: npm run build
