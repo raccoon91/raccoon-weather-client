@@ -1,9 +1,7 @@
 import { useState, useEffect, MutableRefObject } from "react";
 import ResizeObserver from "resize-observer-polyfill";
 
-export const useResizeObserver = (
-  ref: MutableRefObject<HTMLDivElement | null>
-) => {
+export const useResizeObserver = (ref: MutableRefObject<HTMLDivElement | null>): DOMRectReadOnly | null => {
   const [dimensions, setDimensions] = useState<DOMRectReadOnly | null>(null);
 
   useEffect(() => {
