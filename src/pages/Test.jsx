@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from "react";
 
 export const Test = () => {
   const [message, setMessage] = useState("");
 
   const handleClickAddressBook = () => {
-    var api = (navigator.contacts || navigator.mozContacts);
-      
+    var api = navigator.contacts || navigator.mozContacts;
+
     if (api && !!api.select) {
-      api.select(['name', 'tel'])
+      api
+        .select(["name", "tel"])
         .then(function (contacts) {
-          setMessage('Found ' + contacts.length + ' contacts.');
+          setMessage("Found " + contacts.length + " contacts.");
           if (contacts.length) {
-            setMessage('First contact: ' + contacts[0].name + ' (' + contacts[0].tel + ')');
+            setMessage("First contact: " + contacts[0].name + " (" + contacts[0].tel + ")");
           }
         })
         .catch(function (err) {
-          setMessage('Fetching contacts failed: ' + err.name);
+          setMessage("Fetching contacts failed: " + err.name);
         });
-        
     }
 
-    setMessage('Contacts API not supported.');
-  }
+    setMessage("Contacts API not supported.");
+  };
 
   return (
     <div>
@@ -29,5 +29,5 @@ export const Test = () => {
       <button onClick={handleClickAddressBook}>Click</button>
       <p>{message}</p>
     </div>
-  )
-}
+  );
+};
