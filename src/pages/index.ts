@@ -1,2 +1,2 @@
-export * from "./Main";
-export * from "./NoMatch";
+export * from "./MainPage";
+export * from "./NoMatchPage";

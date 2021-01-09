@@ -1,21 +1,18 @@
 import React, { FC } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Main, NoMatch } from "src/pages";
-import "./App.scss";
+import { MainPage, NoMatchPage } from "src/pages";
 
 export const App: FC = () => {
   return (
-    <div className="app-container">
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Main />
-          </Route>
-          <Route path="*">
-            <NoMatch />
-          </Route>
-        </Switch>
-      </Router>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <MainPage />
+        </Route>
+        <Route path="*">
+          <NoMatchPage />
+        </Route>
+      </Switch>
+    </Router>
   );
 };
