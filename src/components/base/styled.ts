@@ -1,8 +1,5 @@
 import styled from "styled-components";
 
-export const gap = "20px";
-export const height = "230px";
-
 export const Layout = styled.div`
   overflow: auto;
   width: 100vw;
@@ -49,7 +46,7 @@ interface IH1Props {
   size?: string;
   weight?: string;
 }
-export const H1 = styled.p<IH1Props>`
+export const H1 = styled.h1<IH1Props>`
   margin: ${({ margin }) => margin || "unset"};
   padding: ${({ padding }) => padding || "unset"};
   color: ${({ color }) => color || "unset"};
@@ -64,7 +61,22 @@ interface IH2Props {
   size?: string;
   weight?: string;
 }
-export const H2 = styled.p<IH2Props>`
+export const H2 = styled.h2<IH2Props>`
+  margin: ${({ margin }) => margin || "unset"};
+  padding: ${({ padding }) => padding || "unset"};
+  color: ${({ color }) => color || "unset"};
+  font-size: ${({ size }) => size || "unset"};
+  font-weight: ${({ weight }) => weight || "unset"};
+`;
+
+interface IH3Props {
+  margin?: string;
+  padding?: string;
+  color?: string;
+  size?: string;
+  weight?: string;
+}
+export const H3 = styled.h3<IH3Props>`
   margin: ${({ margin }) => margin || "unset"};
   padding: ${({ padding }) => padding || "unset"};
   color: ${({ color }) => color || "unset"};
