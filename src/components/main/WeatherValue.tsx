@@ -1,12 +1,19 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { FlexBox, Box, Text, H3 } from "./styled";
+import { FlexBox, Box, Text, H3 } from "src/components/base/styled";
 
-interface IStatusContainerProps {
+import { ReactComponent as Up } from "src/images/up.svg";
+import { ReactComponent as Down } from "src/images/down.svg";
+import { ReactComponent as Smiling } from "src/images/smiling.svg";
+import { ReactComponent as Smile } from "src/images/smile.svg";
+import { ReactComponent as Sad } from "src/images/sad.svg";
+import { ReactComponent as Angry } from "src/images/angry.svg";
+
+interface IWeatherContainerProps {
   isDropArea?: boolean;
 }
 
-const StatusContainer = styled(Box)<IStatusContainerProps>`
+const WeatherContainer = styled(Box)<IWeatherContainerProps>`
   position: relative;
   width: 160px;
   height: 105px;
@@ -34,7 +41,7 @@ const StatusContainer = styled(Box)<IStatusContainerProps>`
   }
 `;
 
-const StatusTitle = styled(H3)`
+const WeatherTitle = styled(H3)`
   @media (max-width: 900px) {
     white-space: nowrap;
     overflow: hidden;
@@ -42,13 +49,13 @@ const StatusTitle = styled(H3)`
   }
 `;
 
-const StatusText = styled(Text)`
+const WeatherText = styled(Text)`
   @media (max-width: 900px) {
     font-size: 22px;
   }
 `;
 
-const StatusUnit = styled(Text)`
+const WeatherUnit = styled(Text)`
   @media (max-width: 900px) {
     font-size: 14px;
   }
@@ -77,66 +84,61 @@ const isNumeric = (value: number | string): boolean => {
   }
 };
 
-interface IStatusProps {
+const WeatherIcon = (subIcon?: string | null) => {
+  if (!subIcon) return null;
+
+  switch (subIcon) {
+    case "temp-down":
+      return <Down />;
+    case "temp-up":
+      return <Up />;
+    case "air-smiling":
+      return <Smiling />;
+    case "air-smile":
+      return <Smile />;
+    case "air-sad":
+      return <Sad />;
+    case "air-angry":
+      return <Angry />;
+    default:
+      return null;
+  }
+};
+
+interface IWeatherProps {
   title: string;
   value: number | string | null;
   unit?: string;
   subValue?: string | null;
-  subIcon?: string | JSX.Element | null;
-  draggable?: boolean;
-  position?: string | number;
-  onDragStart?: any;
-  onDragOver?: any;
-  onDrop?: any;
-  onDragLeave?: any;
-  isDropArea?: boolean;
+  subIcon?: string | null;
 }
 
-export const Status: FC<IStatusProps> = ({
-  title,
-  value,
-  unit,
-  subValue,
-  subIcon,
-  draggable,
-  onDragStart,
-  position,
-  onDragOver,
-  onDrop,
-  onDragLeave,
-  isDropArea,
-}) => {
+export const Weather: FC<IWeatherProps> = ({ title, value, unit, subValue, subIcon }) => {
   return (
-    <StatusContainer
-      draggable={draggable}
-      onDragStart={onDragStart}
-      onDragOver={onDragOver}
-      onDrop={onDrop}
-      onDragLeave={onDragLeave}
-      data-position={position}
-      isDropArea={isDropArea}
-    >
-      <StatusTitle size="14px" margin="0 0 8px 0">
+    <WeatherContainer>
+      <WeatherTitle size="14px" margin="0 0 8px 0">
         {title}
-      </StatusTitle>
+      </WeatherTitle>
+
       <FlexBox justifyContent="flex-start" height="36px" margin="0 0 5px 0">
-        <StatusText size="28px" weight="bold">
+        <WeatherText size="28px" weight="bold">
           {value || "-"}
-        </StatusText>
+        </WeatherText>
         {value && unit && isNumeric(value) && (
-          <StatusUnit size="20px" margin="8px 0 0 10px">
+          <WeatherUnit size="20px" margin="8px 0 0 10px">
             {unit}
-          </StatusUnit>
+          </WeatherUnit>
         )}
       </FlexBox>
+
       {subValue ? (
         <SubValueBox justifyContent="flex-start">
-          {subIcon && subIcon}
+          {WeatherIcon(subIcon)}
           <Text size="14px" weight="bold">
             {subValue}
           </Text>
         </SubValueBox>
       ) : null}
-    </StatusContainer>
+    </WeatherContainer>
   );
 };

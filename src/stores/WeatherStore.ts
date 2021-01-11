@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import { observable, action, runInAction } from "mobx";
 import { csv, DSVRowArray } from "d3";
 import { requestWeatherApi } from "src/api";
+import { formatWeatherData } from "src/utils/weather";
 
 const { REACT_APP_GLOBAL_TEMPERATURE_URL } = process.env;
 
@@ -29,7 +30,7 @@ interface ICurrentWeatherResponseData {
   location: ILocationResponseData;
 }
 
-interface ICurrentWeather {
+export interface IWeather {
   city: string | null;
   r2: string | null;
   r3: string | null;
@@ -41,35 +42,30 @@ interface ICurrentWeather {
   pm25: string | null;
 }
 
+export interface IWeatherData {
+  title: string;
+  value: string | number | null;
+  unit?: string;
+  subValue?: string | null;
+  subIcon?: string | null;
+}
+
 interface IGlobalTempData {
   value: number;
   x: number;
 }
 
 export class WeatherStore {
-  @observable currentWeather: ICurrentWeather = {
-    city: null,
-    r2: null,
-    r3: null,
-    t1h: null,
-    yesterday_temp: null,
-    pop: null,
-    reh: null,
-    pm10: null,
-    pm25: null,
-  };
-
+  @observable weatherDataList: { [key: string]: IWeatherData } | null = null;
   @observable globalTempChartDataList: IGlobalTempData[] = [];
 
   @action
-  getCurrentWeather = async () => {
+  getCurrentWeather = async (): Promise<void> => {
     try {
-      const response: AxiosResponse<ICurrentWeatherResponseData> = await requestWeatherApi(
-        {
-          method: "get",
-          url: "weather",
-        }
-      );
+      const response: AxiosResponse<ICurrentWeatherResponseData> = await requestWeatherApi({
+        method: "get",
+        url: "weather",
+      });
 
       const { weather, location } = response.data;
 
@@ -79,7 +75,7 @@ export class WeatherStore {
       const { city, r2, r3 } = location;
 
       runInAction(() => {
-        this.currentWeather = {
+        this.weatherDataList = formatWeatherData({
           city,
           r2,
           r3,
@@ -89,7 +85,7 @@ export class WeatherStore {
           reh,
           pm10,
           pm25,
-        };
+        });
       });
     } catch (err) {
       console.error("current weather request failed");
@@ -97,11 +93,9 @@ export class WeatherStore {
   };
 
   @action
-  getGlobalTemperature = async () => {
+  getGlobalTemperature = async (): Promise<void> => {
     try {
-      const response: DSVRowArray = await csv(
-        REACT_APP_GLOBAL_TEMPERATURE_URL as string
-      );
+      const response: DSVRowArray = await csv(REACT_APP_GLOBAL_TEMPERATURE_URL as string);
 
       const chartDataList: IGlobalTempData[] = [];
 
