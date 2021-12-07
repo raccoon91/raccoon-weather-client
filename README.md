@@ -1,26 +1,46 @@
-# Raccoon Weather Client
+# Getting Started with Create React App
 
-<a href="https://weather.dev-raccoon.site" target="_blank">Raccoon Weather 바로가기</a>
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-<div style="display: flex;">
-  <img src="./main-image.png" alt="main image" width="500"/>
-</div>
+## Available Scripts
 
-### Introduction
+In the project directory, you can run:
 
-- 전국 날씨 정보를 보여주는 웹 사이트
+### `yarn start`
 
-### Features
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-- 사용자 지역의 현재 날씨 제공
-- D3를 이용한 지도, 그래프 에니메이션
-- 지도 선택시 해당 지역의 날씨 그래프로 변경
-- 전세계 평균 온도 그래프 제공
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-### Tech
+### `yarn test`
 
-- React, TypeScript, Mobx, Scss, D3, S3, CloudFront
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### More Info
+### `yarn build`
 
-<a href="https://www.notion.so/Raccoon-Weather-Client-2020-09-33cd4e898a4b47668965e0d67755d4eb" target="_blank">Notion Portfolio</a>
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `yarn eject`
+
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
