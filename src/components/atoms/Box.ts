@@ -5,6 +5,7 @@ interface IBoxProps {
   d?: string;
   f?: string;
   fd?: string;
+  fw?: string;
   a?: string;
   j?: string;
   w?: string;
@@ -21,6 +22,7 @@ export const Box = styled.div<IBoxProps>`
   display: ${({ d }) => d || "flex"};
   ${({ f }) => f && `flex: ${f};`}
   flex-direction: ${({ fd }) => fd || "column"};
+  ${({ fw }) => fw && `flex-wrap: ${fw};`}
   ${({ a }) => a && `align-items: ${a};`}
   ${({ j }) => j && `justify-content: ${j};`}
   ${({ w }) => w && `width: ${w};`}
