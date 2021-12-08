@@ -3,7 +3,8 @@ const color = {
   white: "#ffffff",
   blue: "#4d99f0",
   skyBlue: "#d9ebff",
-  gray: "#808080",
+  gray: "#e8e8e8",
+  darkGray: "#a9a9a9",
 };
 
 const textSize = {
@@ -13,10 +14,10 @@ const textSize = {
   md: "1.6rem",
   lg: "1.8rem",
   xl: "2.0rem",
-  "2xl": "2.2rem",
-  "3xl": "2.4rem",
-  "4xl": "2.6rem",
-  "5xl": "2.8rem",
+  "2xl": "2.6rem",
+  "3xl": "3.2rem",
+  "4xl": "3.8rem",
+  "5xl": "4.4rem",
 };
 
 const titleSize = {
@@ -32,8 +33,32 @@ const titleSize = {
   "5xl": "7.2rem",
 };
 
+const variant = (variant?: string): string => {
+  switch (variant) {
+    case "primary":
+      return `
+        background-color: ${color.blue};
+        border: 2px solid ${color.blue};
+        color: ${color.skyBlue};
+      `;
+    case "primary-outline":
+      return `
+        background-color: ${color.skyBlue};
+        border: 2px solid ${color.blue};
+        color: ${color.blue};
+      `;
+    default:
+      return `
+        background-color: ${color.blue};
+        border: 2px solid ${color.blue};
+        color: ${color.skyBlue};
+      `;
+  }
+};
+
 export const theme = {
   color,
   textSize,
   titleSize,
+  variant,
 };

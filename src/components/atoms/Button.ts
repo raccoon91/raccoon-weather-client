@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
-interface ITextProps {
+interface IButtonProps {
+  variant?: string;
   m?: string;
   p?: string;
   color?: string;
@@ -8,11 +9,13 @@ interface ITextProps {
   weight?: string;
 }
 
-export const Text = styled.p<ITextProps>`
+export const Button = styled.button<IButtonProps>`
+  ${({ variant, theme }) => theme.variant(variant)}
   ${({ m }) => m && `margin: ${m};`}
-  ${({ p }) => p && `padding: ${p};`}
-  ${({ color, theme }) => color && `color: ${theme.color[color] || "black"};`}
-  font-size: ${({ theme, size }) => theme.textSize[size || "sm"]};
+  padding: ${({ p }) => p || "6px 12px"};
+  border-radius: 5px;
+  font-size: ${({ theme, size }) => theme.textSize[size || "lg"]};
   ${({ weight }) => weight && `font-weight: ${weight};`}
+  cursor: pointer;
   user-select: none;
 `;
