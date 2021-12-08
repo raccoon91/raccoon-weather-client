@@ -1,5 +1,16 @@
 import { FC } from "react";
+import { Title1, Anchor } from "components/atoms";
+import { PageLayout } from "components/templates";
 
 export const NotFoundPage: FC = () => {
-  return <div>Page Not Found</div>;
+  return (
+    <PageLayout>
+      <Title1 color="blue" size="2xl">
+        Page Not Found
+      </Title1>
+      <Anchor to="/" variant="primary-outline" m="60px 0 0">
+        Go To Main
+      </Anchor>
+    </PageLayout>
+  );
 };
