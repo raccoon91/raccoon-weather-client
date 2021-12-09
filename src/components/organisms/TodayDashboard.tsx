@@ -1,35 +1,49 @@
 import { FC } from "react";
-import { Box, Card, Title2, Title3 } from "components/atoms";
-import { WindCard, TempCard, PercentCard, AirCard } from "components/molecules";
+import { Box, Card, Title3, TempChart, PercentChart, WindIndicator } from "components/atoms";
+import { Navigation, WeatherCard } from "components/molecules";
+import { percentRange, pm10Range, pm25Range, airChartColor } from "configs";
 
-interface ITodayDashboardProps {
-  feel: string;
-  humid: string;
-  rain: string;
-  air1: string;
-  air2: string;
-  wind: string;
-}
+type ITodayDashboardProps = ITodayWeather;
 
-export const TodayDashboard: FC<ITodayDashboardProps> = ({ feel, humid, rain, air1, air2, wind }) => {
+export const TodayDashboard: FC<ITodayDashboardProps> = ({ feel, humid, rain, pm10, pm25, wind }) => {
   return (
-    <Box o="hidden auto" f="1" h="100%" p="40px 60px" bgc="skyBlue" btlr="30px">
-      <Title2 size="lg">Today</Title2>
+    <Box o="hidden auto" f="1" h="100%" p="4rem 6rem" bgc="skyBlue" btlr="3rem">
+      <Navigation />
 
-      <Box fd="row" j="space-between" m="30px 0 0">
-        <TempCard title="체감온도" value={feel} />
-        <PercentCard title="강수확률" value={humid} />
-        <PercentCard title="습도" value={rain} />
+      <Box fd="row" j="space-between" m="3rem 0 0">
+        <WeatherCard title="체감온도" value={feel} unit="°C" chart={<TempChart chartData={Number(feel)} />} />
+        <WeatherCard
+          title="강수확률"
+          value={humid}
+          unit="%"
+          chart={<PercentChart chartData={Number(humid)} chartRange={percentRange} />}
+        />
+        <WeatherCard
+          title="습도"
+          value={rain}
+          unit="%"
+          chart={<PercentChart chartData={Number(rain)} chartRange={percentRange} />}
+        />
       </Box>
 
-      <Box fd="row" j="space-between" m="20px 0 0">
-        <AirCard type="pm10" title="미세먼지(PM10)" value={air1} />
-        <AirCard type="pm25" title="미세먼지(PM25)" value={air2} />
-        <WindCard title="바람" value={wind} />
+      <Box fd="row" j="space-between" m="2rem 0 0">
+        <WeatherCard
+          title="미세먼지(PM10)"
+          value={pm10}
+          unit="㎍/㎥"
+          chart={<PercentChart chartData={Number(pm10)} chartRange={pm10Range} chartColor={airChartColor} />}
+        />
+        <WeatherCard
+          title="미세먼지(PM25)"
+          value={pm25}
+          unit="㎍/㎥"
+          chart={<PercentChart chartData={Number(pm25)} chartRange={pm25Range} chartColor={airChartColor} />}
+        />
+        <WeatherCard title="바람" value={wind} unit="m/s" chart={<WindIndicator />} />
       </Box>
 
-      <Box m="30px 0 0">
-        <Card w="100%" h="320px" p="30px">
+      <Box m="3rem 0 0">
+        <Card w="100%" h="32rem" p="3rem">
           <Title3 size="sm">오늘의 날씨</Title3>
         </Card>
       </Box>

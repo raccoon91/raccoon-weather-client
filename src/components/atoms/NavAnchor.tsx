@@ -1,9 +1,8 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { Button } from "./Button";
+import { NavLink } from "react-router-dom";
 
-interface IStyledLinkProps {
+interface IStyledNavLinkProps {
   m?: string;
   p?: string;
   color?: string;
@@ -11,19 +10,25 @@ interface IStyledLinkProps {
   weight?: string;
 }
 
-const StyledLink = styled(Link)<IStyledLinkProps>`
+const StyledNavLink = styled(NavLink)<IStyledNavLinkProps>`
   display: inline-block;
   ${({ m }) => m && `margin: ${m};`}
   ${({ p }) => p && `padding: ${p};`}
   ${({ theme, size }) => size && `font-size: ${theme.textSize[size || "lg"]};`}
   ${({ weight }) => weight && `font-weight: ${weight};`}
+  color: ${({ color, theme }) => theme.color[color || "black"]};
   text-decoration: none;
   user-select: none;
+  opacity: 0.4;
+
+  &.active,
+  &:hover {
+    opacity: 1;
+  }
 `;
 
-interface IAnchorProps {
+interface INavAnchorProps {
   to: string;
-  variant?: TVariant;
   m?: string;
   p?: string;
   color?: string;
@@ -32,20 +37,10 @@ interface IAnchorProps {
   children?: string | React.ReactNode;
 }
 
-export const Anchor: FC<IAnchorProps> = ({ to, variant, children, ...style }) => {
-  if (variant) {
-    return (
-      <StyledLink to={to}>
-        <Button variant={variant} {...style}>
-          {children}
-        </Button>
-      </StyledLink>
-    );
-  }
-
+export const NavAnchor: FC<INavAnchorProps> = ({ to, children, ...style }) => {
   return (
-    <StyledLink to={to} {...style}>
+    <StyledNavLink to={to} activeClassName="active" {...style}>
       {children}
-    </StyledLink>
+    </StyledNavLink>
   );
 };

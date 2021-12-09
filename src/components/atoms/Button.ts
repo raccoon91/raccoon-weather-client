@@ -1,19 +1,19 @@
 import styled from "styled-components";
 
 interface IButtonProps {
-  variant?: string;
+  variant?: TVariant;
   m?: string;
   p?: string;
   color?: string;
-  size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl";
+  size?: TTextSize;
   weight?: string;
 }
 
 export const Button = styled.button<IButtonProps>`
   ${({ variant, theme }) => theme.variant(variant)}
   ${({ m }) => m && `margin: ${m};`}
-  padding: ${({ p }) => p || "6px 12px"};
-  border-radius: 5px;
+  padding: ${({ p }) => p || "0.6rem 1.2rem"};
+  border-radius: 0.5rem;
   font-size: ${({ theme, size }) => theme.textSize[size || "lg"]};
   ${({ weight }) => weight && `font-weight: ${weight};`}
   cursor: pointer;

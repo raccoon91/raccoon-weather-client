@@ -25,5 +25,5 @@ export const Card = styled.div<ICardProps>`
   ${({ m }) => m && `margin: ${m};`}
   ${({ p }) => p && `padding: ${p};`}
   background-color: ${({ bgc, theme }) => theme.color[bgc || "white"]};
-  border-radius: ${({ r }) => r || "30px"};
+  border-radius: ${({ r }) => r || "3rem"};
 `;

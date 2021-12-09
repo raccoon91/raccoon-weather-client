@@ -6,7 +6,7 @@ const StyledPercentChartWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 12px;
+  height: 1.2rem;
 `;
 
 interface IStyledPercentChartProps {
@@ -18,16 +18,16 @@ const StyledPercentChart = styled.div<IStyledPercentChartProps>`
   overflow: hidden;
   position: relative;
   width: ${({ width }) => `${width - 1}%`};
-  height: 12px;
+  height: 1.2rem;
   background-color: ${({ theme }) => theme.color.gray};
-  border-radius: 6px;
+  border-radius: 0.6rem;
 
   &::after {
     content: "";
     position: absolute;
     left: 0;
     width: ${({ percent }) => `${percent}%`};
-    height: 12px;
+    height: 1.2rem;
     background-color: ${({ color, theme }) => color || theme.color.blue};
   }
 `;
@@ -38,8 +38,8 @@ interface IStyledPercentChartTickProps {
 const StyledPercentChartTick = styled.p<IStyledPercentChartTickProps>`
   position: absolute;
   left: ${({ position }) => `${position}%`};
-  top: -16px;
-  width: 18px;
+  top: -1.6rem;
+  width: 1.8rem;
   transform: translateX(-50%);
   color: ${({ theme }) => theme.color.darkGray};
   font-size: ${({ theme }) => theme.textSize.xs};
