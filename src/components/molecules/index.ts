@@ -1,4 +1,2 @@
-export * from "./TempCard";
-export * from "./PercentCard";
-export * from "./AirCard";
-export * from "./WindCard";
+export * from "./Navgation";
+export * from "./WeatherCard";

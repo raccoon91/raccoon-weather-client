@@ -8,7 +8,7 @@ export const NotFoundPage: FC = () => {
       <Title1 color="blue" size="2xl">
         Page Not Found
       </Title1>
-      <Anchor to="/" variant="primary-outline" m="60px 0 0">
+      <Anchor to="/" variant="primary-outline" m="6rem 0 0">
         Go To Main
       </Anchor>
     </PageLayout>

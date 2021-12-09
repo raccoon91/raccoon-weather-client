@@ -53,10 +53,11 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   html {
-    font-size: 10px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 10px;
   }
   *, *:before, *:after {
     -webkit-box-sizing: inherit;
@@ -66,10 +67,10 @@ export const GlobalStyle = createGlobalStyle`
 
   
   *::-webkit-scrollbar {
-    width: 8px;
+    width: 0.8rem;
   }
   *::-webkit-scrollbar-thumb {
-    border-radius: 4px;
+    border-radius: 0.4rem;
     background-color: white;
   }
   *::-webkit-scrollbar-track {
