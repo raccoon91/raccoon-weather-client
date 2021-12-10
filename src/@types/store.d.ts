@@ -13,3 +13,12 @@ interface ITodayWeather {
   pm25: string;
   wind: string;
 }
+
+interface IChartData {
+  x: number;
+  value: number;
+}
+
+interface IClimate {
+  tempChartDataList: IChartData[];
+}
