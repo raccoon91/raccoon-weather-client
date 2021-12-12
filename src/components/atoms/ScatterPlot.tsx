@@ -23,15 +23,17 @@ const drawScatterPlot = (
 ) => {
   const chartWidth = clientWidth - 2 * canvasPadding - yAxisWidth;
   const chartHeight = clientHeight - 2 * canvasPadding - xAxisHeight;
-  const positionX = canvasPadding + yAxisWidth;
-  const reversePositionY = clientHeight - canvasPadding - xAxisHeight;
+  const originX = canvasPadding + yAxisWidth;
+  const reverseOriginY = clientHeight - canvasPadding - xAxisHeight;
 
   for (let i = 0; i < datasets.length; i++) {
     const x = Math.floor(((datasets[i].x - minX) * (chartWidth - 2 * chartPadding)) / rangeX);
     const y = Math.floor(((datasets[i].value - minY) * (chartHeight - 2 * chartPadding)) / rangeY);
+    const positionX = x + originX + chartPadding;
+    const positionY = reverseOriginY - chartPadding - y;
 
     ctx.beginPath();
-    ctx.arc(x + positionX + chartPadding, reversePositionY - chartPadding - y, 3, 0, Math.PI * 2);
+    ctx.arc(positionX, positionY, 3, 0, Math.PI * 2);
     ctx.globalAlpha = 0.3;
     ctx.fillStyle = "blue";
     ctx.fill();
