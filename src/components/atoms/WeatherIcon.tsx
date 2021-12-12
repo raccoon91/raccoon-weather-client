@@ -9,6 +9,7 @@ interface IStyledImageProps {
 const StyledImage = styled.img<IStyledImageProps>`
   width: ${({ size }) => (size ? `${size}rem` : "10rem")};
   height: ${({ size }) => (size ? `${size}rem` : "10rem")};
+  user-select: none;
 `;
 
 interface IWeatherIconProps {

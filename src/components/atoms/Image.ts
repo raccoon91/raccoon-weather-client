@@ -15,4 +15,5 @@ export const Image = styled.img<ImageProps>`
   `}
   ${({ m }) => m && `margin: ${m};`}
   ${({ p }) => p && `padding: ${p};`}
+  user-select: none;
 `;
