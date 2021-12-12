@@ -21,4 +21,5 @@ interface IChartData {
 
 interface IClimate {
   tempChartDataList: IChartData[];
+  rainChartDataList: IChartData[];
 }

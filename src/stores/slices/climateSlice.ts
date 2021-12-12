@@ -13,6 +13,16 @@ const randomTemp = (year: number) => {
   return result;
 };
 
+const randomRain = (year: number) => {
+  const result = { x: year, value: 0 };
+  const min = 0;
+  const max = 100;
+
+  result.value = Math.floor(Math.random() * (max - min + 1)) + min;
+
+  return result;
+};
+
 const climateData = {
   tempChartDataList: [
     ...randomTemp(1990),
@@ -34,10 +44,31 @@ const climateData = {
     ...randomTemp(2006),
     ...randomTemp(2007),
   ],
+  rainChartDataList: [
+    randomRain(1990),
+    randomRain(1991),
+    randomRain(1992),
+    randomRain(1993),
+    randomRain(1994),
+    randomRain(1995),
+    randomRain(1996),
+    randomRain(1997),
+    randomRain(1998),
+    randomRain(1999),
+    randomRain(2000),
+    randomRain(2001),
+    randomRain(2002),
+    randomRain(2003),
+    randomRain(2004),
+    randomRain(2005),
+    randomRain(2006),
+    randomRain(2007),
+  ],
 };
 
 const initialClimateState: IClimate = {
   tempChartDataList: [],
+  rainChartDataList: [],
 };
 
 export const getClimate = createAsyncThunk("climate/getClimate", async () => {
@@ -62,8 +93,9 @@ export const climateSlice = createSlice({
         return;
       }
 
-      const { tempChartDataList } = action.payload;
+      const { tempChartDataList, rainChartDataList } = action.payload;
 
       state.tempChartDataList = tempChartDataList;
+      state.rainChartDataList = rainChartDataList;
     }),
 });
