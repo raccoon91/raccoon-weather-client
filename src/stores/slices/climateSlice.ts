@@ -3,9 +3,11 @@ import { fakeApi } from "api";
 
 const randomTemp = (year: number) => {
   const result = [];
+  const min = -40;
+  const max = 50;
 
   for (let i = 0; i < 30; i++) {
-    result.push({ x: year, value: Math.floor(Math.random() * (50 + 40 + 1)) - 40 });
+    result.push({ x: year, value: Math.floor(Math.random() * (max - min + 1)) + min });
   }
 
   return result;

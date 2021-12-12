@@ -7,6 +7,37 @@ const CanvasWrapper = styled.div`
   height: 100%;
 `;
 
+const drawScatterPlot = (
+  ctx: CanvasRenderingContext2D,
+  datasets: IChartData[],
+  clientWidth: number,
+  clientHeight: number,
+  canvasPadding: number,
+  yAxisWidth: number,
+  xAxisHeight: number,
+  chartPadding: number,
+  minX: number,
+  minY: number,
+  rangeX: number,
+  rangeY: number
+) => {
+  const chartWidth = clientWidth - 2 * canvasPadding - yAxisWidth;
+  const chartHeight = clientHeight - 2 * canvasPadding - xAxisHeight;
+  const positionX = canvasPadding + yAxisWidth;
+  const reversePositionY = clientHeight - canvasPadding - xAxisHeight;
+
+  for (let i = 0; i < datasets.length; i++) {
+    const x = Math.floor(((datasets[i].x - minX) * (chartWidth - 2 * chartPadding)) / rangeX);
+    const y = Math.floor(((datasets[i].value - minY) * (chartHeight - 2 * chartPadding)) / rangeY);
+
+    ctx.beginPath();
+    ctx.arc(x + positionX + chartPadding, reversePositionY - chartPadding - y, 3, 0, Math.PI * 2);
+    ctx.globalAlpha = 0.3;
+    ctx.fillStyle = "blue";
+    ctx.fill();
+  }
+};
+
 interface IScatterPlotProps {
   datasets: IChartData[];
 }
@@ -28,25 +59,30 @@ export const ScatterPlot: FC<IScatterPlotProps> = ({ datasets }) => {
       canvas.width = clientWidth;
       canvas.height = clientHeight;
 
-      const width = clientWidth - 20;
-      const height = clientHeight - 20;
+      const canvasPadding = 10;
+      const yAxisWidth = 20;
+      const xAxisHeight = 10;
+      const chartPadding = 10;
       const { minX, maxX, minY, maxY } = parseDatasets(datasets);
       const rangeX = maxX - minX;
       const rangeY = maxY - minY;
 
-      drawYAxis(ctx, height - 20, -40, 50);
-      drawXAxis(ctx, width - 40, height - 20, minX, maxX);
-
-      for (let i = 0; i < datasets.length; i++) {
-        const x = Math.floor(((datasets[i].x - minX) * (width - 40)) / rangeX);
-        const y = Math.floor(((datasets[i].value - minY) * (height - 40)) / rangeY);
-
-        ctx.beginPath();
-        ctx.arc(x + 40, y + 25, 3, 0, Math.PI * 2);
-        ctx.globalAlpha = 0.3;
-        ctx.fillStyle = "blue";
-        ctx.fill();
-      }
+      drawYAxis(ctx, clientHeight, canvasPadding, yAxisWidth, xAxisHeight, chartPadding, minY, maxY);
+      drawXAxis(ctx, clientWidth, clientHeight, canvasPadding, yAxisWidth, xAxisHeight, chartPadding, minX, maxX);
+      drawScatterPlot(
+        ctx,
+        datasets,
+        clientWidth,
+        clientHeight,
+        canvasPadding,
+        yAxisWidth,
+        xAxisHeight,
+        chartPadding,
+        minX,
+        minY,
+        rangeX,
+        rangeY
+      );
 
       return () => {
         ctx.clearRect(0, 0, clientWidth, clientHeight);

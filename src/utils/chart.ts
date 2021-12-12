@@ -19,44 +19,72 @@ export const parseDatasets = (datasets: IChartData[]) => {
   return { xAxis, yAxis, minX, maxX, minY, maxY };
 };
 
-export const drawYAxis = (ctx: CanvasRenderingContext2D, height: number, minY: number, maxY: number) => {
+export const drawYAxis = (
+  ctx: CanvasRenderingContext2D,
+  clientHeight: number,
+  canvasPadding: number,
+  yAxisWidth: number,
+  xAxisHeight: number,
+  chartPadding: number,
+  minY: number,
+  maxY: number
+) => {
+  const positionX = canvasPadding + yAxisWidth;
+  const originY = canvasPadding;
+  const endY = clientHeight - canvasPadding - xAxisHeight;
+  const chartHeight = clientHeight - 2 * canvasPadding - xAxisHeight;
+
   ctx.beginPath();
-  ctx.moveTo(35.5, 10);
-  ctx.lineTo(35.5, height + 10);
+  ctx.moveTo(positionX + 0.5, originY);
+  ctx.lineTo(positionX + 0.5, endY);
   ctx.stroke();
 
-  const range = maxY - minY;
+  const rangeY = maxY - minY;
 
-  for (let value = 0; value <= range; value += 10) {
-    const y = Math.floor((value * height) / range);
+  for (let value = 0; value <= rangeY; value += 10) {
+    const y = Math.floor((value * (chartHeight - 2 * chartPadding)) / rangeY);
 
-    ctx.fillText(String(value + minY), 5, y + 12);
+    ctx.fillText(String(value + minY), positionX - 25, endY - chartPadding - y + 4);
 
     ctx.beginPath();
-    ctx.moveTo(30, y + 10.5);
-    ctx.lineTo(35, y + 10.5);
+    ctx.moveTo(positionX - 5, endY - chartPadding - y + 0.5);
+    ctx.lineTo(positionX, endY - chartPadding - y + 0.5);
     ctx.stroke();
   }
 };
 
-export const drawXAxis = (ctx: CanvasRenderingContext2D, width: number, height: number, minX: number, maxX: number) => {
+export const drawXAxis = (
+  ctx: CanvasRenderingContext2D,
+  clientWidth: number,
+  clientHeight: number,
+  canvasPadding: number,
+  yAxisWidth: number,
+  xAxisHeight: number,
+  chartPadding: number,
+  minX: number,
+  maxX: number
+) => {
+  const originX = canvasPadding + yAxisWidth;
+  const endX = clientWidth - canvasPadding;
+  const positionY = clientHeight - canvasPadding - xAxisHeight;
+  const chartWidth = clientWidth - 2 * canvasPadding - yAxisWidth;
+
   ctx.beginPath();
-  ctx.moveTo(30, height + 10.5);
-  ctx.lineTo(width + 30, height + 10.5);
+  ctx.moveTo(originX, positionY + 0.5);
+  ctx.lineTo(endX, positionY + 0.5);
   ctx.stroke();
 
-  const range = maxX - minX;
+  const rangeX = maxX - minX;
   let value = minX;
 
-  for (let index = 0; index <= range; index += 2) {
-    const x = Math.floor((index * width) / range);
+  for (let index = 0; index <= rangeX; index += 2) {
+    const x = Math.floor((index * (chartWidth - 2 * chartPadding)) / rangeX);
 
-    ctx.fillText(String(value), x + 40, height + 30);
-    ctx.textAlign = "center";
+    ctx.fillText(String(value).slice(2), x + originX + chartPadding - 4, positionY + 15);
 
     ctx.beginPath();
-    ctx.moveTo(x + 40.5, height + 10);
-    ctx.lineTo(x + 40.5, height + 15);
+    ctx.moveTo(x + originX + chartPadding + 0.5, positionY);
+    ctx.lineTo(x + originX + chartPadding + 0.5, positionY + 5);
     ctx.stroke();
 
     value += 2;
