@@ -43,12 +43,13 @@ export const drawYAxis = (
 
   for (let value = 0; value <= rangeY; value += 10) {
     const y = Math.floor((value * (chartHeight - 2 * chartPadding)) / rangeY);
+    const positionY = endY - chartPadding - y;
 
-    ctx.fillText(String(value + minY), positionX - 25, endY - chartPadding - y + 4);
+    ctx.fillText(String(value + minY), positionX - 25, positionY + 4);
 
     ctx.beginPath();
-    ctx.moveTo(positionX - 5, endY - chartPadding - y + 0.5);
-    ctx.lineTo(positionX, endY - chartPadding - y + 0.5);
+    ctx.moveTo(positionX - 5, positionY + 0.5);
+    ctx.lineTo(positionX, positionY + 0.5);
     ctx.stroke();
   }
 };
@@ -79,12 +80,51 @@ export const drawXAxis = (
 
   for (let index = 0; index <= rangeX; index += 2) {
     const x = Math.floor((index * (chartWidth - 2 * chartPadding)) / rangeX);
+    const positionX = x + originX + chartPadding;
 
-    ctx.fillText(String(value).slice(2), x + originX + chartPadding - 4, positionY + 15);
+    ctx.fillText(String(value).slice(2), positionX - 4, positionY + 15);
 
     ctx.beginPath();
-    ctx.moveTo(x + originX + chartPadding + 0.5, positionY);
-    ctx.lineTo(x + originX + chartPadding + 0.5, positionY + 5);
+    ctx.moveTo(positionX + 0.5, positionY);
+    ctx.lineTo(positionX + 0.5, positionY + 5);
+    ctx.stroke();
+
+    value += 2;
+  }
+};
+
+export const drawBarXAxis = (
+  ctx: CanvasRenderingContext2D,
+  clientWidth: number,
+  clientHeight: number,
+  canvasPadding: number,
+  yAxisWidth: number,
+  xAxisHeight: number,
+  chartPadding: number,
+  barWidth: number,
+  minX: number,
+  maxX: number
+) => {
+  const originX = canvasPadding + yAxisWidth;
+  const endX = clientWidth - canvasPadding;
+  const positionY = clientHeight - canvasPadding - xAxisHeight;
+
+  ctx.beginPath();
+  ctx.moveTo(originX, positionY + 0.5);
+  ctx.lineTo(endX, positionY + 0.5);
+  ctx.stroke();
+
+  const rangeX = maxX - minX;
+  let value = minX;
+
+  for (let index = 0; index <= rangeX; index += 2) {
+    const positionX = index * barWidth + originX + chartPadding + Math.floor(barWidth / 2);
+
+    ctx.fillText(String(value).slice(2), positionX - 4, positionY + 15);
+
+    ctx.beginPath();
+    ctx.moveTo(positionX + 0.5, positionY);
+    ctx.lineTo(positionX + 0.5, positionY + 5);
     ctx.stroke();
 
     value += 2;

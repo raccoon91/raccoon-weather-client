@@ -11,3 +11,4 @@ export * from "./TempChart";
 export * from "./PercentChart";
 export * from "./WindIndicator";
 export * from "./ScatterPlot";
+export * from "./BarChart";
