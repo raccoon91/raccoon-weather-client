@@ -8,7 +8,7 @@ interface ITempClimateCardProps {
 
 export const TempClimateCard: FC<ITempClimateCardProps> = ({ title, datasets }) => {
   return (
-    <Card w="49%" h="34rem" p="3rem 4rem">
+    <Card w="100%" h="60%" m="0 0 1rem" p="3rem 4rem">
       <Box h="1.6rem">
         <Title3 size="sm">{title}</Title3>
       </Box>
