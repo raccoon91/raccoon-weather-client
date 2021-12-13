@@ -21,19 +21,14 @@ export const parseDatasets = (datasets: IChartData[]) => {
 
 export const drawYAxis = (
   ctx: CanvasRenderingContext2D,
-  clientHeight: number,
-  canvasPadding: number,
-  yAxisWidth: number,
-  xAxisHeight: number,
+  originY: number,
+  endY: number,
+  positionX: number,
+  chartHeight: number,
   chartPadding: number,
   minY: number,
   maxY: number
 ) => {
-  const positionX = canvasPadding + yAxisWidth;
-  const originY = canvasPadding;
-  const endY = clientHeight - canvasPadding - xAxisHeight;
-  const chartHeight = clientHeight - 2 * canvasPadding - xAxisHeight;
-
   ctx.beginPath();
   ctx.moveTo(positionX + 0.5, originY);
   ctx.lineTo(positionX + 0.5, endY);
@@ -56,20 +51,14 @@ export const drawYAxis = (
 
 export const drawXAxis = (
   ctx: CanvasRenderingContext2D,
-  clientWidth: number,
-  clientHeight: number,
-  canvasPadding: number,
-  yAxisWidth: number,
-  xAxisHeight: number,
+  originX: number,
+  endX: number,
+  positionY: number,
+  chartWidth: number,
   chartPadding: number,
   minX: number,
   maxX: number
 ) => {
-  const originX = canvasPadding + yAxisWidth;
-  const endX = clientWidth - canvasPadding;
-  const positionY = clientHeight - canvasPadding - xAxisHeight;
-  const chartWidth = clientWidth - 2 * canvasPadding - yAxisWidth;
-
   ctx.beginPath();
   ctx.moveTo(originX, positionY + 0.5);
   ctx.lineTo(endX, positionY + 0.5);
@@ -93,22 +82,49 @@ export const drawXAxis = (
   }
 };
 
+export const drawBarYAxis = (
+  ctx: CanvasRenderingContext2D,
+  positionX: number,
+  originY: number,
+  endY: number,
+  chartHeight: number,
+  chartPadding: number,
+  maxY: number
+) => {
+  ctx.beginPath();
+  ctx.moveTo(positionX + 0.5, originY);
+  ctx.lineTo(positionX + 0.5, endY);
+  ctx.stroke();
+
+  let rangeY = maxY;
+
+  if (maxY % 10 !== 0) {
+    rangeY += 10;
+  }
+
+  for (let value = 0; value <= rangeY; value += 10) {
+    const y = Math.floor((value * (chartHeight - 2 * chartPadding)) / rangeY);
+    const positionY = endY - chartPadding - y;
+
+    ctx.fillText(String(value), positionX - 25, positionY + 4);
+
+    ctx.beginPath();
+    ctx.moveTo(positionX - 5, positionY + 0.5);
+    ctx.lineTo(positionX, positionY + 0.5);
+    ctx.stroke();
+  }
+};
+
 export const drawBarXAxis = (
   ctx: CanvasRenderingContext2D,
-  clientWidth: number,
-  clientHeight: number,
-  canvasPadding: number,
-  yAxisWidth: number,
-  xAxisHeight: number,
+  originX: number,
+  endX: number,
+  positionY: number,
   chartPadding: number,
   barWidth: number,
   minX: number,
   maxX: number
 ) => {
-  const originX = canvasPadding + yAxisWidth;
-  const endX = clientWidth - canvasPadding;
-  const positionY = clientHeight - canvasPadding - xAxisHeight;
-
   ctx.beginPath();
   ctx.moveTo(originX, positionY + 0.5);
   ctx.lineTo(endX, positionY + 0.5);

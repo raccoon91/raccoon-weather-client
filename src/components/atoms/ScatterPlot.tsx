@@ -10,22 +10,16 @@ const CanvasWrapper = styled.div`
 const drawScatterPlot = (
   ctx: CanvasRenderingContext2D,
   datasets: IChartData[],
-  clientWidth: number,
-  clientHeight: number,
-  canvasPadding: number,
-  yAxisWidth: number,
-  xAxisHeight: number,
+  originX: number,
+  reverseOriginY: number,
+  chartWidth: number,
+  chartHeight: number,
   chartPadding: number,
   minX: number,
   minY: number,
   rangeX: number,
   rangeY: number
 ) => {
-  const chartWidth = clientWidth - 2 * canvasPadding - yAxisWidth;
-  const chartHeight = clientHeight - 2 * canvasPadding - xAxisHeight;
-  const originX = canvasPadding + yAxisWidth;
-  const reverseOriginY = clientHeight - canvasPadding - xAxisHeight;
-
   for (let i = 0; i < datasets.length; i++) {
     const x = Math.floor(((datasets[i].x - minX) * (chartWidth - 2 * chartPadding)) / rangeX);
     const y = Math.floor(((datasets[i].value - minY) * (chartHeight - 2 * chartPadding)) / rangeY);
@@ -65,20 +59,30 @@ export const ScatterPlot: FC<IScatterPlotProps> = ({ datasets }) => {
       const yAxisWidth = 20;
       const xAxisHeight = 10;
       const chartPadding = 10;
+
       const { minX, maxX, minY, maxY } = parseDatasets(datasets);
       const rangeX = maxX - minX;
       const rangeY = maxY - minY;
 
-      drawYAxis(ctx, clientHeight, canvasPadding, yAxisWidth, xAxisHeight, chartPadding, minY, maxY);
-      drawXAxis(ctx, clientWidth, clientHeight, canvasPadding, yAxisWidth, xAxisHeight, chartPadding, minX, maxX);
+      const originX = canvasPadding + yAxisWidth;
+      const originY = canvasPadding;
+      const reverseOriginY = clientHeight - canvasPadding - xAxisHeight;
+      const endX = clientWidth - canvasPadding;
+      const endY = clientHeight - canvasPadding - xAxisHeight;
+      const positionX = canvasPadding + yAxisWidth;
+      const positionY = clientHeight - canvasPadding - xAxisHeight;
+      const chartWidth = clientWidth - 2 * canvasPadding - yAxisWidth;
+      const chartHeight = clientHeight - 2 * canvasPadding - xAxisHeight;
+
+      drawYAxis(ctx, originY, endY, positionX, chartHeight, chartPadding, minY, maxY);
+      drawXAxis(ctx, originX, endX, positionY, chartWidth, chartPadding, minX, maxX);
       drawScatterPlot(
         ctx,
         datasets,
-        clientWidth,
-        clientHeight,
-        canvasPadding,
-        yAxisWidth,
-        xAxisHeight,
+        originX,
+        reverseOriginY,
+        chartWidth,
+        chartHeight,
         chartPadding,
         minX,
         minY,
