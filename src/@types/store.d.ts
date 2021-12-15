@@ -19,6 +19,12 @@ interface IChartData {
   value: number;
 }
 
+interface IGlobalSurfaceAirTempData {
+  x: number;
+  value: number;
+  lowess: number;
+}
+
 interface IClimate {
   tempChartDataList: IChartData[];
   rainChartDataList: IChartData[];
