@@ -1,36 +1,11 @@
 import { FC, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { parseDatasets, drawBarYAxis, drawBarXAxis } from "utils";
+import { parseDatasets, drawYAxis, drawXAxis, drawYTick, drawXTick, drawBar } from "utils";
 
 const CanvasWrapper = styled.div`
   width: 100%;
   height: 100%;
 `;
-
-const drawBarChart = (
-  ctx: CanvasRenderingContext2D,
-  datasets: IChartData[],
-  originX: number,
-  reverseOriginY: number,
-  chartHeight: number,
-  chartPadding: number,
-  barWidth: number,
-  minY: number,
-  rangeY: number
-) => {
-  for (let i = 0; i < datasets.length; i++) {
-    const y = Math.floor(((datasets[i].value - minY) * (chartHeight - 2 * chartPadding)) / rangeY);
-    const positionX = i * barWidth + originX + chartPadding;
-    const positionY = reverseOriginY - chartPadding - y;
-
-    ctx.fillStyle = "blue";
-    ctx.globalAlpha = 0.3;
-    ctx.fillRect(positionX, positionY, barWidth, y + chartPadding);
-    ctx.globalAlpha = 1;
-    ctx.strokeStyle = "blue";
-    ctx.strokeRect(positionX, positionY, barWidth, y + chartPadding);
-  }
-};
 
 interface IBarChartProps {
   datasets: IChartData[];
@@ -59,21 +34,36 @@ export const BarChart: FC<IBarChartProps> = ({ datasets }) => {
       const chartPadding = 0;
       const barWidth = Math.floor((clientWidth - 2 * canvasPadding - yAxisWidth - 2 * chartPadding) / datasets.length);
 
-      const { minX, maxX, minY, maxY } = parseDatasets(datasets);
+      const { minY, maxY } = parseDatasets(datasets);
       const rangeY = maxY - minY;
 
       const originX = canvasPadding + yAxisWidth;
       const originY = canvasPadding;
-      const reverseOriginY = clientHeight - canvasPadding - xAxisHeight;
       const endX = clientWidth - canvasPadding;
       const endY = clientHeight - canvasPadding - xAxisHeight;
       const chartHeight = clientHeight - 2 * canvasPadding - xAxisHeight;
-      const positionX = canvasPadding + yAxisWidth;
-      const positionY = clientHeight - canvasPadding - xAxisHeight;
 
-      drawBarYAxis(ctx, positionX, originY, endY, chartHeight, chartPadding, maxY);
-      drawBarXAxis(ctx, originX, endX, positionY, chartPadding, barWidth, minX, maxX);
-      drawBarChart(ctx, datasets, originX, reverseOriginY, chartHeight, chartPadding, barWidth, minY, rangeY);
+      drawYAxis(ctx, originX, originY, endY);
+      drawXAxis(ctx, originX, endX, endY);
+
+      for (let i = 0; i < datasets.length; i++) {
+        const calibrationX = i * barWidth;
+        const calibrationY = Math.floor(((datasets[i].value - minY) * (chartHeight - 2 * chartPadding)) / rangeY);
+        const positionX = calibrationX + originX;
+        const positionY = endY - chartPadding - calibrationY;
+        const middleX = positionX + Math.floor(barWidth / 2);
+        const height = calibrationY + chartPadding;
+
+        drawBar(ctx, positionX, positionY, barWidth, height);
+        drawXTick(ctx, middleX, endY, String(datasets[i].x).slice(2));
+      }
+
+      for (let value = minY; value <= maxY; value += 10) {
+        const calibrationY = Math.floor(((value - minY) * (chartHeight - 2 * chartPadding)) / rangeY);
+        const positionY = endY - chartPadding - calibrationY;
+
+        drawYTick(ctx, originX, positionY, String(value));
+      }
 
       return () => {
         ctx.clearRect(0, 0, clientWidth, clientHeight);

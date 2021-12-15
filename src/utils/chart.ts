@@ -19,130 +19,64 @@ export const parseDatasets = (datasets: IChartData[]) => {
   return { xAxis, yAxis, minX, maxX, minY, maxY };
 };
 
-export const drawYAxis = (
-  ctx: CanvasRenderingContext2D,
-  originY: number,
-  endY: number,
-  positionX: number,
-  chartHeight: number,
-  chartPadding: number,
-  minY: number,
-  maxY: number
-) => {
+export const drawYAxis = (ctx: CanvasRenderingContext2D, originX: number, originY: number, endY: number) => {
   ctx.beginPath();
-  ctx.moveTo(positionX + 0.5, originY);
-  ctx.lineTo(positionX + 0.5, endY);
+  ctx.moveTo(originX + 0.5, originY);
+  ctx.lineTo(originX + 0.5, endY);
   ctx.stroke();
-
-  const rangeY = maxY - minY;
-
-  for (let value = 0; value <= rangeY; value += 10) {
-    const y = Math.floor((value * (chartHeight - 2 * chartPadding)) / rangeY);
-    const positionY = endY - chartPadding - y;
-
-    ctx.fillText(String(value + minY), positionX - 25, positionY + 4);
-
-    ctx.beginPath();
-    ctx.moveTo(positionX - 5, positionY + 0.5);
-    ctx.lineTo(positionX, positionY + 0.5);
-    ctx.stroke();
-  }
 };
 
-export const drawXAxis = (
-  ctx: CanvasRenderingContext2D,
-  originX: number,
-  endX: number,
-  positionY: number,
-  chartWidth: number,
-  chartPadding: number,
-  minX: number,
-  maxX: number
-) => {
+export const drawXAxis = (ctx: CanvasRenderingContext2D, originX: number, endX: number, endY: number) => {
   ctx.beginPath();
-  ctx.moveTo(originX, positionY + 0.5);
-  ctx.lineTo(endX, positionY + 0.5);
+  ctx.moveTo(originX, endY + 0.5);
+  ctx.lineTo(endX, endY + 0.5);
   ctx.stroke();
-
-  const rangeX = maxX - minX;
-  let value = minX;
-
-  for (let index = 0; index <= rangeX; index += 2) {
-    const x = Math.floor((index * (chartWidth - 2 * chartPadding)) / rangeX);
-    const positionX = x + originX + chartPadding;
-
-    ctx.fillText(String(value).slice(2), positionX - 4, positionY + 15);
-
-    ctx.beginPath();
-    ctx.moveTo(positionX + 0.5, positionY);
-    ctx.lineTo(positionX + 0.5, positionY + 5);
-    ctx.stroke();
-
-    value += 2;
-  }
 };
 
-export const drawBarYAxis = (
+export const drawYTick = (ctx: CanvasRenderingContext2D, originX: number, positionY: number, value: string) => {
+  ctx.fillText(value, originX - 25, positionY + 4);
+
+  ctx.beginPath();
+  ctx.moveTo(originX - 5, positionY + 0.5);
+  ctx.lineTo(originX, positionY + 0.5);
+  ctx.stroke();
+};
+
+export const drawXTick = (ctx: CanvasRenderingContext2D, positionX: number, endY: number, value: string) => {
+  ctx.fillText(value, positionX - 4, endY + 15);
+
+  ctx.beginPath();
+  ctx.moveTo(positionX + 0.5, endY);
+  ctx.lineTo(positionX + 0.5, endY + 5);
+  ctx.stroke();
+};
+
+export const drawDot = (ctx: CanvasRenderingContext2D, positionX: number, positionY: number) => {
+  ctx.beginPath();
+  ctx.arc(positionX, positionY, 3, 0, Math.PI * 2);
+  ctx.globalAlpha = 0.3;
+  ctx.fillStyle = "blue";
+  ctx.fill();
+
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = "black";
+};
+
+export const drawBar = (
   ctx: CanvasRenderingContext2D,
   positionX: number,
-  originY: number,
-  endY: number,
-  chartHeight: number,
-  chartPadding: number,
-  maxY: number
-) => {
-  ctx.beginPath();
-  ctx.moveTo(positionX + 0.5, originY);
-  ctx.lineTo(positionX + 0.5, endY);
-  ctx.stroke();
-
-  let rangeY = maxY;
-
-  if (maxY % 10 !== 0) {
-    rangeY += 10;
-  }
-
-  for (let value = 0; value <= rangeY; value += 10) {
-    const y = Math.floor((value * (chartHeight - 2 * chartPadding)) / rangeY);
-    const positionY = endY - chartPadding - y;
-
-    ctx.fillText(String(value), positionX - 25, positionY + 4);
-
-    ctx.beginPath();
-    ctx.moveTo(positionX - 5, positionY + 0.5);
-    ctx.lineTo(positionX, positionY + 0.5);
-    ctx.stroke();
-  }
-};
-
-export const drawBarXAxis = (
-  ctx: CanvasRenderingContext2D,
-  originX: number,
-  endX: number,
   positionY: number,
-  chartPadding: number,
-  barWidth: number,
-  minX: number,
-  maxX: number
+  width: number,
+  height: number
 ) => {
-  ctx.beginPath();
-  ctx.moveTo(originX, positionY + 0.5);
-  ctx.lineTo(endX, positionY + 0.5);
-  ctx.stroke();
+  ctx.fillStyle = "blue";
+  ctx.globalAlpha = 0.3;
+  ctx.fillRect(positionX, positionY, width, height);
 
-  const rangeX = maxX - minX;
-  let value = minX;
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = "blue";
+  ctx.strokeRect(positionX, positionY, width, height);
 
-  for (let index = 0; index <= rangeX; index += 2) {
-    const positionX = index * barWidth + originX + chartPadding + Math.floor(barWidth / 2);
-
-    ctx.fillText(String(value).slice(2), positionX - 4, positionY + 15);
-
-    ctx.beginPath();
-    ctx.moveTo(positionX + 0.5, positionY);
-    ctx.lineTo(positionX + 0.5, positionY + 5);
-    ctx.stroke();
-
-    value += 2;
-  }
+  ctx.fillStyle = "black";
+  ctx.strokeStyle = "black";
 };
