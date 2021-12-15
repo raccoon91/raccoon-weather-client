@@ -1,38 +1,11 @@
 import { FC, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { parseDatasets, drawYAxis, drawXAxis } from "utils";
+import { parseDatasets, drawYAxis, drawXAxis, drawYTick, drawXTick, drawDot } from "utils";
 
 const CanvasWrapper = styled.div`
   width: 100%;
   height: 100%;
 `;
-
-const drawScatterPlot = (
-  ctx: CanvasRenderingContext2D,
-  datasets: IChartData[],
-  originX: number,
-  reverseOriginY: number,
-  chartWidth: number,
-  chartHeight: number,
-  chartPadding: number,
-  minX: number,
-  minY: number,
-  rangeX: number,
-  rangeY: number
-) => {
-  for (let i = 0; i < datasets.length; i++) {
-    const x = Math.floor(((datasets[i].x - minX) * (chartWidth - 2 * chartPadding)) / rangeX);
-    const y = Math.floor(((datasets[i].value - minY) * (chartHeight - 2 * chartPadding)) / rangeY);
-    const positionX = x + originX + chartPadding;
-    const positionY = reverseOriginY - chartPadding - y;
-
-    ctx.beginPath();
-    ctx.arc(positionX, positionY, 3, 0, Math.PI * 2);
-    ctx.globalAlpha = 0.3;
-    ctx.fillStyle = "blue";
-    ctx.fill();
-  }
-};
 
 interface IScatterPlotProps {
   datasets: IChartData[];
@@ -66,29 +39,36 @@ export const ScatterPlot: FC<IScatterPlotProps> = ({ datasets }) => {
 
       const originX = canvasPadding + yAxisWidth;
       const originY = canvasPadding;
-      const reverseOriginY = clientHeight - canvasPadding - xAxisHeight;
       const endX = clientWidth - canvasPadding;
       const endY = clientHeight - canvasPadding - xAxisHeight;
-      const positionX = canvasPadding + yAxisWidth;
-      const positionY = clientHeight - canvasPadding - xAxisHeight;
       const chartWidth = clientWidth - 2 * canvasPadding - yAxisWidth;
       const chartHeight = clientHeight - 2 * canvasPadding - xAxisHeight;
 
-      drawYAxis(ctx, originY, endY, positionX, chartHeight, chartPadding, minY, maxY);
-      drawXAxis(ctx, originX, endX, positionY, chartWidth, chartPadding, minX, maxX);
-      drawScatterPlot(
-        ctx,
-        datasets,
-        originX,
-        reverseOriginY,
-        chartWidth,
-        chartHeight,
-        chartPadding,
-        minX,
-        minY,
-        rangeX,
-        rangeY
-      );
+      drawYAxis(ctx, originX, originY, endY);
+      drawXAxis(ctx, originX, endX, endY);
+
+      for (let i = 0; i < datasets.length; i++) {
+        const calibrationX = Math.floor(((datasets[i].x - minX) * (chartWidth - 2 * chartPadding)) / rangeX);
+        const calibrationY = Math.floor(((datasets[i].value - minY) * (chartHeight - 2 * chartPadding)) / rangeY);
+        const positionX = calibrationX + originX + chartPadding;
+        const positionY = endY - chartPadding - calibrationY;
+
+        drawDot(ctx, positionX, positionY);
+      }
+
+      for (let value = minY; value <= maxY; value += 10) {
+        const calibrationY = Math.floor(((value - minY) * (chartHeight - 2 * chartPadding)) / rangeY);
+        const positionY = endY - chartPadding - calibrationY;
+
+        drawYTick(ctx, originX, positionY, String(value));
+      }
+
+      for (let value = minX; value <= maxX; value += 2) {
+        const calibrationX = Math.floor(((value - minX) * (chartWidth - 2 * chartPadding)) / rangeX);
+        const positionX = calibrationX + originX + chartPadding;
+
+        drawXTick(ctx, positionX, endY, String(value).slice(2));
+      }
 
       return () => {
         ctx.clearRect(0, 0, clientWidth, clientHeight);
