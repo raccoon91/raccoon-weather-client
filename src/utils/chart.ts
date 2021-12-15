@@ -80,3 +80,20 @@ export const drawBar = (
   ctx.fillStyle = "black";
   ctx.strokeStyle = "black";
 };
+
+export const drawLine = (
+  ctx: CanvasRenderingContext2D,
+  startX: number,
+  startY: number,
+  endX: number,
+  endY: number,
+  color: string
+) => {
+  ctx.beginPath();
+  ctx.strokeStyle = color || "black";
+  ctx.moveTo(startX, startY + 0.5);
+  ctx.lineTo(endX, endY + 0.5);
+  ctx.stroke();
+
+  ctx.strokeStyle = "black";
+};

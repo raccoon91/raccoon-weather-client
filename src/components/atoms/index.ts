@@ -13,3 +13,4 @@ export * from "./WindIndicator";
 export * from "./ScatterPlot";
 export * from "./BarChart";
 export * from "./MapChart";
+export * from "./GradientLineChart";
