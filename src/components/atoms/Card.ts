@@ -5,9 +5,9 @@ interface ICardProps {
   fd?: string;
   a?: string;
   j?: string;
-  w: string;
+  w?: string;
   minw?: string;
-  h: string;
+  h?: string;
   m?: string;
   p?: string;
   bgc?: string;

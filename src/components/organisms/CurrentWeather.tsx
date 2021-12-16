@@ -6,7 +6,7 @@ type ICurrentWeatherProps = ICurrentWeather;
 
 export const CurrentWeather: FC<ICurrentWeatherProps> = ({ city, today, temp, sky }) => {
   return (
-    <Box w="20%" minw="20rem" h="100%" p="9rem 3rem 3rem">
+    <Box>
       <Box fd="row" a="center" j="space-between" h="3.6rem">
         <Title2 color="white">{city}</Title2>
         <Image src={MapIcon} size={2} alt="지도 아이콘" />
