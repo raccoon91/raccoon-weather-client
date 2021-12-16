@@ -57,7 +57,6 @@ export const GlobalStyle = createGlobalStyle`
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     font-family: 'Noto Sans KR', sans-serif;
-    font-size: 10px;
   }
   *, *:before, *:after {
     -webkit-box-sizing: inherit;
@@ -75,5 +74,29 @@ export const GlobalStyle = createGlobalStyle`
   }
   *::-webkit-scrollbar-track {
     background-color: #d9ebff;
+  }
+
+  @media (min-width: 1440px) {
+    html {
+      font-size: 12px;
+    }
+  }
+
+  @media (min-width: 1025px) and (max-width: 1440px) { 
+    html {
+      font-size: 10px;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) { 
+    html {
+      font-size: 8px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    html {
+      font-size: 6px;
+    }
   }
 `;
