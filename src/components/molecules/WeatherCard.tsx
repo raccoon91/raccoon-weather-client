@@ -18,7 +18,7 @@ export const WeatherCard: FC<IWeatherCardProps> = ({ title, value, unit, chart, 
         <Title3 size="sm">{title}</Title3>
       </Box>
 
-      <Box f="1" a="center" m="0.8rem 0 0">
+      <Box h="calc(100% - 2.4rem)" a="center" m="0.8rem 0 0">
         <Box fd="row" a="flex-end" h="3.8rem">
           <Text size="4xl" weight="bold">
             {value}

@@ -16,7 +16,7 @@ export const TempClimateCard: FC<ITempClimateCardProps> = ({ title, datasets, w,
         <Title3 size="sm">{title}</Title3>
       </Box>
 
-      <Box f="1" m="1rem 0 0">
+      <Box h="calc(100% - 2.6rem)" m="1rem 0 0">
         <ScatterPlot datasets={datasets} />
       </Box>
     </Card>

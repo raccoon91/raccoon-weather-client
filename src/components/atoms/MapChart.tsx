@@ -1,50 +1,66 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useLayoutEffect } from "react";
 import { geoMercator, geoPath } from "d3-geo";
-import styled from "styled-components";
 import { koreaGeoJson } from "configs";
+import { Box } from "./Box";
 
-const CanvasWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-`;
+const drawMap = (box: HTMLDivElement, canvas: HTMLCanvasElement) => {
+  const { clientWidth, clientHeight } = box;
+  const ctx = canvas.getContext("2d");
+
+  if (!ctx) return;
+
+  canvas.width = clientWidth;
+  canvas.height = clientHeight;
+
+  const projection = geoMercator().fitSize([clientWidth, clientHeight], koreaGeoJson).precision(100);
+  const pathGenerator = geoPath(projection, ctx);
+
+  ctx.beginPath();
+
+  pathGenerator(koreaGeoJson);
+
+  ctx.fillStyle = "blue";
+  ctx.globalAlpha = 0.3;
+  ctx.fill();
+
+  ctx.lineWidth = 0.5;
+  ctx.globalAlpha = 1;
+  ctx.stroke();
+};
 
 export const MapChart = () => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const wrapper = wrapperRef.current;
+    const box = boxRef.current;
     const canvas = canvasRef.current;
 
-    if (wrapper && canvas) {
-      const { clientWidth, clientHeight } = wrapper;
-      const ctx = canvas.getContext("2d");
-
-      if (!ctx) return;
-
-      canvas.width = clientWidth;
-      canvas.height = clientHeight;
-
-      const projection = geoMercator().fitSize([clientWidth, clientHeight], koreaGeoJson).precision(100);
-      const pathGenerator = geoPath(projection, ctx);
-
-      ctx.beginPath();
-
-      pathGenerator(koreaGeoJson);
-
-      ctx.fillStyle = "blue";
-      ctx.globalAlpha = 0.3;
-      ctx.fill();
-
-      ctx.lineWidth = 0.5;
-      ctx.globalAlpha = 1;
-      ctx.stroke();
+    if (box && canvas) {
+      drawMap(box, canvas);
     }
-  }, [wrapperRef.current, canvasRef.current]);
+  }, [boxRef.current, canvasRef.current]);
+
+  useLayoutEffect(() => {
+    const box = boxRef.current;
+    const canvas = canvasRef.current;
+
+    if (box && canvas) {
+      const redrawMap = () => {
+        drawMap(box, canvas);
+      };
+
+      window.addEventListener("resize", redrawMap);
+
+      return () => {
+        window.removeEventListener("resize", redrawMap);
+      };
+    }
+  }, [boxRef.current, canvasRef.current]);
 
   return (
-    <CanvasWrapper ref={wrapperRef}>
+    <Box w="100%" h="100%" ref={boxRef}>
       <canvas ref={canvasRef}></canvas>
-    </CanvasWrapper>
+    </Box>
   );
 };
