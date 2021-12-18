@@ -6,7 +6,7 @@ const randomTemp = (year: number) => {
   const min = -40;
   const max = 50;
 
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 120; i++) {
     result.push({ x: year, value: Math.floor(Math.random() * (max - min + 1)) + min });
   }
 
@@ -43,6 +43,8 @@ const climateData = {
     ...randomTemp(2005),
     ...randomTemp(2006),
     ...randomTemp(2007),
+    ...randomTemp(2008),
+    ...randomTemp(2009),
   ],
   rainChartDataList: [
     randomRain(1990),
@@ -63,6 +65,8 @@ const climateData = {
     randomRain(2005),
     randomRain(2006),
     randomRain(2007),
+    randomRain(2008),
+    randomRain(2009),
   ],
 };
 
