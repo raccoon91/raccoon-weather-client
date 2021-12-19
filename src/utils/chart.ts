@@ -34,24 +34,48 @@ export const getCanvasPostion = (
   return { originX, originY, endX, endY, chartWidth, chartHeight };
 };
 
-export const getCalibration = (value: number, width: number, range: number) => {
-  return Math.floor((value * width) / range);
+export const getPositionX = (
+  value: number,
+  dataRange: IDataRange,
+  canvasPosition: ICanvasPostion,
+  canvasOptions: ICanvasOptions
+) => {
+  const { minX, rangeX } = dataRange;
+  const { originX, chartWidth } = canvasPosition;
+  const { chartPadding } = canvasOptions;
+
+  const calibrationX = Math.floor(((value - minX) * (chartWidth - 2 * chartPadding)) / rangeX);
+  const positionX = calibrationX + originX + chartPadding;
+
+  return positionX;
 };
 
-export const getCalibrationXY = (
+export const getPositionY = (
+  value: number,
+  dataRange: IDataRange,
+  canvasPosition: ICanvasPostion,
+  canvasOptions: ICanvasOptions
+) => {
+  const { minY, rangeY } = dataRange;
+  const { endY, chartHeight } = canvasPosition;
+  const { chartPadding } = canvasOptions;
+
+  const calibrationY = Math.floor(((value - minY) * (chartHeight - 2 * chartPadding)) / rangeY);
+  const positionY = endY - chartPadding - calibrationY;
+
+  return positionY;
+};
+
+export const getPositionXY = (
   data: IChartData,
   dataRange: IDataRange,
   canvasPosition: ICanvasPostion,
   canvasOptions: ICanvasOptions
 ) => {
-  const { minX, minY, rangeX, rangeY } = dataRange;
-  const { chartWidth, chartHeight } = canvasPosition;
-  const { chartPadding } = canvasOptions;
+  const positionX = getPositionX(data.x, dataRange, canvasPosition, canvasOptions);
+  const positionY = getPositionY(data.value, dataRange, canvasPosition, canvasOptions);
 
-  const calibrationX = getCalibration(data.x - minX, chartWidth - 2 * chartPadding, rangeX);
-  const calibrationY = getCalibration(data.value - minY, chartHeight - 2 * chartPadding, rangeY);
-
-  return { calibrationX, calibrationY };
+  return { positionX, positionY };
 };
 
 const axisDefaultOptions = {

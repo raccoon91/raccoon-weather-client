@@ -2,7 +2,7 @@ import { FC, useRef, useEffect, useLayoutEffect } from "react";
 import {
   parseDatasets,
   getCanvasPostion,
-  getCalibration,
+  getPositionY,
   drawYAxis,
   drawXAxis,
   drawYTick,
@@ -38,19 +38,18 @@ const drawBarChart = (
   const dataRange = parseDatasets(datasets, { minY: 0 });
   const canvasPosition = getCanvasPostion(clientWidth, clientHeight, canvasOptions);
 
-  const { minY, maxY, rangeY } = dataRange;
-  const { originX, originY, endX, endY, chartHeight } = canvasPosition;
+  const { minY, maxY } = dataRange;
+  const { originX, originY, endX, endY } = canvasPosition;
 
   drawYAxis(ctx, originX, originY, endY);
   drawXAxis(ctx, originX, endX, endY);
 
   for (let i = 0; i < datasets.length; i++) {
     const calibrationX = i * barWidth;
-    const calibrationY = getCalibration(datasets[i].value - minY, chartHeight - 2 * chartPadding, rangeY);
     const positionX = calibrationX + originX;
-    const positionY = endY - chartPadding - calibrationY;
+    const positionY = getPositionY(datasets[i].value, dataRange, canvasPosition, canvasOptions);
     const middleX = positionX + Math.floor(barWidth / 2);
-    const height = calibrationY + chartPadding;
+    const height = endY - positionY;
 
     const barOptions = {
       barColor: "blue",
@@ -65,8 +64,7 @@ const drawBarChart = (
   }
 
   for (let value = minY; value <= maxY; value += 10) {
-    const calibrationY = getCalibration(value - minY, chartHeight - 2 * chartPadding, rangeY);
-    const positionY = endY - chartPadding - calibrationY;
+    const positionY = getPositionY(value, dataRange, canvasPosition, canvasOptions);
 
     drawYTick(ctx, originX, positionY, String(value));
   }
@@ -88,17 +86,15 @@ const barChartMouseOver = (
   const dataRange = parseDatasets(datasets, { minY: 0 });
   const canvasPosition = getCanvasPostion(clientWidth, clientHeight, canvasOptions);
 
-  const { minY, rangeY } = dataRange;
-  const { originX, endY, chartHeight } = canvasPosition;
+  const { originX, endY } = canvasPosition;
 
   let hoverId: number | undefined;
 
   for (let i = 0; i < datasets.length; i++) {
     const calibrationX = i * barWidth;
-    const calibrationY = getCalibration(datasets[i].value - minY, chartHeight - 2 * chartPadding, rangeY);
     const positionX = calibrationX + originX;
-    const positionY = endY - chartPadding - calibrationY;
-    const height = calibrationY + chartPadding;
+    const positionY = getPositionY(datasets[i].value, dataRange, canvasPosition, canvasOptions);
+    const height = endY - positionY;
 
     if (mouseX > positionX && mouseX < positionX + barWidth && mouseY > positionY && mouseY < positionY + height) {
       hoverId = i;
