@@ -1,4 +1,4 @@
-import { useRef, useEffect, useLayoutEffect } from "react";
+import { FC, useRef, useEffect, useLayoutEffect } from "react";
 import { geoMercator, geoPath, geoContains } from "d3-geo";
 import { koreaGeoJson } from "configs";
 import { Box } from "./Box";
@@ -55,7 +55,7 @@ const drawMap = (box: HTMLDivElement, canvas: HTMLCanvasElement, hoverCity?: str
   });
 };
 
-const mapMouseOver = (event: MouseEvent, box: HTMLDivElement, canvas: HTMLCanvasElement) => {
+const getMousePostionCity = (event: MouseEvent, box: HTMLDivElement) => {
   const mouseX = event.offsetX;
   const mouseY = event.offsetY;
   const { clientWidth, clientHeight } = box;
@@ -65,22 +65,34 @@ const mapMouseOver = (event: MouseEvent, box: HTMLDivElement, canvas: HTMLCanvas
 
   if (!position) return;
 
-  let hoverCity: string | undefined;
-
   for (const feature of koreaGeoJson.features) {
     if (geoContains(feature, position)) {
       const city = feature?.properties?.CTP_KOR_NM || "";
 
-      hoverCity = city;
-
-      break;
+      return city;
     }
   }
+};
+
+const mapMouseOver = (event: MouseEvent, box: HTMLDivElement, canvas: HTMLCanvasElement) => {
+  const hoverCity = getMousePostionCity(event, box);
 
   drawMap(box, canvas, hoverCity);
 };
 
-export const MapChart = () => {
+const mapMouseClick = (event: MouseEvent, box: HTMLDivElement, onClick: (city: string) => void) => {
+  const city = getMousePostionCity(event, box);
+
+  if (city && onClick) {
+    onClick(city);
+  }
+};
+
+interface IMapChartProps {
+  onClick?: (city: string) => void;
+}
+
+export const MapChart: FC<IMapChartProps> = ({ onClick }) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -94,8 +106,14 @@ export const MapChart = () => {
       canvas.onmousemove = (event: MouseEvent) => {
         mapMouseOver(event, box, canvas);
       };
+
+      if (onClick) {
+        canvas.onclick = (event: MouseEvent) => {
+          mapMouseClick(event, box, onClick);
+        };
+      }
     }
-  }, [boxRef.current, canvasRef.current]);
+  }, [boxRef.current, canvasRef.current, onClick]);
 
   useLayoutEffect(() => {
     const box = boxRef.current;

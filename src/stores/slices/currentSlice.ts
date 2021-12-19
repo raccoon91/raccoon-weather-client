@@ -30,7 +30,13 @@ export const getCurrentWeather = createAsyncThunk("current/getCurrentWeather", a
 export const currentSlice = createSlice({
   name: "currentSlice",
   initialState: initialCurrentState,
-  reducers: {},
+  reducers: {
+    changeCity: (state, action) => {
+      const city = action.payload;
+
+      state.city = city;
+    },
+  },
   extraReducers: (builder) =>
     builder.addCase(getCurrentWeather.fulfilled, (state, action) => {
       if (!action.payload) {

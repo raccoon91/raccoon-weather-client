@@ -4,6 +4,7 @@ interface ImageProps {
   size?: number;
   m?: string;
   p?: string;
+  cursor?: string;
 }
 
 export const Image = styled.img<ImageProps>`
@@ -15,5 +16,6 @@ export const Image = styled.img<ImageProps>`
   `}
   ${({ m }) => m && `margin: ${m};`}
   ${({ p }) => p && `padding: ${p};`}
+  ${({ cursor }) => cursor && `cursor: ${cursor};`}
   user-select: none;
 `;
