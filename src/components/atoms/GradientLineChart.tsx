@@ -2,8 +2,9 @@ import { FC, useRef, useEffect, useLayoutEffect } from "react";
 import {
   parseDatasets,
   getCanvasPostion,
-  getCalibrationXY,
-  getCalibration,
+  getPositionXY,
+  getPositionX,
+  getPositionY,
   drawYAxis,
   drawXAxis,
   drawYTick,
@@ -28,7 +29,6 @@ const drawGradientLine = (
   hoverId?: number
 ) => {
   const { clientWidth, clientHeight } = box;
-  const { chartPadding } = canvasOptions;
   const ctx = canvas.getContext("2d");
 
   if (!ctx) return;
@@ -39,8 +39,8 @@ const drawGradientLine = (
   const dataRange = parseDatasets(datasets, { minY: -0.5, maxY: 1 });
   const canvasPosition = getCanvasPostion(clientWidth, clientHeight, canvasOptions);
 
-  const { minX, maxX, minY, rangeX, rangeY } = dataRange;
-  const { originX, originY, endX, endY, chartWidth, chartHeight } = canvasPosition;
+  const { minX, maxX, minY } = dataRange;
+  const { originX, originY, endX, endY } = canvasPosition;
 
   drawYAxis(ctx, originX, originY, endY);
   drawXAxis(ctx, originX, endX, endY);
@@ -54,9 +54,7 @@ const drawGradientLine = (
   };
 
   for (let i = 0; i < datasets.length; i++) {
-    const { calibrationX, calibrationY } = getCalibrationXY(datasets[i], dataRange, canvasPosition, canvasOptions);
-    const positionX = calibrationX + originX + chartPadding;
-    const positionY = endY - chartPadding - calibrationY;
+    const { positionX, positionY } = getPositionXY(datasets[i], dataRange, canvasPosition, canvasOptions);
 
     const dotOptions = {
       size: i === hoverId ? 6 : 2,
@@ -67,47 +65,48 @@ const drawGradientLine = (
     drawDot(ctx, positionX, positionY, dotOptions);
 
     if (i > 0 && i < datasets.length) {
-      const { calibrationX: calibrationStartX, calibrationY: calibrationStartY } = getCalibrationXY(
+      const { positionX: positionStartX, positionY: positionStartY } = getPositionXY(
         datasets[i - 1],
         dataRange,
         canvasPosition,
         canvasOptions
       );
-      const positionStartX = calibrationStartX + originX + chartPadding;
-      const positionStartY = endY - chartPadding - calibrationStartY;
 
       if (datasets[i - 1].value <= 0 && datasets[i].value <= 0) {
         drawLine(ctx, positionStartX, positionStartY, positionX, positionY, blueLineOptions);
       } else if (datasets[i - 1].value >= 0 && datasets[i].value >= 0) {
         drawLine(ctx, positionStartX, positionStartY, positionX, positionY, redLineOptions);
       } else {
-        const calibrationZeroY = getCalibration(0 - minY, chartHeight - 2 * chartPadding, rangeY);
-        const positionZeroY = endY - chartPadding - calibrationZeroY;
+        const positionZeroY = getPositionY(0, dataRange, canvasPosition, canvasOptions);
         const positionZeroX =
           ((positionZeroY - positionStartY) * (positionX - positionStartX)) / (positionY - positionStartY) +
           positionStartX;
 
+        const startLineOptions: ILineOptions = {};
+        const endLineOptions: ILineOptions = {};
+
         if (datasets[i - 1].value > datasets[i].value) {
-          drawLine(ctx, positionStartX, positionStartY, positionZeroX, positionZeroY, redLineOptions);
-          drawLine(ctx, positionZeroX, positionZeroY, positionX, positionY, blueLineOptions);
+          startLineOptions.color = "red";
+          endLineOptions.color = "blue";
         } else {
-          drawLine(ctx, positionStartX, positionStartY, positionZeroX, positionZeroY, blueLineOptions);
-          drawLine(ctx, positionZeroX, positionZeroY, positionX, positionY, redLineOptions);
+          startLineOptions.color = "blue";
+          endLineOptions.color = "red";
         }
+
+        drawLine(ctx, positionStartX, positionStartY, positionZeroX, positionZeroY, startLineOptions);
+        drawLine(ctx, positionZeroX, positionZeroY, positionX, positionY, endLineOptions);
       }
     }
   }
 
   for (let value = minY; value <= 1; value += 0.5) {
-    const calibrationY = getCalibration(value - minY, chartHeight - 2 * chartPadding, rangeY);
-    const positionY = endY - chartPadding - calibrationY;
+    const positionY = getPositionY(value, dataRange, canvasPosition, canvasOptions);
 
     drawYTick(ctx, originX, positionY, String(value));
   }
 
   for (let value = minX; value <= maxX; value += 5) {
-    const calibrationX = getCalibration(value - minX, chartWidth - 2 * chartPadding, rangeX);
-    const positionX = calibrationX + originX + chartPadding;
+    const positionX = getPositionX(value, dataRange, canvasPosition, canvasOptions);
 
     drawXTick(ctx, positionX, endY, String(value).slice(2));
   }
@@ -123,19 +122,14 @@ const gradientLineMouseOver = (
   const mouseX = event.offsetX;
   const mouseY = event.offsetY;
   const { clientWidth, clientHeight } = box;
-  const { chartPadding } = canvasOptions;
 
   const dataRange = parseDatasets(datasets, { minY: -0.5, maxY: 1 });
   const canvasPosition = getCanvasPostion(clientWidth, clientHeight, canvasOptions);
 
-  const { originX, endY } = canvasPosition;
-
   let hoverId: number | undefined;
 
   for (let i = 0; i < datasets.length; i++) {
-    const { calibrationX, calibrationY } = getCalibrationXY(datasets[i], dataRange, canvasPosition, canvasOptions);
-    const positionX = calibrationX + originX + chartPadding;
-    const positionY = endY - chartPadding - calibrationY;
+    const { positionX, positionY } = getPositionXY(datasets[i], dataRange, canvasPosition, canvasOptions);
 
     if (mouseX > positionX - 4 && mouseX < positionX + 4 && mouseY > positionY - 4 && mouseY < positionY + 4) {
       hoverId = i;
