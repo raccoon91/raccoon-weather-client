@@ -1,11 +1,19 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { useAppDispatch } from "hooks";
+import { getCurrentWeather } from "stores/slices/currentSlice";
 import { TodayPage } from "./TodayPage";
 import { ClimatePage } from "./ClimatePage";
 import { MapModalPage } from "./MapModalPage";
 import { NotFoundPage } from "./NotFoundPage";
 
 const Pages: FC = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getCurrentWeather());
+  }, []);
+
   return (
     <Router>
       <Switch>
