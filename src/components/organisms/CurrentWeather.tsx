@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { Box, Title2, Title3, Text, Image, WeatherIcon } from "components/atoms";
 import MapIcon from "images/map.svg";
@@ -8,6 +8,17 @@ type ICurrentWeatherProps = ICurrentWeather;
 export const CurrentWeather: FC<ICurrentWeatherProps> = ({ city, today, temp, sky }) => {
   const history = useHistory();
   const location = useLocation();
+  const [showMapIcon, setShowMapIcon] = useState(true);
+
+  useEffect(() => {
+    const [, path] = location.pathname.split("/");
+
+    if (path === "today") {
+      setShowMapIcon(true);
+    } else {
+      setShowMapIcon(false);
+    }
+  }, []);
 
   const handleClickMapIcon = () => {
     const [, path] = location.pathname.split("/");
@@ -19,7 +30,10 @@ export const CurrentWeather: FC<ICurrentWeatherProps> = ({ city, today, temp, sk
     <Box>
       <Box fd="row" a="center" j="space-between" h="3.6rem">
         <Title2 color="white">{city}</Title2>
-        <Image src={MapIcon} size={2} onClick={handleClickMapIcon} cursor="pointer" alt="지도 아이콘" />
+
+        {showMapIcon ? (
+          <Image src={MapIcon} size={2} onClick={handleClickMapIcon} cursor="pointer" alt="지도 아이콘" />
+        ) : null}
       </Box>
 
       <Box h="1.4rem" m="1.6rem 0 0">
