@@ -1,6 +1,5 @@
 import { FC, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "hooks";
-import { getCurrentWeather } from "stores/slices/currentSlice";
 import { getTodayWeather } from "stores/slices/todaySlice";
 import { CurrentWeather, TodayDashboard } from "components/organisms";
 import { WeatherLayout } from "components/templates";
@@ -11,7 +10,6 @@ export const TodayPage: FC = () => {
   const today = useAppSelector((state) => state.today);
 
   useEffect(() => {
-    dispatch(getCurrentWeather());
     dispatch(getTodayWeather());
   }, []);
 

@@ -17,6 +17,12 @@ const initialCurrentState: ICurrentWeather = {
 
 export const getCurrentWeather = createAsyncThunk("current/getCurrentWeather", async () => {
   try {
+    const city = window.localStorage.getItem("city");
+
+    if (city) {
+      currentData.city = city;
+    }
+
     const response = await fakeApi(currentData);
 
     if (response.status === 200) {
@@ -33,6 +39,8 @@ export const currentSlice = createSlice({
   reducers: {
     changeCity: (state, action) => {
       const city = action.payload;
+
+      window.localStorage.setItem("city", city);
 
       state.city = city;
     },
