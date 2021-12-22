@@ -9,11 +9,12 @@ interface IWeatherCardProps {
   w?: string;
   h?: string;
   m?: string;
+  p?: string;
 }
 
-export const WeatherCard: FC<IWeatherCardProps> = ({ title, value, unit, chart, w, h, m }) => {
+export const WeatherCard: FC<IWeatherCardProps> = ({ title, value, unit, chart, w, h, m, p = "3rem 4rem" }) => {
   return (
-    <Card w={w} h={h} m={m} p="3rem 4rem">
+    <Card w={w} h={h} m={m} p={p}>
       <Box h="1.6rem">
         <Title3 size="sm">{title}</Title3>
       </Box>

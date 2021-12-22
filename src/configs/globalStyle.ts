@@ -76,25 +76,19 @@ export const GlobalStyle = createGlobalStyle`
     background-color: #d9ebff;
   }
 
-  @media (min-width: 1440px) {
-    html {
-      font-size: 12px;
-    }
-  }
-
-  @media (min-width: 1025px) and (max-width: 1440px) { 
+  @media (min-width: 769px) { 
     html {
       font-size: 10px;
     }
   }
 
-  @media (min-width: 769px) and (max-width: 1024px) { 
+  @media (min-width: 481px) and (max-width: 768px) {
     html {
       font-size: 8px;
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 480px) {
     html {
       font-size: 6px;
     }
