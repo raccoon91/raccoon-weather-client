@@ -15,6 +15,7 @@ interface IBoxProps {
   j?: string;
   w?: string;
   minw?: string;
+  maxw?: string;
   h?: string;
   m?: string;
   p?: string;
@@ -39,6 +40,7 @@ export const Box = styled.div<IBoxProps>`
   ${({ j }) => j && `justify-content: ${j};`}
   ${({ w }) => w && `width: ${w};`}
   ${({ minw }) => minw && `min-width: ${minw};`}
+  ${({ maxw }) => maxw && `max-width: ${maxw};`}
   ${({ h }) => h && `height: ${h};`}
   ${({ m }) => m && `margin: ${m};`}
   ${({ p }) => p && `padding: ${p};`}
