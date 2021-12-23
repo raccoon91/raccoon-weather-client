@@ -15,7 +15,7 @@ export const WeatherLayout: FC<IWeatherLayoutProps> = ({ current, dashboard }) =
       </Box>
 
       <Box w="calc(100% - 26rem)" h="100%" p="4rem 0 0" bgc="skyBlue" btlr="3rem">
-        <Box w="100%" h="2rem" m="0 6rem 2rem">
+        <Box w="100%" h="2rem" m="0 10rem 2rem">
           <Navigation />
         </Box>
 

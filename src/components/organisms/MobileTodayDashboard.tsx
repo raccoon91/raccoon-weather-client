@@ -1,13 +1,21 @@
 import { FC } from "react";
-import { Box, Card, Title3, TempChart, PercentChart, WindIndicator } from "components/atoms";
-import { WeatherCard } from "components/molecules";
+import { Box, TempChart, PercentChart, WindIndicator } from "components/atoms";
+import { WeatherCard, ForecastCard } from "components/molecules";
 import { percentRange, pm10Range, pm25Range, airChartColor } from "configs";
 
 type IMobileTodayDashboardProps = ITodayWeather;
 
-export const MobileTodayDashboard: FC<IMobileTodayDashboardProps> = ({ feel, humid, rain, pm10, pm25, wind }) => {
+export const MobileTodayDashboard: FC<IMobileTodayDashboardProps> = ({
+  feel,
+  humid,
+  rain,
+  pm10,
+  pm25,
+  wind,
+  todayForcast,
+}) => {
   return (
-    <Box o="hidden auto" w="100%" h="100%" p="0 3rem" m="0 0 1rem">
+    <Box o="hidden auto" d="block" w="100%" h="100%" p="0 3rem" m="0 0 1rem">
       <Box fd="row" j="space-between">
         <WeatherCard
           title="체감온도"
@@ -63,9 +71,7 @@ export const MobileTodayDashboard: FC<IMobileTodayDashboardProps> = ({ feel, hum
         <WeatherCard title="바람" value={wind} unit="m/s" chart={<WindIndicator />} w="48%" h="17rem" p="3rem" />
       </Box>
 
-      <Card w="100%" h="32rem" m="3rem 0 0" p="3rem">
-        <Title3 size="sm">오늘의 날씨</Title3>
-      </Card>
+      <ForecastCard title="오늘의 날씨" datasets={todayForcast} w="100%" h="32rem" m="3rem 0 0" />
     </Box>
   );
 };

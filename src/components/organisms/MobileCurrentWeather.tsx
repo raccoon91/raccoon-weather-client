@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Box, Title2, Title3, Text, WeatherIcon } from "components/atoms";
+import { Box, Title2, Title3, Text, AnimationIcon } from "components/atoms";
 
 type IMobileCurrentWeatherProps = ICurrentWeather;
 
@@ -8,7 +8,7 @@ export const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ city, tod
     <Box fd="row" a="center" j="space-between" h="100%">
       <Box fd="row" a="flex-end" h="100%">
         <Box o="hidden" w="10rem" h="10rem" a="center" j="center" m="0 6rem 0 0">
-          <WeatherIcon type={sky} size={24} />
+          <AnimationIcon type={sky} size={24} />
         </Box>
 
         <Box fd="row" a="flex-end" j="center" h="8.4rem">

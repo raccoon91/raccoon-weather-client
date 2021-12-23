@@ -1,31 +1,30 @@
 import styled from "styled-components";
 
-interface ICardProps {
+interface IFlexProps {
   o?: string;
+  f?: string;
   d?: string;
-  fd?: string;
+  fw?: string;
   a?: string;
   j?: string;
   w?: string;
-  minw?: string;
   h?: string;
   m?: string;
   p?: string;
   bgc?: string;
-  r?: string;
 }
 
-export const Card = styled.div<ICardProps>`
+export const Flex = styled.div<IFlexProps>`
   ${({ o }) => o && `overflow: ${o};`}
-  display: ${({ d }) => d || "flex"};
-  flex-direction: ${({ fd }) => fd || "column"};
+  display: flex;
+  ${({ f }) => f && `flex: ${f};`}
+  flex-direction: ${({ d }) => d || "column"};
+  ${({ fw }) => fw && `flex-wrap: ${fw};`}
   ${({ a }) => a && `align-items: ${a};`}
   ${({ j }) => j && `justify-content: ${j};`}
   ${({ w }) => w && `width: ${w};`}
-  ${({ minw }) => minw && `min-width: ${minw};`}
   ${({ h }) => h && `height: ${h};`}
   ${({ m }) => m && `margin: ${m};`}
   ${({ p }) => p && `padding: ${p};`}
-  background-color: ${({ bgc, theme }) => theme.color[bgc || "white"]};
-  border-radius: ${({ r }) => r || "3rem"};
+  ${({ bgc, theme }) => bgc && `background-color: ${theme.color[bgc] || "none"};`}
 `;

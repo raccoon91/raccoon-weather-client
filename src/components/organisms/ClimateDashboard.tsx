@@ -6,7 +6,7 @@ type IClimateDashboardProps = IClimate;
 
 export const ClimateDashboard: FC<IClimateDashboardProps> = ({ tempChartDataList, rainChartDataList }) => {
   return (
-    <Box o="hidden auto" w="100%" h="100%" p="0 6rem 4rem">
+    <Box o="hidden auto" d="block" w="100%" h="100%" p="2rem 10rem 4rem">
       <Box fd="row" j="space-between" w="100%" h="60rem" m="0 0 1rem">
         <MapCard title="지역" w="calc(48% - 1rem)" h="60rem" m="0 1rem 0 0" />
 
