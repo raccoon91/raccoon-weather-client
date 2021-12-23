@@ -1,31 +1,9 @@
-import { FC, useState, useEffect } from "react";
-import { useLocation, useHistory } from "react-router-dom";
-import { Box, Title2, Title3, Text, Image, WeatherIcon } from "components/atoms";
-import MapIcon from "images/map.svg";
+import { FC } from "react";
+import { Box, Title2, Title3, Text, WeatherIcon } from "components/atoms";
 
 type IMobileCurrentWeatherProps = ICurrentWeather;
 
 export const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ city, today, temp, sky }) => {
-  const history = useHistory();
-  const location = useLocation();
-  const [showMapIcon, setShowMapIcon] = useState(true);
-
-  useEffect(() => {
-    const [, path] = location.pathname.split("/");
-
-    if (path === "today") {
-      setShowMapIcon(true);
-    } else {
-      setShowMapIcon(false);
-    }
-  }, []);
-
-  const handleClickMapIcon = () => {
-    const [, path] = location.pathname.split("/");
-
-    history.push(`/${path}/map`);
-  };
-
   return (
     <Box fd="row" a="center" j="space-between" h="100%">
       <Box fd="row" a="flex-end" h="100%">
@@ -44,26 +22,13 @@ export const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ city, tod
       </Box>
 
       <Box j="flex-end" h="100%">
-        <Box h="1.4rem">
-          <Text size="md" color="white">
-            Today {today}
-          </Text>
-        </Box>
+        <Text size="md" color="white">
+          Today {today}
+        </Text>
 
-        <Box fd="row" a="center" j="space-between" h="3.6rem" m="2rem 0 0">
-          <Title2 color="white">{city}</Title2>
-
-          {showMapIcon ? (
-            <Image
-              src={MapIcon}
-              size={2}
-              m="0 0 0 3rem"
-              onClick={handleClickMapIcon}
-              cursor="pointer"
-              alt="지도 아이콘"
-            />
-          ) : null}
-        </Box>
+        <Title2 color="white" m="1rem 0 0">
+          {city}
+        </Title2>
       </Box>
     </Box>
   );

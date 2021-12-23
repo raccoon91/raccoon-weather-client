@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect, useLayoutEffect } from "react";
+import { FC, useRef, useEffect } from "react";
 import {
   parseDatasets,
   getCanvasPostion,
@@ -29,7 +29,7 @@ const drawBarChart = (
   const { canvasPadding, yAxisWidth, chartPadding } = canvasOptions;
   const ctx = canvas.getContext("2d");
 
-  if (!ctx) return;
+  if (!clientWidth || !clientHeight || !ctx) return;
 
   canvas.width = clientWidth;
   canvas.height = clientHeight;
@@ -48,7 +48,6 @@ const drawBarChart = (
     const calibrationX = i * barWidth;
     const positionX = calibrationX + originX;
     const positionY = getPositionY(datasets[i].value, dataRange, canvasPosition, canvasOptions);
-    const middleX = positionX + Math.floor(barWidth / 2);
     const height = endY - positionY;
 
     const barOptions = {
@@ -60,13 +59,28 @@ const drawBarChart = (
     };
 
     drawBar(ctx, positionX, positionY, barWidth, height, barOptions);
-    drawXTick(ctx, middleX, endY, String(datasets[i].x).slice(2));
   }
 
   for (let value = minY; value <= maxY; value += 10) {
     const positionY = getPositionY(value, dataRange, canvasPosition, canvasOptions);
 
     drawYTick(ctx, originX, positionY, String(value));
+  }
+
+  let xTickSkip = 1;
+
+  if (window.innerWidth > 1024) {
+    xTickSkip = 1;
+  } else {
+    xTickSkip = 2;
+  }
+
+  for (let i = 0; i < datasets.length; i += xTickSkip) {
+    const calibrationX = i * barWidth;
+    const positionX = calibrationX + originX;
+    const middleX = positionX + Math.floor(barWidth / 2);
+
+    drawXTick(ctx, middleX, endY, String(datasets[i].x).slice(2));
   }
 };
 
@@ -121,17 +135,12 @@ export const BarChart: FC<IBarChartProps> = ({ datasets, canvasOptions = barChar
     if (box && canvas && datasets.length) {
       drawBarChart(box, canvas, datasets, canvasOptions);
 
-      canvas.onmousemove = (event: MouseEvent) => {
-        barChartMouseOver(event, box, canvas, datasets, canvasOptions);
-      };
-    }
-  }, [boxRef.current, canvasRef.current, datasets]);
+      if (window.innerWidth > 1024) {
+        canvas.onmousemove = (event: MouseEvent) => {
+          barChartMouseOver(event, box, canvas, datasets, canvasOptions);
+        };
+      }
 
-  useLayoutEffect(() => {
-    const box = boxRef.current;
-    const canvas = canvasRef.current;
-
-    if (box && canvas && datasets.length) {
       const redrawBarChart = () => {
         drawBarChart(box, canvas, datasets, canvasOptions);
       };

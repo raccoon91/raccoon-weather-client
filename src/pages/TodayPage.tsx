@@ -16,7 +16,7 @@ export const TodayPage: FC = () => {
 
   useLayoutEffect(() => {
     const resize = () => {
-      if (window.innerWidth > 1025) {
+      if (window.innerWidth > 1024) {
         setDevice("desktop");
       } else {
         setDevice("mobile");
