@@ -14,14 +14,14 @@ import {
 } from "utils";
 import { Box } from "./Box";
 
-const graientLineDefaultOptions = {
+const gradientLineDefaultOptions = {
   canvasPadding: 10,
   yAxisWidth: 15,
   xAxisHeight: 10,
   chartPadding: 10,
 };
 
-const drawGradientLine = (
+const drawGradientLineChart = (
   box: HTMLDivElement,
   canvas: HTMLCanvasElement,
   datasets: IChartData[],
@@ -145,7 +145,7 @@ const gradientLineMouseOver = (
     }
   }
 
-  drawGradientLine(box, canvas, datasets, canvasOptions, hoverId);
+  drawGradientLineChart(box, canvas, datasets, canvasOptions, hoverId);
 };
 
 interface IGradientLineChartProps {
@@ -155,7 +155,7 @@ interface IGradientLineChartProps {
 
 export const GradientLineChart: FC<IGradientLineChartProps> = ({
   datasets,
-  canvasOptions = graientLineDefaultOptions,
+  canvasOptions = gradientLineDefaultOptions,
 }) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -165,7 +165,7 @@ export const GradientLineChart: FC<IGradientLineChartProps> = ({
     const canvas = canvasRef.current;
 
     if (box && canvas && datasets.length) {
-      drawGradientLine(box, canvas, datasets, canvasOptions);
+      drawGradientLineChart(box, canvas, datasets, canvasOptions);
 
       if (window.innerWidth > 1024) {
         canvas.onmousemove = (event: MouseEvent) => {
@@ -173,14 +173,14 @@ export const GradientLineChart: FC<IGradientLineChartProps> = ({
         };
       }
 
-      const redrawGradientLine = () => {
-        drawGradientLine(box, canvas, datasets, canvasOptions);
+      const redrawGradientLineChart = () => {
+        drawGradientLineChart(box, canvas, datasets, canvasOptions);
       };
 
-      window.addEventListener("resize", redrawGradientLine);
+      window.addEventListener("resize", redrawGradientLineChart);
 
       return () => {
-        window.removeEventListener("resize", redrawGradientLine);
+        window.removeEventListener("resize", redrawGradientLineChart);
       };
     }
   }, [boxRef.current, canvasRef.current, datasets]);

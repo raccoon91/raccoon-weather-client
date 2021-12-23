@@ -1,6 +1,6 @@
 import { FC } from "react";
 import styled from "styled-components";
-import Sunny from "images/weather/day.svg";
+import Sunny from "images/animations/day.svg";
 
 interface IStyledImageProps {
   size?: string | number;
@@ -12,11 +12,11 @@ const StyledImage = styled.img<IStyledImageProps>`
   user-select: none;
 `;
 
-interface IWeatherIconProps {
+interface IAnimationIconProps {
   type: string;
   size?: string | number;
 }
 
-export const WeatherIcon: FC<IWeatherIconProps> = ({ type, size }) => {
+export const AnimationIcon: FC<IAnimationIconProps> = ({ type, size }) => {
   return <StyledImage src={Sunny} alt={type} size={size} />;
 };

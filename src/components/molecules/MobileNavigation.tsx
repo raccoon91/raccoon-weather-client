@@ -17,6 +17,7 @@ const MobileNavAnchor = styled(NavAnchor)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 20;
 
   svg {
     width: 3rem;

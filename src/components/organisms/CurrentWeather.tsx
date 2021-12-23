@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import { Box, Title2, Title3, Text, Image, WeatherIcon } from "components/atoms";
+import { Box, Title2, Title3, Text, Image, AnimationIcon } from "components/atoms";
 import MapIcon from "images/map.svg";
 
 type ICurrentWeatherProps = ICurrentWeather;
@@ -50,7 +50,7 @@ export const CurrentWeather: FC<ICurrentWeatherProps> = ({ city, today, temp, sk
       </Box>
 
       <Box a="center">
-        <WeatherIcon type={sky} size={32} />
+        <AnimationIcon type={sky} size={32} />
       </Box>
     </Box>
   );

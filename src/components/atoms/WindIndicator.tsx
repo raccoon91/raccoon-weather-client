@@ -1,34 +1,43 @@
+import { FC } from "react";
 import styled from "styled-components";
 import { Text } from "./Text";
-import Pointer from "images/pointer.svg";
+import { ReactComponent as Pointer } from "images/pointer.svg";
 
-const StyledWindIndicatorWrapper = styled.div`
+interface IIndicatorWrapperProps {
+  size?: number;
+}
+
+const IndicatorWrapper = styled.div<IIndicatorWrapperProps>`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   width: 100%;
-  height: 2rem;
-  padding: 0 1rem;
+
+  svg {
+    width: ${({ size }) => `${size}rem`};
+    height: ${({ size }) => `${size}rem`};
+  }
+
+  ${Text} {
+    margin-left: 1.6rem;
+  }
 `;
 
-const StyledIndicatorWrapper = styled.div`
-  margin-right: 2rem;
-`;
+interface IWindIndicatorProps {
+  size?: number;
+  onlyIcon?: boolean;
+  fontSize?: TTextSize;
+}
 
-const StyledIndicator = styled.img`
-  width: 2.5rem;
-  height: 2.5rem;
-`;
-
-export const WindIndicator = () => {
+export const WindIndicator: FC<IWindIndicatorProps> = ({ size = 2.5, onlyIcon = false, fontSize }) => {
   return (
-    <StyledWindIndicatorWrapper>
-      <StyledIndicatorWrapper>
-        <StyledIndicator src={Pointer} />
-      </StyledIndicatorWrapper>
-      <Text size="md" weight="bold">
-        북동쪽
-      </Text>
-    </StyledWindIndicatorWrapper>
+    <IndicatorWrapper size={size}>
+      <Pointer />
+
+      {!onlyIcon ? (
+        <Text size={fontSize || "md"} weight="bold">
+          북동쪽
+        </Text>
+      ) : null}
+    </IndicatorWrapper>
   );
 };

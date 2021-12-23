@@ -5,6 +5,16 @@ interface ICurrentWeather {
   sky: string;
 }
 
+interface ITodayForecast {
+  date: string;
+  sky: string;
+  temp: string;
+  feel: string;
+  rain: string;
+  wind: string;
+  humid: string;
+}
+
 interface ITodayWeather {
   feel: string;
   humid: string;
@@ -12,6 +22,7 @@ interface ITodayWeather {
   pm10: string;
   pm25: string;
   wind: string;
+  todayForcast: ITodayForecast[];
 }
 
 interface IChartData {
