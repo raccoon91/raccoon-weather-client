@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect, useLayoutEffect } from "react";
+import { FC, useRef, useEffect } from "react";
 import {
   parseDatasets,
   getCanvasPostion,
@@ -30,7 +30,7 @@ const drawScatterPlot = (
   const { clientWidth, clientHeight } = box;
   const ctx = canvas.getContext("2d");
 
-  if (!ctx) return;
+  if (!clientWidth || !clientHeight || !ctx) return;
 
   canvas.width = clientWidth;
   canvas.height = clientHeight;
@@ -114,17 +114,12 @@ export const ScatterPlot: FC<IScatterPlotProps> = ({ datasets, canvasOptions = s
     if (box && canvas && datasets.length) {
       drawScatterPlot(box, canvas, datasets, canvasOptions);
 
-      canvas.onmousemove = (event: MouseEvent) => {
-        scatterPlotMouseOver(event, box, canvas, datasets, canvasOptions);
-      };
-    }
-  }, [boxRef.current, canvasRef.current, datasets]);
+      if (window.innerWidth > 1024) {
+        canvas.onmousemove = (event: MouseEvent) => {
+          scatterPlotMouseOver(event, box, canvas, datasets, canvasOptions);
+        };
+      }
 
-  useLayoutEffect(() => {
-    const box = boxRef.current;
-    const canvas = canvasRef.current;
-
-    if (box && canvas && datasets.length) {
       const redrawScatterPlot = () => {
         drawScatterPlot(box, canvas, datasets, canvasOptions);
       };

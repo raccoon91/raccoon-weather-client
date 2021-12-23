@@ -28,7 +28,7 @@ interface IStyledTempChartTickProps {
 const StyledTempChartTick = styled.p<IStyledTempChartTickProps>`
   position: absolute;
   ${({ position }) => (position === "right" ? "left: 100%;" : position === "left" ? "left: 0;" : `left: ${position}%;`)}
-  top: -1.6rem;
+  top: -1.8rem;
   width: 1.8rem;
   transform: translateX(-50%);
   color: ${({ theme }) => theme.color.darkGray};

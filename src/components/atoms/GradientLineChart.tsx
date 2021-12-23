@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect, useLayoutEffect } from "react";
+import { FC, useRef, useEffect } from "react";
 import {
   parseDatasets,
   getCanvasPostion,
@@ -31,7 +31,7 @@ const drawGradientLine = (
   const { clientWidth, clientHeight } = box;
   const ctx = canvas.getContext("2d");
 
-  if (!ctx) return;
+  if (!clientWidth || !clientHeight || !ctx) return;
 
   canvas.width = clientWidth;
   canvas.height = clientHeight;
@@ -105,7 +105,15 @@ const drawGradientLine = (
     drawYTick(ctx, originX, positionY, String(value));
   }
 
-  for (let value = minX; value <= maxX; value += 5) {
+  let xTickSkip = 5;
+
+  if (window.innerWidth > 1024) {
+    xTickSkip = 5;
+  } else {
+    xTickSkip = 10;
+  }
+
+  for (let value = minX; value <= maxX; value += xTickSkip) {
     const positionX = getPositionX(value, dataRange, canvasPosition, canvasOptions);
 
     drawXTick(ctx, positionX, endY, String(value).slice(2));
@@ -159,17 +167,12 @@ export const GradientLineChart: FC<IGradientLineChartProps> = ({
     if (box && canvas && datasets.length) {
       drawGradientLine(box, canvas, datasets, canvasOptions);
 
-      canvas.onmousemove = (event: MouseEvent) => {
-        gradientLineMouseOver(event, box, canvas, datasets, canvasOptions);
-      };
-    }
-  }, [boxRef.current, canvasRef.current, datasets]);
+      if (window.innerWidth > 1024) {
+        canvas.onmousemove = (event: MouseEvent) => {
+          gradientLineMouseOver(event, box, canvas, datasets, canvasOptions);
+        };
+      }
 
-  useLayoutEffect(() => {
-    const box = boxRef.current;
-    const canvas = canvasRef.current;
-
-    if (box && canvas && datasets.length) {
       const redrawGradientLine = () => {
         drawGradientLine(box, canvas, datasets, canvasOptions);
       };

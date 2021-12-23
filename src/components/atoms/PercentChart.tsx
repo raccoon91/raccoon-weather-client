@@ -1,13 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import styled from "styled-components";
-
-const StyledPercentChartWrapper = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 1.2rem;
-`;
+import { Box } from "./Box";
 
 interface IStyledPercentChartProps {
   width: number;
@@ -38,7 +31,7 @@ interface IStyledPercentChartTickProps {
 const StyledPercentChartTick = styled.p<IStyledPercentChartTickProps>`
   position: absolute;
   left: ${({ position }) => `${position}%`};
-  top: -1.6rem;
+  top: -1.8rem;
   width: 1.8rem;
   transform: translateX(-50%);
   color: ${({ theme }) => theme.color.darkGray};
@@ -82,7 +75,7 @@ export const PercentChart: FC<IPercentChartProps> = ({ chartData, chartRange, ch
   }, [chartData, chartRange]);
 
   return (
-    <StyledPercentChartWrapper>
+    <Box po="relative" fd="row" j="space-between" w="100%" h="1.2rem">
       {percentList &&
         chartLength &&
         percentList.map((percent, index) => (
@@ -100,6 +93,6 @@ export const PercentChart: FC<IPercentChartProps> = ({ chartData, chartRange, ch
             {data}
           </StyledPercentChartTick>
         ))}
-    </StyledPercentChartWrapper>
+    </Box>
   );
 };

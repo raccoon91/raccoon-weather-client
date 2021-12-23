@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { Box } from "components/atoms";
+import { MobileNavigation } from "components/molecules";
 
 interface IMobileWeatherLayoutProps {
   current: React.ReactNode;
@@ -14,7 +15,13 @@ export const MobileWeatherLayout: FC<IMobileWeatherLayoutProps> = ({ current, da
       </Box>
 
       <Box f="1" h="calc(100% - 18rem)" p="4rem 0 0" bgc="skyBlue" btlr="3rem">
-        {dashboard}
+        <Box w="100%" h="calc(100% - 7rem)">
+          {dashboard}
+        </Box>
+
+        <Box w="100%" h="7rem">
+          <MobileNavigation />
+        </Box>
       </Box>
     </Box>
   );

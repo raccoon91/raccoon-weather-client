@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect, useLayoutEffect } from "react";
+import { FC, useRef, useEffect } from "react";
 import { geoMercator, geoPath, geoContains } from "d3-geo";
 import { koreaGeoJson } from "configs";
 import { Box } from "./Box";
@@ -7,7 +7,7 @@ const drawMap = (box: HTMLDivElement, canvas: HTMLCanvasElement, hoverCity?: str
   const { clientWidth, clientHeight } = box;
   const ctx = canvas.getContext("2d");
 
-  if (!ctx) return;
+  if (!clientWidth || !clientHeight || !ctx) return;
 
   canvas.width = clientWidth;
   canvas.height = clientHeight;
@@ -27,11 +27,13 @@ const drawMap = (box: HTMLDivElement, canvas: HTMLCanvasElement, hoverCity?: str
       y1: bound[0][1],
       y2: bound[1][1],
     };
+    const featureWidth = bounds.x2 - bounds.x1;
+    const featureHeight = bounds.y2 - bounds.y1;
 
-    if (!featureCtx) return;
+    if (featureWidth < 1 || featureHeight < 1 || !featureCtx) return;
 
-    featureCanvas.width = bounds.x2 - bounds.x1;
-    featureCanvas.height = bounds.y2 - bounds.y1;
+    featureCanvas.width = featureWidth;
+    featureCanvas.height = featureHeight;
 
     featureCtx.beginPath();
     featureCtx.translate(-bounds.x1, -bounds.y1);
@@ -51,7 +53,7 @@ const drawMap = (box: HTMLDivElement, canvas: HTMLCanvasElement, hoverCity?: str
     featureCtx.lineWidth = 0.5;
     featureCtx.stroke();
 
-    ctx.drawImage(featureCanvas, bounds.x1, bounds.y1, bounds.x2 - bounds.x1, bounds.y2 - bounds.y1);
+    ctx.drawImage(featureCanvas, bounds.x1, bounds.y1, featureWidth, featureHeight);
   });
 };
 
@@ -103,23 +105,6 @@ export const MapChart: FC<IMapChartProps> = ({ onClick }) => {
     if (box && canvas) {
       drawMap(box, canvas);
 
-      canvas.onmousemove = (event: MouseEvent) => {
-        mapMouseOver(event, box, canvas);
-      };
-
-      if (onClick) {
-        canvas.onclick = (event: MouseEvent) => {
-          mapMouseClick(event, box, onClick);
-        };
-      }
-    }
-  }, [boxRef.current, canvasRef.current, onClick]);
-
-  useLayoutEffect(() => {
-    const box = boxRef.current;
-    const canvas = canvasRef.current;
-
-    if (box && canvas) {
       const redrawMap = () => {
         drawMap(box, canvas);
       };
@@ -131,6 +116,25 @@ export const MapChart: FC<IMapChartProps> = ({ onClick }) => {
       };
     }
   }, [boxRef.current, canvasRef.current]);
+
+  useEffect(() => {
+    const box = boxRef.current;
+    const canvas = canvasRef.current;
+
+    if (box && canvas) {
+      if (window.innerWidth > 1024) {
+        canvas.onmousemove = (event: MouseEvent) => {
+          mapMouseOver(event, box, canvas);
+        };
+      }
+
+      if (onClick) {
+        canvas.onclick = (event: MouseEvent) => {
+          mapMouseClick(event, box, onClick);
+        };
+      }
+    }
+  }, [boxRef.current, canvasRef.current, onClick]);
 
   return (
     <Box w="100%" h="100%" ref={boxRef}>
