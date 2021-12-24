@@ -1,23 +1,29 @@
 import { FC } from "react";
-import { Box } from "components/atoms";
-import { MapCard, TempClimateCard, RainClimateCard, GlobalSurfaceAirTempCard } from "components/molecules";
+import { Box, Flex, MapChart, ScatterPlot, BarChart, GradientLineChart } from "components/atoms";
+import { ClimateCard } from "components/molecules";
+import { globalSurfaceAirTemp } from "configs";
 
 type IClimateDashboardProps = IClimate;
 
 export const ClimateDashboard: FC<IClimateDashboardProps> = ({ tempChartDataList, rainChartDataList }) => {
   return (
-    <Box o="hidden auto" d="block" w="100%" h="100%" p="2rem 10rem 4rem">
-      <Box fd="row" j="space-between" w="100%" h="60rem" m="0 0 1rem">
-        <MapCard title="지역" w="calc(48% - 1rem)" h="60rem" m="0 1rem 0 0" />
+    <Box o="hidden auto" w="100%" h="100%" p="2rem 10rem 4rem">
+      <Flex j="space-between">
+        <ClimateCard title="지역" w="calc(48% - 1rem)" h="60rem" m="0 1rem 0 0" chart={<MapChart />} />
 
-        <Box fd="column" j="space-between" w="calc(52% - 1rem)" h="100%" m="0 0 0 1rem">
-          <TempClimateCard title="온도" datasets={tempChartDataList} w="100%" h="32rem" m="0 0 1rem" />
+        <Flex d="column" j="space-between" w="calc(52% - 1rem)" h="60rem" m="0 0 0 1rem">
+          <ClimateCard title="온도" h="32rem" m="0 0 1rem" chart={<ScatterPlot datasets={tempChartDataList} />} />
 
-          <RainClimateCard title="강수량" datasets={rainChartDataList} w="100%" h="26rem" m="1rem 0 0" />
-        </Box>
-      </Box>
+          <ClimateCard title="강수량" h="26rem" m="1rem 0 0" chart={<BarChart datasets={rainChartDataList} />} />
+        </Flex>
+      </Flex>
 
-      <GlobalSurfaceAirTempCard title="기후 변화" w="100%" h="24rem" m="1rem 0 0" />
+      <ClimateCard
+        title="기후 변화"
+        h="26rem"
+        m="2rem 0 0"
+        chart={<GradientLineChart datasets={globalSurfaceAirTemp} />}
+      />
     </Box>
   );
 };

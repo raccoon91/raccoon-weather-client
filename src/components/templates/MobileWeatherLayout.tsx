@@ -1,6 +1,11 @@
 import React, { FC } from "react";
+import styled from "styled-components";
 import { Box } from "components/atoms";
 import { MobileNavigation } from "components/molecules";
+
+const DashboardWrapper = styled(Box)`
+  border-top-left-radius: 3rem;
+`;
 
 interface IMobileWeatherLayoutProps {
   current: React.ReactNode;
@@ -10,19 +15,19 @@ interface IMobileWeatherLayoutProps {
 export const MobileWeatherLayout: FC<IMobileWeatherLayoutProps> = ({ current, dashboard }) => {
   return (
     <Box o="hidden" w="100vw" h="100vh" bgc="blue">
-      <Box w="100%" h="16rem" p="4rem 3rem 3rem">
+      <Box h="16rem" p="3rem 4rem">
         {current}
       </Box>
 
-      <Box f="1" h="calc(100% - 18rem)" p="4rem 0 0" bgc="skyBlue" btlr="3rem">
-        <Box w="100%" h="calc(100% - 7rem)">
+      <DashboardWrapper h="calc(100% - 16rem)" p="4rem 0 0" bgc="skyBlue">
+        <Box h="calc(100% - 7rem)" p="0 0 1rem">
           {dashboard}
         </Box>
 
-        <Box w="100%" h="7rem">
+        <Box h="7rem">
           <MobileNavigation />
         </Box>
-      </Box>
+      </DashboardWrapper>
     </Box>
   );
 };

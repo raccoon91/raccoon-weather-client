@@ -78,9 +78,15 @@ export const GlobalStyle = createGlobalStyle`
     border-radius: 0.4rem;
   }
 
-  @media (min-width: 769px) { 
+  @media (min-width: 1025px) { 
     html {
       font-size: 10px;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    html {
+      font-size: 9px;
     }
   }
 
