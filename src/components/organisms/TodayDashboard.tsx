@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { Box, TempChart, PercentChart, WindIndicator } from "components/atoms";
+import { Box, ProgressChart, WindIndicator } from "components/atoms";
 import { WeatherCard, ForecastCard } from "components/molecules";
-import { percentRange, pm10Range, pm25Range, airChartColor } from "configs";
+import { tempChartOptions, percentChartOptions, pm10ChartOptions, pm25ChartOptions } from "configs";
 
 type ITodayDashboardProps = ITodayWeather;
 
@@ -11,46 +11,46 @@ export const TodayDashboard: FC<ITodayDashboardProps> = ({ feel, humid, rain, pm
       <Box fd="row" j="space-between" m="1rem 0 0">
         <WeatherCard
           title="체감온도"
-          value={feel}
+          w="32%"
+          h="17rem"
           unit="°C"
-          chart={<TempChart chartData={Number(feel)} />}
-          w="32%"
-          h="17rem"
-        />
-        <WeatherCard
-          title="강수확률"
-          value={humid}
-          unit="%"
-          chart={<PercentChart chartData={Number(humid)} chartRange={percentRange} />}
-          w="32%"
-          h="17rem"
+          value={feel}
+          chart={<ProgressChart chartData={Number(humid)} chartOptions={tempChartOptions} />}
         />
         <WeatherCard
           title="습도"
-          value={rain}
-          unit="%"
-          chart={<PercentChart chartData={Number(rain)} chartRange={percentRange} />}
           w="32%"
           h="17rem"
+          unit="%"
+          value={humid}
+          chart={<ProgressChart chartData={Number(humid)} chartOptions={percentChartOptions} />}
+        />
+        <WeatherCard
+          title="강수확률"
+          unit="%"
+          w="32%"
+          h="17rem"
+          value={rain}
+          chart={<ProgressChart chartData={Number(rain)} chartOptions={percentChartOptions} />}
         />
       </Box>
 
       <Box fd="row" j="space-between" m="2rem 0 0">
         <WeatherCard
           title="미세먼지(PM10)"
-          value={pm10}
-          unit="㎍/㎥"
-          chart={<PercentChart chartData={Number(pm10)} chartRange={pm10Range} chartColor={airChartColor} />}
           w="32%"
           h="17rem"
+          unit="㎍/㎥"
+          value={pm10}
+          chart={<ProgressChart chartData={Number(pm10)} chartOptions={pm10ChartOptions} />}
         />
         <WeatherCard
           title="미세먼지(PM25)"
-          value={pm25}
-          unit="㎍/㎥"
-          chart={<PercentChart chartData={Number(pm25)} chartRange={pm25Range} chartColor={airChartColor} />}
           w="32%"
           h="17rem"
+          unit="㎍/㎥"
+          value={pm25}
+          chart={<ProgressChart chartData={Number(pm25)} chartOptions={pm25ChartOptions} />}
         />
         <WeatherCard title="바람" value={wind} unit="m/s" chart={<WindIndicator />} w="32%" h="17rem" />
       </Box>
