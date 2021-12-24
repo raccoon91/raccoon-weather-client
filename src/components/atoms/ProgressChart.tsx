@@ -66,11 +66,11 @@ export const ProgressChart: FC<IProgressChartProps> = ({ chartData, chartOptions
 
   useEffect(() => {
     if (chartOptions) {
-      let chartValue = chartData;
       const { range, colors } = chartOptions;
       const width = Math.floor(100 / (range.length - 1));
       const progressList = [];
       const tickList = [];
+      let chartValue = chartData - range[0];
 
       for (let i = 0; i < range.length; i++) {
         if (i < range.length - 1) {
