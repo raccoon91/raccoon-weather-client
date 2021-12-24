@@ -24,7 +24,7 @@ export const MobileTodayDashboard: FC<IMobileTodayDashboardProps> = ({
           p="3rem"
           unit="°C"
           value={feel}
-          chart={<ProgressChart chartData={Number(humid)} chartOptions={tempChartOptions} />}
+          chart={<ProgressChart chartData={Number(feel)} chartOptions={tempChartOptions} />}
         />
         <WeatherCard
           title="습도"
