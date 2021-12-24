@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Flex } from "components/atoms";
+import { Box, Flex } from "components/atoms";
 
 interface IPageLayoutProps {
   children: React.ReactNode;
@@ -7,8 +7,10 @@ interface IPageLayoutProps {
 
 export const PageLayout: FC<IPageLayoutProps> = ({ children }) => {
   return (
-    <Flex d="column" a="center" j="center" w="100vw" h="100vh" bgc="skyBlue">
-      {children}
-    </Flex>
+    <Box w="100vw" h="100vh" bgc="background">
+      <Flex d="column" a="center" j="center" w="100%" maxw="1920px" h="100%" m="0 auto" bgc="skyBlue">
+        {children}
+      </Flex>
+    </Box>
   );
 };

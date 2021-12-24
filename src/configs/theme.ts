@@ -5,6 +5,7 @@ const color: { [key in TColor]: string } = {
   skyBlue: "#d9ebff",
   gray: "#e8e8e8",
   darkGray: "#a9a9a9",
+  background: "#f8f8f8",
 };
 
 const textSize: { [key in TTextSize]: string } = {

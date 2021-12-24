@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Box, Flex, Title3, Text, WeatherIcon, WindIndicator, LineChart } from "components/atoms";
 
 const Forecast = styled(Flex)`
-  border-right: 1px dashed black;
+  border-right: 0.1rem dashed black;
 
   &:last-child {
     border-right: none;

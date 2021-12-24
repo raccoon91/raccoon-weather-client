@@ -19,17 +19,14 @@ const Pages: FC = () => {
       <Switch>
         <Redirect path="/" exact to="/today" />
 
-        <Route path="/today">
-          <Route path="/today" component={TodayPage} />
-          <Route path="/today/map" component={MapModalPage} />
-        </Route>
-
-        <Route path="/climate" component={ClimatePage} />
-
-        <Route path="/404" component={NotFoundPage} />
+        <Route path="/today" component={TodayPage} />
+        <Route path="/climate" exact component={ClimatePage} />
+        <Route path="/404" exact component={NotFoundPage} />
 
         <Redirect path="*" to="/404" />
       </Switch>
+
+      <Route path="/today/map" component={MapModalPage} />
     </Router>
   );
 };

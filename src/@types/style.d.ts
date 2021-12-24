@@ -1,4 +1,4 @@
-type TColor = "black" | "white" | "blue" | "skyBlue" | "gray" | "darkGray";
+type TColor = "black" | "white" | "blue" | "skyBlue" | "gray" | "darkGray" | "background";
 
 type TTextSize = "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl";
 
