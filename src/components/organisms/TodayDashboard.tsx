@@ -15,7 +15,7 @@ export const TodayDashboard: FC<ITodayDashboardProps> = ({ feel, humid, rain, pm
           h="17rem"
           unit="°C"
           value={feel}
-          chart={<ProgressChart chartData={Number(humid)} chartOptions={tempChartOptions} />}
+          chart={<ProgressChart chartData={Number(feel)} chartOptions={tempChartOptions} />}
         />
         <WeatherCard
           title="습도"
