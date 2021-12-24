@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import styled from "styled-components";
-import { Box } from "./Box";
+import { Flex } from "./Flex";
 
 interface IStyledProgressChartProps {
   width: number;
@@ -108,7 +108,7 @@ export const ProgressChart: FC<IProgressChartProps> = ({ chartData, chartOptions
   }
 
   return (
-    <Box po="relative" fd="row" j="space-between" w="100%" h="1.2rem">
+    <Flex po="relative" d="row" j="space-between" w="100%" h="1.2rem">
       {progressList.map((progress, index) => (
         <StyledProgressChart
           key={`pc-${index}`}
@@ -123,6 +123,6 @@ export const ProgressChart: FC<IProgressChartProps> = ({ chartData, chartOptions
           {data.tick}
         </StyledProgressTick>
       ))}
-    </Box>
+    </Flex>
   );
 };

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { Box, NavAnchor, Text } from "components/atoms";
+import { Flex, NavAnchor, Text } from "components/atoms";
 import { ReactComponent as SunIcon } from "images/sun.svg";
 import { ReactComponent as CloudIcon } from "images/cloud.svg";
 import { ReactComponent as MapIcon } from "images/map.svg";
@@ -17,7 +17,7 @@ const MobileNavAnchor = styled(NavAnchor)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 20;
+  z-index: 5;
 
   svg {
     width: 3rem;
@@ -53,27 +53,27 @@ const MobileNavAnchor = styled(NavAnchor)`
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 6rem;
-        height: 6rem;
-        border-radius: 3rem;
+        width: 6.5rem;
+        height: 6.5rem;
+        border-radius: 3.25rem;
         border-top: ${({ theme }) => `1rem solid ${theme.color.skyBlue}`};
         border-right: ${({ theme }) => `1rem solid ${theme.color.skyBlue}`};
         border-bottom: 1rem solid transparent;
         border-left: 1rem solid transparent;
-        transform: translate(-3rem, -3rem) rotate(135deg);
+        transform: translate(-3.25rem, -3.25rem) rotate(135deg);
         z-index: 1;
       }
     }
 
     ${Text} {
-      margin: 1rem 0 0;
+      margin: 1.5rem 0 0;
     }
   }
 `;
 
 export const MobileNavigation: FC = () => {
   return (
-    <Box po="relative" fd="row" a="center" j="space-around" h="100%" bgc="white">
+    <Flex po="relative" a="center" j="space-around" h="100%" bgc="white">
       <MobileNavAnchor to="/today" exact size="xl" weight="bold">
         <ImageWrapper>
           <SunIcon />
@@ -94,6 +94,6 @@ export const MobileNavigation: FC = () => {
         </ImageWrapper>
         <Text>Region</Text>
       </MobileNavAnchor>
-    </Box>
+    </Flex>
   );
 };

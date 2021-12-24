@@ -1,27 +1,23 @@
 import { FC } from "react";
-import { Box, Title2, Title3, Text, AnimationIcon } from "components/atoms";
+import { Box, Flex, Title2, Title3, Text, AnimationIcon } from "components/atoms";
 
 type IMobileCurrentWeatherProps = ICurrentWeather;
 
 export const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ city, today, temp, sky }) => {
   return (
-    <Box fd="row" a="center" j="space-between" h="100%">
-      <Box fd="row" a="flex-end" h="100%">
-        <Box o="hidden" w="10rem" h="10rem" a="center" j="center" m="0 6rem 0 0">
-          <AnimationIcon type={sky} size={24} />
-        </Box>
+    <Flex a="flex-end" j="flex-start">
+      <Flex a="center" j="center" w="10rem" h="10rem" m="0 4rem 0 0">
+        <AnimationIcon type={sky} size={24} />
+      </Flex>
 
-        <Box fd="row" a="flex-end" j="center" h="8.4rem">
-          <Title3 color="white" size="6xl" weight="normal">
-            {temp}
-          </Title3>
-          <Text color="white" size="5xl" m="0 0 1rem 1rem">
-            °C
-          </Text>
-        </Box>
-      </Box>
+      <Title3 color="white" size="6xl" weight="normal">
+        {temp}
+      </Title3>
+      <Text color="white" size="5xl" m="0 0 1rem 1rem">
+        °C
+      </Text>
 
-      <Box j="flex-end" h="100%">
+      <Box m="0 0 0 auto">
         <Text size="md" color="white">
           Today {today}
         </Text>
@@ -30,6 +26,6 @@ export const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ city, tod
           {city}
         </Title2>
       </Box>
-    </Box>
+    </Flex>
   );
 };

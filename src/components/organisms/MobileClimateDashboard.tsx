@@ -1,17 +1,24 @@
 import { FC } from "react";
-import { Box } from "components/atoms";
-import { TempClimateCard, RainClimateCard, GlobalSurfaceAirTempCard } from "components/molecules";
+import { Box, ScatterPlot, BarChart, GradientLineChart } from "components/atoms";
+import { ClimateCard } from "components/molecules";
+import { globalSurfaceAirTemp } from "configs";
 
 type IMobileClimateDashboardProps = IClimate;
 
 export const MobileClimateDashboard: FC<IMobileClimateDashboardProps> = ({ tempChartDataList, rainChartDataList }) => {
   return (
-    <Box o="hidden auto" d="block" w="100%" h="100%" p="0 3rem" m="0 0 1rem">
-      <TempClimateCard title="온도" datasets={tempChartDataList} w="100%" h="32rem" m="0 0 1rem" p="2.5rem" />
+    <Box o="hidden auto" w="100%" h="100%" p="1rem 3rem 2rem">
+      <ClimateCard title="온도" h="32rem" p="2.5rem" chart={<ScatterPlot datasets={tempChartDataList} />} />
 
-      <RainClimateCard title="강수량" datasets={rainChartDataList} w="100%" h="30rem" m="1rem 0 1rem" p="2.5rem" />
+      <ClimateCard title="강수량" h="30rem" m="2rem 0 0" p="2.5rem" chart={<BarChart datasets={rainChartDataList} />} />
 
-      <GlobalSurfaceAirTempCard title="기후 변화" w="100%" h="26rem" m="1rem 0 0" p="2.5rem" />
+      <ClimateCard
+        title="기후 변화"
+        h="26rem"
+        m="2rem 0 0"
+        p="2.5rem"
+        chart={<GradientLineChart datasets={globalSurfaceAirTemp} />}
+      />
     </Box>
   );
 };
