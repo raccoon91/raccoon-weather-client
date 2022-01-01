@@ -13,10 +13,10 @@ const StyledImage = styled.img<IStyledImageProps>`
 `;
 
 interface IWeatherIconProps {
-  type: string;
+  type: number;
   size?: string | number;
 }
 
 export const WeatherIcon: FC<IWeatherIconProps> = ({ type, size }) => {
-  return <StyledImage src={Sunny} alt={type} size={size} />;
+  return <StyledImage src={Sunny} alt={`${type}`} size={size} />;
 };

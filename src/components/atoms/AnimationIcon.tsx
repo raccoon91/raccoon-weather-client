@@ -13,10 +13,10 @@ const StyledImage = styled.img<IStyledImageProps>`
 `;
 
 interface IAnimationIconProps {
-  type: string;
+  type: number;
   size?: string | number;
 }
 
 export const AnimationIcon: FC<IAnimationIconProps> = ({ type, size }) => {
-  return <StyledImage src={Sunny} alt={type} size={size} />;
+  return <StyledImage src={Sunny} alt={`${type}`} size={size} />;
 };
