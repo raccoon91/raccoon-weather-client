@@ -3,7 +3,12 @@ import { useLocation, useHistory } from "react-router-dom";
 import { Box, Flex, Title2, Title3, Text, Image, AnimationIcon } from "components/atoms";
 import MapIcon from "images/map.svg";
 
-type ICurrentWeatherProps = ICurrentWeather;
+interface ICurrentWeatherProps {
+  city: string;
+  today: string;
+  temp: number;
+  sky: number;
+}
 
 export const CurrentWeather: FC<ICurrentWeatherProps> = ({ city, today, temp, sky }) => {
   const history = useHistory();

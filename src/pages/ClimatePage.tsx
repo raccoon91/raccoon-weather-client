@@ -6,7 +6,7 @@ import { WeatherLayout, MobileWeatherLayout } from "components/templates";
 
 export const ClimatePage: FC = () => {
   const dispatch = useAppDispatch();
-  const current = useAppSelector((state) => state.current);
+  const today = useAppSelector((state) => state.today);
   const climate = useAppSelector((state) => state.climate);
   const device = useLayout();
 
@@ -15,10 +15,13 @@ export const ClimatePage: FC = () => {
   }, []);
 
   return device === "desktop" ? (
-    <WeatherLayout current={<CurrentWeather {...current} />} dashboard={<ClimateDashboard {...climate} />} />
+    <WeatherLayout
+      current={<CurrentWeather city={today.city} today={today.today} temp={today.temp} sky={today.sky} />}
+      dashboard={<ClimateDashboard {...climate} />}
+    />
   ) : (
     <MobileWeatherLayout
-      current={<MobileCurrentWeather {...current} />}
+      current={<MobileCurrentWeather city={today.city} today={today.today} temp={today.temp} sky={today.sky} />}
       dashboard={<MobileClimateDashboard {...climate} />}
     />
   );

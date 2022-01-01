@@ -15,7 +15,7 @@ export const TodayDashboard: FC<ITodayDashboardProps> = ({ feel, humid, rain, pm
           h="17rem"
           unit="°C"
           value={feel}
-          chart={<ProgressChart chartData={Number(feel)} chartOptions={tempChartOptions} />}
+          chart={<ProgressChart chartData={feel} chartOptions={tempChartOptions} />}
         />
         <WeatherCard
           title="습도"
@@ -23,7 +23,7 @@ export const TodayDashboard: FC<ITodayDashboardProps> = ({ feel, humid, rain, pm
           h="17rem"
           unit="%"
           value={humid}
-          chart={<ProgressChart chartData={Number(humid)} chartOptions={percentChartOptions} />}
+          chart={<ProgressChart chartData={humid} chartOptions={percentChartOptions} />}
         />
         <WeatherCard
           title="강수확률"
@@ -31,7 +31,7 @@ export const TodayDashboard: FC<ITodayDashboardProps> = ({ feel, humid, rain, pm
           h="17rem"
           unit="%"
           value={rain}
-          chart={<ProgressChart chartData={Number(rain)} chartOptions={percentChartOptions} />}
+          chart={<ProgressChart chartData={rain} chartOptions={percentChartOptions} />}
         />
       </Flex>
 
@@ -42,7 +42,7 @@ export const TodayDashboard: FC<ITodayDashboardProps> = ({ feel, humid, rain, pm
           h="17rem"
           unit="㎍/㎥"
           value={pm10}
-          chart={<ProgressChart chartData={Number(pm10)} chartOptions={pm10ChartOptions} />}
+          chart={<ProgressChart chartData={pm10} chartOptions={pm10ChartOptions} />}
         />
         <WeatherCard
           title="미세먼지(PM25)"
@@ -50,7 +50,7 @@ export const TodayDashboard: FC<ITodayDashboardProps> = ({ feel, humid, rain, pm
           h="17rem"
           unit="㎍/㎥"
           value={pm25}
-          chart={<ProgressChart chartData={Number(pm25)} chartOptions={pm25ChartOptions} />}
+          chart={<ProgressChart chartData={pm25} chartOptions={pm25ChartOptions} />}
         />
         <WeatherCard
           title="바람"

@@ -1,7 +1,12 @@
 import { FC } from "react";
 import { Box, Flex, Title2, Title3, Text, AnimationIcon } from "components/atoms";
 
-type IMobileCurrentWeatherProps = ICurrentWeather;
+interface IMobileCurrentWeatherProps {
+  city: string;
+  today: string;
+  temp: number;
+  sky: number;
+}
 
 export const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ city, today, temp, sky }) => {
   return (

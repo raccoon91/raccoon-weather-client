@@ -1,42 +1,53 @@
-interface ICurrentWeather {
-  city: string;
-  today: string;
-  temp: string;
-  sky: string;
+interface IWeatherData {
+  date: string;
+  humid: number;
+  id: number;
+  rain: number;
+  rainType: number;
+  temp: number;
+  wind: number;
+  windDirection: number;
+}
+
+interface IForecastData {
+  date: string;
+  sky: number;
+  temp: number;
+  rain: number;
+  rainType: number;
+  rainProb: number;
+  humid: number;
+  wind: number;
+  windDirection: number;
 }
 
 interface ITodayForecast {
   date: string;
-  sky: string;
-  temp: string;
-  feel: string;
-  rain: string;
-  wind: string;
-  humid: string;
+  sky: number;
+  temp: number;
+  feel: number;
+  rain: number;
+  wind: number;
+  humid: number;
 }
 
 interface ITodayWeather {
-  feel: string;
-  humid: string;
-  rain: string;
-  pm10: string;
-  pm25: string;
-  wind: string;
+  city: string;
+  today: string;
+  sky: number;
+  temp: number;
+  feel: number;
+  humid: number;
+  rain: number;
+  pm10: number;
+  pm25: number;
+  wind: number;
+  windDirection: number;
   todayForcast: ITodayForecast[];
 }
 
-interface IChartData {
-  x: number;
-  value: number;
-}
-
-interface IGlobalSurfaceAirTempData {
-  x: number;
-  value: number;
-  lowess: number;
-}
-
 interface IClimate {
-  tempChartDataList: IChartData[];
-  rainChartDataList: IChartData[];
+  years: string[];
+  tempClimates: number[][];
+  rainClimates: number[];
 }
