@@ -1,81 +1,78 @@
-export const parseDatasets = (datasets: IChartData[], rangeOptions?: IRangeOptions): IDataRange => {
-  let minX = rangeOptions?.minX !== undefined ? rangeOptions.minX : datasets[0].x;
-  let maxX = rangeOptions?.maxX !== undefined ? rangeOptions.maxX : datasets[0].x;
-  let minY = rangeOptions?.minY !== undefined ? rangeOptions.minY : datasets[0].value;
-  let maxY = rangeOptions?.maxY !== undefined ? rangeOptions.maxY : datasets[0].value;
-
-  datasets.forEach((data) => {
-    if (data.x < minX) minX = data.x;
-    if (data.x > maxX) maxX = data.x;
-    if (data.value < minY) minY = data.value;
-    if (data.value > maxY) maxY = data.value;
-  });
-
-  const rangeX = maxX - minX;
-  const rangeY = maxY - minY;
-
-  return { minX, maxX, minY, maxY, rangeX, rangeY };
+export const toDecimal = (value: number, digits = 2) => {
+  return Number(value.toFixed(digits));
 };
 
-export const getCanvasPostion = (
-  clientWidth: number,
-  clientHeight: number,
-  canvasOptions: ICanvasOptions
-): ICanvasPostion => {
-  const { canvasPadding, yAxisWidth, xAxisHeight } = canvasOptions;
+export const getDataRange = (datasets: number[], dataRange: { min?: number; max?: number }) => {
+  if (dataRange.min !== undefined && dataRange.max !== undefined) {
+    return { min: dataRange.min, max: dataRange.max, range: dataRange.max - dataRange.min };
+  } else {
+    let min = dataRange.min === undefined ? datasets[0] : dataRange.min;
+    let max = dataRange.max === undefined ? datasets[0] : dataRange.max;
 
-  const originX = canvasPadding + yAxisWidth;
-  const originY = canvasPadding;
-  const endX = clientWidth - canvasPadding;
-  const endY = clientHeight - canvasPadding - xAxisHeight;
-  const chartWidth = clientWidth - 2 * canvasPadding - yAxisWidth;
-  const chartHeight = clientHeight - 2 * canvasPadding - xAxisHeight;
+    datasets.forEach((data) => {
+      if (dataRange.min === undefined && data < min) {
+        min = data;
+      }
 
-  return { originX, originY, endX, endY, chartWidth, chartHeight };
+      if (dataRange.max === undefined && data > max) {
+        max = data;
+      }
+    });
+
+    return {
+      min: dataRange.min === undefined ? min : dataRange.min,
+      max: dataRange.max === undefined ? max : dataRange.max,
+      range: max - min,
+    };
+  }
 };
 
-export const getPositionX = (
-  value: number,
-  dataRange: IDataRange,
-  canvasPosition: ICanvasPostion,
-  canvasOptions: ICanvasOptions
-) => {
-  const { minX, rangeX } = dataRange;
-  const { originX, chartWidth } = canvasPosition;
-  const { chartPadding } = canvasOptions;
+export const getStackDataRange = (datasets: number[][], dataRange: { min?: number; max?: number }) => {
+  if (dataRange.min !== undefined && dataRange.max !== undefined) {
+    return { min: dataRange.min, max: dataRange.max, range: dataRange.max - dataRange.min };
+  } else {
+    let min = datasets[0][0];
+    let max = datasets[0][0];
 
-  const calibrationX = Math.floor(((value - minX) * (chartWidth - 2 * chartPadding)) / rangeX);
-  const positionX = calibrationX + originX + chartPadding;
+    datasets.forEach((nestedDatas) => {
+      nestedDatas.forEach((data) => {
+        if (dataRange.min === undefined && data < min) {
+          min = data;
+        }
 
-  return positionX;
+        if (dataRange.max === undefined && data > max) {
+          max = data;
+        }
+      });
+    });
+
+    return {
+      min: dataRange.min === undefined ? min : dataRange.min,
+      max: dataRange.max === undefined ? max : dataRange.max,
+      range: max - min,
+    };
+  }
 };
 
-export const getPositionY = (
-  value: number,
-  dataRange: IDataRange,
-  canvasPosition: ICanvasPostion,
-  canvasOptions: ICanvasOptions
-) => {
-  const { minY, rangeY } = dataRange;
-  const { endY, chartHeight } = canvasPosition;
-  const { chartPadding } = canvasOptions;
+export const getCanvasPostion = (box: HTMLDivElement, canvasOptions: ICanvasOptions) => {
+  const { clientWidth, clientHeight } = box;
+  const { chart, draw } = canvasOptions;
 
-  const calibrationY = Math.floor(((value - minY) * (chartHeight - 2 * chartPadding)) / rangeY);
-  const positionY = endY - chartPadding - calibrationY;
+  return {
+    startX: chart.paddingX + chart.yAxisWidth,
+    startY: chart.paddingY,
+    endX: clientWidth - chart.paddingX,
+    endY: clientHeight - chart.paddingY - chart.xAxisHeight,
+    chartWidth: clientWidth - 2 * chart.paddingX - chart.yAxisWidth,
+    chartHeight: clientHeight - 2 * chart.paddingY - chart.xAxisHeight,
 
-  return positionY;
-};
-
-export const getPositionXY = (
-  data: IChartData,
-  dataRange: IDataRange,
-  canvasPosition: ICanvasPostion,
-  canvasOptions: ICanvasOptions
-) => {
-  const positionX = getPositionX(data.x, dataRange, canvasPosition, canvasOptions);
-  const positionY = getPositionY(data.value, dataRange, canvasPosition, canvasOptions);
-
-  return { positionX, positionY };
+    drawStartX: chart.paddingX + chart.yAxisWidth + draw.paddingX,
+    drawStartY: chart.paddingY + draw.paddingY,
+    drawEndX: clientWidth - chart.paddingX - draw.paddingX,
+    drawEndY: clientHeight - chart.paddingY - chart.xAxisHeight - draw.paddingY,
+    drawWidth: clientWidth - 2 * chart.paddingX - chart.yAxisWidth - 2 * draw.paddingX,
+    drawHeight: clientHeight - 2 * chart.paddingY - chart.xAxisHeight - 2 * draw.paddingY,
+  };
 };
 
 const axisDefaultOptions = {
@@ -85,8 +82,8 @@ const axisDefaultOptions = {
 
 export const drawYAxis = (
   ctx: CanvasRenderingContext2D,
-  originX: number,
-  originY: number,
+  startX: number,
+  startY: number,
   endY: number,
   axisOptions?: IAxisOptions
 ) => {
@@ -96,14 +93,14 @@ export const drawYAxis = (
   ctx.strokeStyle = style;
 
   ctx.beginPath();
-  ctx.moveTo(originX + 0.5, originY);
-  ctx.lineTo(originX + 0.5, endY);
+  ctx.moveTo(startX + 0.5, startY);
+  ctx.lineTo(startX + 0.5, endY);
   ctx.stroke();
 };
 
 export const drawXAxis = (
   ctx: CanvasRenderingContext2D,
-  originX: number,
+  startX: number,
   endX: number,
   endY: number,
   axisOptions?: IAxisOptions
@@ -114,7 +111,7 @@ export const drawXAxis = (
   ctx.strokeStyle = style;
 
   ctx.beginPath();
-  ctx.moveTo(originX, endY + 0.5);
+  ctx.moveTo(startX, endY + 0.5);
   ctx.lineTo(endX, endY + 0.5);
   ctx.stroke();
 };
@@ -128,7 +125,7 @@ const tickDefaultOptions = {
 
 export const drawYTick = (
   ctx: CanvasRenderingContext2D,
-  originX: number,
+  startX: number,
   positionY: number,
   value: string,
   tickOptions?: ITickOptions
@@ -137,13 +134,13 @@ export const drawYTick = (
 
   ctx.globalAlpha = textAlpha;
   ctx.fillStyle = textStyle;
-  ctx.fillText(value, originX - 25, positionY + 4);
+  ctx.fillText(value, startX - 27, positionY + 4);
 
   ctx.globalAlpha = strokeAlpha;
   ctx.strokeStyle = strokeStyle;
   ctx.beginPath();
-  ctx.moveTo(originX - 5, positionY + 0.5);
-  ctx.lineTo(originX, positionY + 0.5);
+  ctx.moveTo(startX - 5, positionY + 0.5);
+  ctx.lineTo(startX, positionY + 0.5);
   ctx.stroke();
 };
 

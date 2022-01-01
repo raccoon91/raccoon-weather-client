@@ -1,54 +1,45 @@
 import { FC, useRef, useEffect } from "react";
-import {
-  parseDatasets,
-  getCanvasPostion,
-  getPositionY,
-  drawYAxis,
-  drawXAxis,
-  drawYTick,
-  drawXTick,
-  drawBar,
-} from "utils";
+import { toDecimal, getDataRange, getCanvasPostion, drawYAxis, drawXAxis, drawYTick, drawXTick, drawBar } from "utils";
 import { Box } from "./Box";
 
 const barChartDefaultOptions = {
-  canvasPadding: 10,
-  yAxisWidth: 20,
-  xAxisHeight: 10,
-  chartPadding: 0,
+  chart: {
+    paddingX: 5,
+    paddingY: 8,
+    yAxisWidth: 25,
+    xAxisHeight: 10,
+  },
+  draw: { paddingX: 0, paddingY: 0 },
+  dataRange: { min: 0 },
 };
 
 const drawBarChart = (
   box: HTMLDivElement,
   canvas: HTMLCanvasElement,
-  datasets: IChartData[],
-  canvasOptions: ICanvasOptions,
+  labels: string[],
+  datasets: number[],
+  options: ICanvasOptions,
   hoverId?: number
 ) => {
   const { clientWidth, clientHeight } = box;
-  const { canvasPadding, yAxisWidth, chartPadding } = canvasOptions;
   const ctx = canvas.getContext("2d");
 
-  if (!clientWidth || !clientHeight || !ctx) return;
+  if (!ctx) return;
 
   canvas.width = clientWidth;
   canvas.height = clientHeight;
 
-  const barWidth = Math.floor((clientWidth - 2 * canvasPadding - yAxisWidth - 2 * chartPadding) / datasets.length);
-  const dataRange = parseDatasets(datasets, { minY: 0 });
-  const canvasPosition = getCanvasPostion(clientWidth, clientHeight, canvasOptions);
+  const { min, max, range } = getDataRange(datasets, options.dataRange);
+  const { startX, startY, endX, endY, drawStartX, drawEndY, drawWidth, drawHeight } = getCanvasPostion(box, options);
+  const nodeWidth = toDecimal(drawWidth / datasets.length);
 
-  const { minY, maxY } = dataRange;
-  const { originX, originY, endX, endY } = canvasPosition;
-
-  drawYAxis(ctx, originX, originY, endY);
-  drawXAxis(ctx, originX, endX, endY);
+  drawYAxis(ctx, startX, startY, endY);
+  drawXAxis(ctx, startX, endX, endY);
 
   for (let i = 0; i < datasets.length; i++) {
-    const calibrationX = i * barWidth;
-    const positionX = calibrationX + originX;
-    const positionY = getPositionY(datasets[i].value, dataRange, canvasPosition, canvasOptions);
-    const height = endY - positionY;
+    const positionX = i * nodeWidth + drawStartX;
+    const positionY = drawEndY - toDecimal((datasets[i] * drawHeight) / range);
+    const height = drawEndY - positionY;
 
     const barOptions = {
       barColor: "blue",
@@ -58,29 +49,27 @@ const drawBarChart = (
       strokeWidth: 0.5,
     };
 
-    drawBar(ctx, positionX, positionY, barWidth, height, barOptions);
+    drawBar(ctx, positionX, positionY, nodeWidth, height, barOptions);
   }
 
-  for (let value = minY; value <= maxY; value += 10) {
-    const positionY = getPositionY(value, dataRange, canvasPosition, canvasOptions);
+  for (let value = min; value <= max; value += 500) {
+    const positionY = drawEndY - toDecimal((value * drawHeight) / range);
 
-    drawYTick(ctx, originX, positionY, String(value));
+    drawYTick(ctx, startX, positionY, value.toFixed(0));
   }
 
   let xTickSkip = 1;
 
   if (window.innerWidth > 1024) {
-    xTickSkip = 1;
+    xTickSkip = Math.ceil(labels.length / 10);
   } else {
-    xTickSkip = 2;
+    xTickSkip = Math.ceil(labels.length / 8);
   }
 
-  for (let i = 0; i < datasets.length; i += xTickSkip) {
-    const calibrationX = i * barWidth;
-    const positionX = calibrationX + originX;
-    const middleX = positionX + Math.floor(barWidth / 2);
+  for (let i = 0; i < labels.length; i += xTickSkip) {
+    const middleX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
 
-    drawXTick(ctx, middleX, endY, String(datasets[i].x).slice(2));
+    drawXTick(ctx, middleX, endY, labels[i].slice(2));
   }
 };
 
@@ -88,43 +77,41 @@ const barChartMouseOver = (
   event: MouseEvent,
   box: HTMLDivElement,
   canvas: HTMLCanvasElement,
-  datasets: IChartData[],
-  canvasOptions: ICanvasOptions
+  labels: string[],
+  datasets: number[],
+  options: ICanvasOptions
 ) => {
   const mouseX = event.offsetX;
   const mouseY = event.offsetY;
-  const { clientWidth, clientHeight } = box;
-  const { canvasPadding, yAxisWidth, chartPadding } = canvasOptions;
 
-  const barWidth = Math.floor((clientWidth - 2 * canvasPadding - yAxisWidth - 2 * chartPadding) / datasets.length);
-  const dataRange = parseDatasets(datasets, { minY: 0 });
-  const canvasPosition = getCanvasPostion(clientWidth, clientHeight, canvasOptions);
-
-  const { originX, endY } = canvasPosition;
+  const { range } = getDataRange(datasets, { min: 0 });
+  const { startX, endY, drawHeight, drawWidth } = getCanvasPostion(box, options);
+  const nodeWidth = toDecimal(drawWidth / datasets.length);
 
   let hoverId: number | undefined;
 
   for (let i = 0; i < datasets.length; i++) {
-    const calibrationX = i * barWidth;
-    const positionX = calibrationX + originX;
-    const positionY = getPositionY(datasets[i].value, dataRange, canvasPosition, canvasOptions);
+    const positionX = i * nodeWidth + startX;
+    const positionY = endY - toDecimal((datasets[i] * drawHeight) / range);
     const height = endY - positionY;
 
-    if (mouseX > positionX && mouseX < positionX + barWidth && mouseY > positionY && mouseY < positionY + height) {
+    if (mouseX > positionX && mouseX < positionX + nodeWidth && mouseY > positionY && mouseY < positionY + height) {
       hoverId = i;
+
       break;
     }
   }
 
-  drawBarChart(box, canvas, datasets, canvasOptions, hoverId);
+  drawBarChart(box, canvas, labels, datasets, options, hoverId);
 };
 
 interface IBarChartProps {
-  datasets: IChartData[];
-  canvasOptions?: ICanvasOptions;
+  labels: string[];
+  datasets: number[];
+  options?: ICanvasOptions;
 }
 
-export const BarChart: FC<IBarChartProps> = ({ datasets, canvasOptions = barChartDefaultOptions }) => {
+export const BarChart: FC<IBarChartProps> = ({ labels, datasets, options = barChartDefaultOptions }) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -132,17 +119,23 @@ export const BarChart: FC<IBarChartProps> = ({ datasets, canvasOptions = barChar
     const box = boxRef.current;
     const canvas = canvasRef.current;
 
-    if (box && canvas && datasets.length) {
-      drawBarChart(box, canvas, datasets, canvasOptions);
+    if (box && canvas && labels.length && datasets.length) {
+      const barOptions = {
+        chart: { ...barChartDefaultOptions.chart, ...options.chart },
+        draw: { ...barChartDefaultOptions.draw, ...options.draw },
+        dataRange: { ...barChartDefaultOptions.dataRange, ...options.dataRange },
+      };
+
+      drawBarChart(box, canvas, labels, datasets, barOptions);
 
       if (window.innerWidth > 1024) {
         canvas.onmousemove = (event: MouseEvent) => {
-          barChartMouseOver(event, box, canvas, datasets, canvasOptions);
+          barChartMouseOver(event, box, canvas, labels, datasets, barOptions);
         };
       }
 
       const redrawBarChart = () => {
-        drawBarChart(box, canvas, datasets, canvasOptions);
+        drawBarChart(box, canvas, labels, datasets, barOptions);
       };
 
       window.addEventListener("resize", redrawBarChart);
@@ -151,7 +144,7 @@ export const BarChart: FC<IBarChartProps> = ({ datasets, canvasOptions = barChar
         window.removeEventListener("resize", redrawBarChart);
       };
     }
-  }, [boxRef.current, canvasRef.current, datasets]);
+  }, [boxRef.current, canvasRef.current, labels, datasets]);
 
   return (
     <Box w="100%" h="100%" ref={boxRef}>

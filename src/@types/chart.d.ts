@@ -1,33 +1,24 @@
-interface ICanvasOptions {
-  canvasPadding: number;
+interface IChartOptions {
+  paddingX: number;
+  paddingY: number;
   yAxisWidth: number;
   xAxisHeight: number;
-  chartPadding: number;
+}
+
+interface IDrawOptions {
+  paddingX: number;
+  paddingY: number;
 }
 
 interface IDataRange {
-  minX: number;
-  maxX: number;
-  minY: number;
-  maxY: number;
-  rangeX: number;
-  rangeY: number;
+  min?: number;
+  max?: number;
 }
 
-interface IRangeOptions {
-  minX?: number;
-  maxX?: number;
-  minY?: number;
-  maxY?: number;
-}
-
-interface ICanvasPostion {
-  originX: number;
-  originY: number;
-  endX: number;
-  endY: number;
-  chartWidth: number;
-  chartHeight: numbe;
+interface ICanvasOptions {
+  chart: IChartOptions;
+  draw: IDrawOptions;
+  dataRange: IDataRange;
 }
 
 interface IAxisOptions {
@@ -42,7 +33,7 @@ interface ITickOptions {
   strokeStyle?: string;
 }
 
-interface IChartOptions {
+interface IChartNodeOptions {
   color?: string;
   alpha?: number;
   size?: number;
@@ -54,8 +45,8 @@ interface IStrokeOptions {
   strokeWidth?: number;
 }
 
-type IDotOptions = IChartOptions;
+type IDotOptions = IChartNodeOptions;
 
-interface IBarOptions extends IChartOptions, IStrokeOptions {}
+interface IBarOptions extends IChartNodeOptions, IStrokeOptions {}
 
-type ILineOptions = IChartOptions;
+type ILineOptions = IChartNodeOptions;

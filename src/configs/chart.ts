@@ -1,4 +1,4 @@
-const tempRange = [-40, 50];
+const tempRange = [-20, 35];
 const percentRange = [0, 20, 40, 60, 80, 100];
 const pm10Range = [0, 30, 80, 150, 200];
 const pm25Range = [0, 15, 35, 75, 100];
