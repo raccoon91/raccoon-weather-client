@@ -3,7 +3,7 @@ import { Box, Flex, Title3, Text } from "components/atoms";
 
 interface IWeatherCardProps {
   title: string;
-  value: string;
+  value: number;
   unit: string;
   chart: React.ReactNode;
   w?: string;

@@ -26,22 +26,14 @@ export const ForecastCard: FC<IForecastCardProps> = ({ title, datasets, w, h, m,
       <Title3 size="sm">{title}</Title3>
 
       <Flex po="relative" o="auto hidden" d="row" h="calc(100% - 2.6rem)" m="1rem 0 0" p="0 0 1rem" z="2">
-        <Box po="absolute" t="3rem" w={`${12 * datasets.length}rem`} h="calc(100% - 14rem)" z="1">
-          <LineChart
-            datasets={datasets.map((data) => ({ x: dayjs(data.date).hour(), value: Number(data.temp) }))}
-            canvasOptions={{
-              canvasPadding: 60,
-              yAxisWidth: 0,
-              xAxisHeight: 0,
-              chartPadding: 0,
-            }}
-          />
+        <Box po="absolute" t="5rem" w={`${12 * datasets.length}rem`} h="calc(100% - 20rem)" z="1">
+          <LineChart datasets={datasets.map((data) => data.temp)} />
         </Box>
 
         {datasets.map((data) => (
           <Forecast key={data.date} f="0 0 12rem" d="column" a="center" w="12rem">
             <Box h="2rem" m="1rem 0 0">
-              <Text>{dayjs(data.date).format("HH")}</Text>
+              <Text>{dayjs(data.date).subtract(9, "hour").format("HH")}</Text>
             </Box>
 
             <Flex d="column" a="center" j="space-around" h="12rem" m="auto 0 0">

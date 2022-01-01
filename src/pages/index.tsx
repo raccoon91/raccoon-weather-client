@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { useAppDispatch } from "hooks";
-import { getCurrentWeather } from "stores/slices/currentSlice";
+import { getCurrentWeather } from "stores/slices/todaySlice";
 import { TodayPage } from "./TodayPage";
 import { ClimatePage } from "./ClimatePage";
 import { MapModalPage } from "./MapModalPage";
