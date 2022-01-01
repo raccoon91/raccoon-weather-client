@@ -1,10 +1,8 @@
 import { FC, useRef, useEffect } from "react";
 import {
-  parseDatasets,
+  toDecimal,
+  getDataRange,
   getCanvasPostion,
-  getPositionXY,
-  getPositionX,
-  getPositionY,
   drawYAxis,
   drawXAxis,
   drawYTick,
@@ -15,69 +13,70 @@ import {
 import { Box } from "./Box";
 
 const gradientLineDefaultOptions = {
-  canvasPadding: 10,
-  yAxisWidth: 15,
-  xAxisHeight: 10,
-  chartPadding: 10,
+  chart: {
+    paddingX: 5,
+    paddingY: 8,
+    yAxisWidth: 25,
+    xAxisHeight: 10,
+  },
+  draw: {
+    paddingX: 0,
+    paddingY: 10,
+  },
+  dataRange: {
+    min: -0.5,
+    max: 1,
+  },
 };
 
 const drawGradientLineChart = (
   box: HTMLDivElement,
   canvas: HTMLCanvasElement,
-  datasets: IChartData[],
-  canvasOptions: ICanvasOptions,
+  labels: string[],
+  datasets: number[],
+  options: ICanvasOptions,
   hoverId?: number
 ) => {
   const { clientWidth, clientHeight } = box;
   const ctx = canvas.getContext("2d");
 
-  if (!clientWidth || !clientHeight || !ctx) return;
+  if (!ctx) return;
 
   canvas.width = clientWidth;
   canvas.height = clientHeight;
 
-  const dataRange = parseDatasets(datasets, { minY: -0.5, maxY: 1 });
-  const canvasPosition = getCanvasPostion(clientWidth, clientHeight, canvasOptions);
+  const { min, range } = getDataRange(datasets, options.dataRange);
+  const { startX, startY, endX, endY, drawStartX, drawEndY, drawWidth, drawHeight } = getCanvasPostion(box, options);
+  const nodeWidth = toDecimal(drawWidth / datasets.length);
 
-  const { minX, maxX, minY } = dataRange;
-  const { originX, originY, endX, endY } = canvasPosition;
+  drawYAxis(ctx, startX, startY, endY);
+  drawXAxis(ctx, startX, endX, endY);
 
-  drawYAxis(ctx, originX, originY, endY);
-  drawXAxis(ctx, originX, endX, endY);
-
-  const redLineOptions = {
-    color: "red",
-  };
-
-  const blueLineOptions = {
-    color: "blue",
-  };
+  const redLineOptions = { color: "red" };
+  const blueLineOptions = { color: "blue" };
 
   for (let i = 0; i < datasets.length; i++) {
-    const { positionX, positionY } = getPositionXY(datasets[i], dataRange, canvasPosition, canvasOptions);
+    const positionX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
+    const positionY = drawEndY - toDecimal(((datasets[i] - min) * drawHeight) / range);
 
     const dotOptions = {
       size: i === hoverId ? 6 : 2,
-      color: i === hoverId ? (datasets[i].value > 0 ? "red" : "blue") : "black",
+      color: i === hoverId ? (datasets[i] > 0 ? "red" : "blue") : "black",
       alpha: i === hoverId ? 0.7 : 0.3,
     };
 
     drawDot(ctx, positionX, positionY, dotOptions);
 
-    if (i > 0 && i < datasets.length) {
-      const { positionX: positionStartX, positionY: positionStartY } = getPositionXY(
-        datasets[i - 1],
-        dataRange,
-        canvasPosition,
-        canvasOptions
-      );
+    if (i > 0) {
+      const positionStartX = (i - 1) * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
+      const positionStartY = drawEndY - toDecimal(((datasets[i - 1] - min) * drawHeight) / range);
 
-      if (datasets[i - 1].value <= 0 && datasets[i].value <= 0) {
+      if (datasets[i - 1] <= 0 && datasets[i] <= 0) {
         drawLine(ctx, positionStartX, positionStartY, positionX, positionY, blueLineOptions);
-      } else if (datasets[i - 1].value >= 0 && datasets[i].value >= 0) {
+      } else if (datasets[i - 1] >= 0 && datasets[i] >= 0) {
         drawLine(ctx, positionStartX, positionStartY, positionX, positionY, redLineOptions);
       } else {
-        const positionZeroY = getPositionY(0, dataRange, canvasPosition, canvasOptions);
+        const positionZeroY = drawEndY - toDecimal(((0 - min) * drawHeight) / range);
         const positionZeroX =
           ((positionZeroY - positionStartY) * (positionX - positionStartX)) / (positionY - positionStartY) +
           positionStartX;
@@ -85,7 +84,7 @@ const drawGradientLineChart = (
         const startLineOptions: ILineOptions = {};
         const endLineOptions: ILineOptions = {};
 
-        if (datasets[i - 1].value > datasets[i].value) {
+        if (datasets[i - 1] > datasets[i]) {
           startLineOptions.color = "red";
           endLineOptions.color = "blue";
         } else {
@@ -99,24 +98,24 @@ const drawGradientLineChart = (
     }
   }
 
-  for (let value = minY; value <= 1; value += 0.5) {
-    const positionY = getPositionY(value, dataRange, canvasPosition, canvasOptions);
+  for (let value = min; value <= 1; value += 0.5) {
+    const positionY = drawEndY - toDecimal(((value - min) * drawHeight) / range);
 
-    drawYTick(ctx, originX, positionY, String(value));
+    drawYTick(ctx, startX, positionY, String(value));
   }
 
-  let xTickSkip = 5;
+  let xTickSkip = 1;
 
   if (window.innerWidth > 1024) {
-    xTickSkip = 5;
+    xTickSkip = Math.ceil(labels.length / 16);
   } else {
-    xTickSkip = 10;
+    xTickSkip = Math.ceil(labels.length / 10);
   }
 
-  for (let value = minX; value <= maxX; value += xTickSkip) {
-    const positionX = getPositionX(value, dataRange, canvasPosition, canvasOptions);
+  for (let i = 0; i < labels.length; i += xTickSkip) {
+    const middleX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
 
-    drawXTick(ctx, positionX, endY, String(value).slice(2));
+    drawXTick(ctx, middleX, endY, labels[i].slice(2));
   }
 };
 
@@ -124,20 +123,22 @@ const gradientLineMouseOver = (
   event: MouseEvent,
   box: HTMLDivElement,
   canvas: HTMLCanvasElement,
-  datasets: IChartData[],
-  canvasOptions: ICanvasOptions
+  labels: string[],
+  datasets: number[],
+  options: ICanvasOptions
 ) => {
   const mouseX = event.offsetX;
   const mouseY = event.offsetY;
-  const { clientWidth, clientHeight } = box;
 
-  const dataRange = parseDatasets(datasets, { minY: -0.5, maxY: 1 });
-  const canvasPosition = getCanvasPostion(clientWidth, clientHeight, canvasOptions);
+  const { min, range } = getDataRange(datasets, options.dataRange);
+  const { drawStartX, drawEndY, drawWidth, drawHeight } = getCanvasPostion(box, options);
+  const nodeWidth = toDecimal(drawWidth / datasets.length);
 
   let hoverId: number | undefined;
 
   for (let i = 0; i < datasets.length; i++) {
-    const { positionX, positionY } = getPositionXY(datasets[i], dataRange, canvasPosition, canvasOptions);
+    const positionX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
+    const positionY = drawEndY - toDecimal(((datasets[i] - min) * drawHeight) / range);
 
     if (mouseX > positionX - 4 && mouseX < positionX + 4 && mouseY > positionY - 4 && mouseY < positionY + 4) {
       hoverId = i;
@@ -145,17 +146,19 @@ const gradientLineMouseOver = (
     }
   }
 
-  drawGradientLineChart(box, canvas, datasets, canvasOptions, hoverId);
+  drawGradientLineChart(box, canvas, labels, datasets, options, hoverId);
 };
 
 interface IGradientLineChartProps {
-  datasets: IGlobalSurfaceAirTempData[];
-  canvasOptions?: ICanvasOptions;
+  labels: string[];
+  datasets: number[];
+  options?: ICanvasOptions;
 }
 
 export const GradientLineChart: FC<IGradientLineChartProps> = ({
+  labels,
   datasets,
-  canvasOptions = gradientLineDefaultOptions,
+  options = gradientLineDefaultOptions,
 }) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -164,17 +167,23 @@ export const GradientLineChart: FC<IGradientLineChartProps> = ({
     const box = boxRef.current;
     const canvas = canvasRef.current;
 
-    if (box && canvas && datasets.length) {
-      drawGradientLineChart(box, canvas, datasets, canvasOptions);
+    if (box && canvas && labels.length && datasets.length) {
+      const gradientLineOptions = {
+        chart: { ...gradientLineDefaultOptions.chart, ...options.chart },
+        draw: { ...gradientLineDefaultOptions.draw, ...options.draw },
+        dataRange: { ...gradientLineDefaultOptions.dataRange, ...options.dataRange },
+      };
+
+      drawGradientLineChart(box, canvas, labels, datasets, gradientLineOptions);
 
       if (window.innerWidth > 1024) {
         canvas.onmousemove = (event: MouseEvent) => {
-          gradientLineMouseOver(event, box, canvas, datasets, canvasOptions);
+          gradientLineMouseOver(event, box, canvas, labels, datasets, gradientLineOptions);
         };
       }
 
       const redrawGradientLineChart = () => {
-        drawGradientLineChart(box, canvas, datasets, canvasOptions);
+        drawGradientLineChart(box, canvas, labels, datasets, gradientLineOptions);
       };
 
       window.addEventListener("resize", redrawGradientLineChart);
@@ -183,7 +192,7 @@ export const GradientLineChart: FC<IGradientLineChartProps> = ({
         window.removeEventListener("resize", redrawGradientLineChart);
       };
     }
-  }, [boxRef.current, canvasRef.current, datasets]);
+  }, [boxRef.current, canvasRef.current, labels, datasets]);
 
   return (
     <Box w="100%" h="100%" ref={boxRef}>

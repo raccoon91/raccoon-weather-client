@@ -1,34 +1,40 @@
 import { FC, useRef, useEffect } from "react";
-import { parseDatasets, getCanvasPostion, getPositionXY, drawDot, drawLine } from "utils";
+import { toDecimal, getDataRange, getCanvasPostion, drawDot, drawLine } from "utils";
 import { Box } from "./Box";
 
 const lineDefaultOptions = {
-  canvasPadding: 50,
-  yAxisWidth: 0,
-  xAxisHeight: 0,
-  chartPadding: 0,
+  chart: {
+    paddingX: 0,
+    paddingY: 5,
+    yAxisWidth: 0,
+    xAxisHeight: 0,
+  },
+  draw: { paddingX: 0, paddingY: 0 },
+  dataRange: {},
 };
 
 const drawLineChart = (
   box: HTMLDivElement,
   canvas: HTMLCanvasElement,
-  datasets: IChartData[],
-  canvasOptions: ICanvasOptions,
+  datasets: number[],
+  options: ICanvasOptions,
   hoverId?: number
 ) => {
   const { clientWidth, clientHeight } = box;
   const ctx = canvas.getContext("2d");
 
-  if (!clientWidth || !clientHeight || !ctx) return;
+  if (!ctx) return;
 
   canvas.width = clientWidth;
   canvas.height = clientHeight;
 
-  const dataRange = parseDatasets(datasets, { minY: -0.5, maxY: 1 });
-  const canvasPosition = getCanvasPostion(clientWidth, clientHeight, canvasOptions);
+  const { min, range } = getDataRange(datasets, options.dataRange);
+  const { drawStartX, drawEndY, drawWidth, drawHeight } = getCanvasPostion(box, options);
+  const nodeWidth = toDecimal(drawWidth / datasets.length);
 
   for (let i = 0; i < datasets.length; i++) {
-    const { positionX, positionY } = getPositionXY(datasets[i], dataRange, canvasPosition, canvasOptions);
+    const positionX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
+    const positionY = drawEndY - toDecimal(((datasets[i] - min) * drawHeight) / range);
 
     const dotOptions = {
       size: i === hoverId ? 6 : 3,
@@ -39,12 +45,8 @@ const drawLineChart = (
     drawDot(ctx, positionX, positionY, dotOptions);
 
     if (i > 0 && i < datasets.length) {
-      const { positionX: positionStartX, positionY: positionStartY } = getPositionXY(
-        datasets[i - 1],
-        dataRange,
-        canvasPosition,
-        canvasOptions
-      );
+      const positionStartX = (i - 1) * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
+      const positionStartY = drawEndY - toDecimal(((datasets[i - 1] - min) * drawHeight) / range);
 
       drawLine(ctx, positionStartX, positionStartY, positionX, positionY, { color: "black" });
     }
@@ -52,11 +54,11 @@ const drawLineChart = (
 };
 
 interface ILineChartProps {
-  datasets: IChartData[];
-  canvasOptions?: ICanvasOptions;
+  datasets: number[];
+  options?: ICanvasOptions;
 }
 
-export const LineChart: FC<ILineChartProps> = ({ datasets, canvasOptions = lineDefaultOptions }) => {
+export const LineChart: FC<ILineChartProps> = ({ datasets, options = lineDefaultOptions }) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -65,10 +67,16 @@ export const LineChart: FC<ILineChartProps> = ({ datasets, canvasOptions = lineD
     const canvas = canvasRef.current;
 
     if (box && canvas && datasets.length) {
-      drawLineChart(box, canvas, datasets, canvasOptions);
+      const lineOptions = {
+        chart: { ...lineDefaultOptions.chart, ...options.chart },
+        draw: { ...lineDefaultOptions.draw, ...options.draw },
+        dataRange: { ...lineDefaultOptions.dataRange, ...options.dataRange },
+      };
+
+      drawLineChart(box, canvas, datasets, lineOptions);
 
       const redrawLineChart = () => {
-        drawLineChart(box, canvas, datasets, canvasOptions);
+        drawLineChart(box, canvas, datasets, lineOptions);
       };
 
       window.addEventListener("resize", redrawLineChart);
