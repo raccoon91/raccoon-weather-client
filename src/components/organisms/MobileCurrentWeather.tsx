@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Box, Flex, Title2, Title3, Text, AnimationIcon } from "components/atoms";
 
 interface IMobileCurrentWeatherProps {
-  city: string;
+  city: ICity | null;
   today: string;
   temp: number;
   sky: number;
@@ -28,7 +28,7 @@ export const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ city, tod
         </Text>
 
         <Title2 color="white" m="1rem 0 0">
-          {city}
+          {city?.korName || ""}
         </Title2>
       </Box>
     </Flex>

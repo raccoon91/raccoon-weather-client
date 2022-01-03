@@ -5,7 +5,8 @@ import { getFeelTemp } from "utils";
 import type { AxiosResponse } from "axios";
 
 const initialTodayState: ITodayWeather = {
-  city: "",
+  search: "",
+  city: null,
   today: "",
   sky: 0,
   temp: 0,
@@ -21,15 +22,15 @@ const initialTodayState: ITodayWeather = {
 
 export const getCurrentWeather = createAsyncThunk("current/getCurrentWeather", async () => {
   try {
-    const city = window.localStorage.getItem("city") || "seoul";
+    const search = window.localStorage.getItem("search") || "seoul";
 
     const response: AxiosResponse<IWeatherData> = await serverApi({
       method: "get",
-      url: `weathers/${city}`,
+      url: `weathers/${search}`,
     });
 
     if (response.status === 200) {
-      return { city, ...response.data };
+      return response.data;
     }
   } catch (error) {
     console.error(error);
@@ -38,11 +39,11 @@ export const getCurrentWeather = createAsyncThunk("current/getCurrentWeather", a
 
 export const getTodayForecast = createAsyncThunk("today/getTodayForecast", async () => {
   try {
-    const city = window.localStorage.getItem("city") || "seoul";
+    const search = window.localStorage.getItem("search") || "seoul";
 
     const response: AxiosResponse<IForecastData[]> = await serverApi({
       method: "get",
-      url: `forecasts/${city}`,
+      url: `forecasts/${search}`,
     });
 
     if (response.status === 200) {
@@ -58,11 +59,11 @@ export const todaySlice = createSlice({
   initialState: initialTodayState,
   reducers: {
     changeCity: (state, action) => {
-      const city = action.payload;
+      const search = action.payload;
 
-      window.localStorage.setItem("city", city);
+      window.localStorage.setItem("search", search);
 
-      state.city = city;
+      state.search = search;
     },
   },
   extraReducers: (builder) =>
@@ -72,7 +73,7 @@ export const todaySlice = createSlice({
           return;
         }
 
-        const { city, date, temp, humid, rain, wind, windDirection } = action.payload;
+        const { city, date, temp, humid, rain, wind, windDirection, pm10, pm25 } = action.payload;
 
         state.city = city;
         state.today = dayjs(date).subtract(9, "hour").format("MM-DD HH:mm");
@@ -83,6 +84,8 @@ export const todaySlice = createSlice({
         state.rain = rain;
         state.wind = wind;
         state.windDirection = windDirection;
+        state.pm10 = pm10;
+        state.pm25 = pm25;
       })
       .addCase(getTodayForecast.fulfilled, (state, action) => {
         if (!action.payload) {

@@ -1,4 +1,11 @@
+interface ICity {
+  id: number;
+  name: string;
+  korName: string;
+}
+
 interface IWeatherData {
+  city: ICity;
   date: string;
   humid: number;
   id: number;
@@ -7,6 +14,8 @@ interface IWeatherData {
   temp: number;
   wind: number;
   windDirection: number;
+  pm10: number;
+  pm25: number;
 }
 
 interface IForecastData {
@@ -32,7 +41,8 @@ interface ITodayForecast {
 }
 
 interface ITodayWeather {
-  city: string;
+  search: string;
+  city: ICity | null;
   today: string;
   sky: number;
   temp: number;

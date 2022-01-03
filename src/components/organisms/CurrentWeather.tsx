@@ -4,7 +4,7 @@ import { Box, Flex, Title2, Title3, Text, Image, AnimationIcon } from "component
 import MapIcon from "images/map.svg";
 
 interface ICurrentWeatherProps {
-  city: string;
+  city: ICity | null;
   today: string;
   temp: number;
   sky: number;
@@ -34,7 +34,7 @@ export const CurrentWeather: FC<ICurrentWeatherProps> = ({ city, today, temp, sk
   return (
     <Box>
       <Flex a="center" j="space-between" h="3.6rem">
-        <Title2 color="white">{city}</Title2>
+        <Title2 color="white">{city?.korName || ""}</Title2>
 
         {showMapIcon ? (
           <Image src={MapIcon} size={2} onClick={handleClickMapIcon} cursor="pointer" alt="지도 아이콘" />
