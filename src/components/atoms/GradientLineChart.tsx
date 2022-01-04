@@ -10,6 +10,7 @@ import {
   drawDot,
   drawLine,
 } from "utils";
+import { chartTheme } from "configs";
 import { Box } from "./Box";
 
 const gradientLineDefaultOptions = {
@@ -52,8 +53,8 @@ const drawGradientLineChart = (
   drawYAxis(ctx, startX, startY, endY);
   drawXAxis(ctx, startX, endX, endY);
 
-  const redLineOptions = { color: "red" };
-  const blueLineOptions = { color: "blue" };
+  const redLineOptions = { color: chartTheme.red };
+  const blueLineOptions = { color: chartTheme.blue };
 
   for (let i = 0; i < datasets.length; i++) {
     const positionX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
@@ -61,8 +62,8 @@ const drawGradientLineChart = (
 
     const dotOptions = {
       size: i === hoverId ? 6 : 2,
-      color: i === hoverId ? (datasets[i] > 0 ? "red" : "blue") : "black",
-      alpha: i === hoverId ? 0.7 : 0.3,
+      color: i === hoverId ? (datasets[i] > 0 ? chartTheme.red : chartTheme.blue) : chartTheme.black,
+      alpha: i === hoverId ? 1 : 0.3,
     };
 
     drawDot(ctx, positionX, positionY, dotOptions);
@@ -85,11 +86,11 @@ const drawGradientLineChart = (
         const endLineOptions: ILineOptions = {};
 
         if (datasets[i - 1] > datasets[i]) {
-          startLineOptions.color = "red";
-          endLineOptions.color = "blue";
+          startLineOptions.color = chartTheme.red;
+          endLineOptions.color = chartTheme.blue;
         } else {
-          startLineOptions.color = "blue";
-          endLineOptions.color = "red";
+          startLineOptions.color = chartTheme.blue;
+          endLineOptions.color = chartTheme.red;
         }
 
         drawLine(ctx, positionStartX, positionStartY, positionZeroX, positionZeroY, startLineOptions);

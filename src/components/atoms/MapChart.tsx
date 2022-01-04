@@ -1,6 +1,7 @@
 import { FC, useRef, useEffect } from "react";
 import { geoMercator, geoPath, geoContains } from "d3-geo";
 import { koreaGeoJson } from "configs";
+import { chartTheme } from "configs";
 import { Box } from "./Box";
 
 const drawMap = (box: HTMLDivElement, canvas: HTMLCanvasElement, hoverCity?: string) => {
@@ -41,12 +42,12 @@ const drawMap = (box: HTMLDivElement, canvas: HTMLCanvasElement, hoverCity?: str
     pathGenerator.context(featureCtx)(feature);
 
     if (city === hoverCity) {
-      featureCtx.globalAlpha = 0.7;
+      featureCtx.globalAlpha = 1;
     } else {
-      featureCtx.globalAlpha = 0.3;
+      featureCtx.globalAlpha = 0.5;
     }
 
-    featureCtx.fillStyle = "blue";
+    featureCtx.fillStyle = chartTheme.blue;
     featureCtx.fill();
 
     featureCtx.globalAlpha = 1;

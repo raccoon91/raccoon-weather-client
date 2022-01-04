@@ -32,24 +32,38 @@ export const ForecastCard: FC<IForecastCardProps> = ({ title, datasets, w, h, m,
       <Flex w="100%" h="calc(100% - 2.6rem)" m="1rem 0 0" p="0 0 1rem">
         <ForecastIndex d="column" a="center" w="20rem" h="100%">
           <Box h="2rem">
-            <Text size="xs" m="1rem 0 0">
+            <Text size="xs" weight="bold" m="1rem 0 0">
               시간
             </Text>
           </Box>
 
           <Flex f="1" a="center">
-            <Text size="xs">온도</Text>
+            <Text size="xs" weight="bold">
+              온도
+            </Text>
           </Flex>
 
           <Flex d="column" a="center" j="space-around" h="12rem" m="auto 0 0" p="0 0 0.6rem">
             <Box h="2rem">
-              <Text size="xs">날씨</Text>
+              <Text size="xs" weight="bold">
+                날씨
+              </Text>
             </Box>
-            <Text size="xs">체감</Text>
-            <Text size="xs">강수</Text>
-            <Text size="xs">습도</Text>
-            <Text size="xs">바람</Text>
-            <Text size="xs">방향</Text>
+            <Text size="xs" weight="bold">
+              체감
+            </Text>
+            <Text size="xs" weight="bold">
+              강수
+            </Text>
+            <Text size="xs" weight="bold">
+              습도
+            </Text>
+            <Text size="xs" weight="bold">
+              바람
+            </Text>
+            <Text size="xs" weight="bold">
+              방향
+            </Text>
           </Flex>
         </ForecastIndex>
 

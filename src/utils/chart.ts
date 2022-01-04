@@ -1,3 +1,5 @@
+import { chartTheme } from "configs";
+
 export const toDecimal = (value: number, digits = 2) => {
   return Number(value.toFixed(digits));
 };
@@ -77,7 +79,7 @@ export const getCanvasPostion = (box: HTMLDivElement, canvasOptions: ICanvasOpti
 
 const axisDefaultOptions = {
   alpha: 1,
-  style: "black",
+  style: chartTheme.black,
 };
 
 export const drawYAxis = (
@@ -118,9 +120,9 @@ export const drawXAxis = (
 
 const tickDefaultOptions = {
   textAlpha: 1,
-  textStyle: "black",
+  textStyle: chartTheme.black,
   strokeAlpha: 1,
-  strokeStyle: "black",
+  strokeStyle: chartTheme.black,
 };
 
 export const drawYTick = (
@@ -167,7 +169,7 @@ export const drawXTick = (
 
 const dotDefaultOptions = {
   size: 3,
-  color: "blue",
+  color: chartTheme.blue,
   alpha: 0.5,
 };
 
@@ -180,7 +182,7 @@ export const drawDot = (
   const { size, color, alpha } = { ...dotDefaultOptions, ...dotOptions };
 
   ctx.globalAlpha = alpha || 0.5;
-  ctx.fillStyle = color || "blue";
+  ctx.fillStyle = color || chartTheme.blue;
 
   ctx.beginPath();
   ctx.arc(positionX, positionY, size || 3, 0, Math.PI * 2);
@@ -188,9 +190,9 @@ export const drawDot = (
 };
 
 const barDefaultOptions = {
-  barColor: "blue",
+  barColor: chartTheme.blue,
   barAlpha: 0.3,
-  strokeColor: "blue",
+  strokeColor: chartTheme.blue,
   strokeAlpha: 0.5,
   strokeWidth: 0.5,
 };
@@ -206,17 +208,17 @@ export const drawBar = (
   const { barColor, barAlpha, strokeColor, strokeAlpha, strokeWidth } = { ...barDefaultOptions, ...barOptions };
 
   ctx.globalAlpha = barAlpha || 0.3;
-  ctx.fillStyle = barColor || "blue";
+  ctx.fillStyle = barColor || chartTheme.blue;
   ctx.fillRect(positionX, positionY, width, height);
 
   ctx.globalAlpha = strokeAlpha || barAlpha || 1;
-  ctx.strokeStyle = strokeColor || barColor || "blue";
+  ctx.strokeStyle = strokeColor || barColor || chartTheme.blue;
   ctx.lineWidth = strokeWidth || 0.5;
   ctx.strokeRect(positionX, positionY, width, height);
 };
 
 const lineDefaultOptions = {
-  color: "blue",
+  color: chartTheme.blue,
 };
 
 export const drawLine = (
@@ -230,7 +232,7 @@ export const drawLine = (
   const { color } = { ...lineDefaultOptions, ...lineOptions };
 
   ctx.globalAlpha = 1;
-  ctx.strokeStyle = color || "blue";
+  ctx.strokeStyle = color || chartTheme.blue;
 
   ctx.beginPath();
   ctx.moveTo(startX, startY + 0.5);
