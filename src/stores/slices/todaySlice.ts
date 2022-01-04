@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { serverApi } from "api";
-import dayjs from "dayjs";
-import { getFeelTemp } from "utils";
+import { formatDate, getFeelTemp } from "utils";
 import type { AxiosResponse } from "axios";
 
 const initialTodayState: ITodayWeather = {
@@ -13,6 +12,7 @@ const initialTodayState: ITodayWeather = {
   feel: 0,
   humid: 0,
   rain: 0,
+  rainType: 0,
   pm10: 0,
   pm25: 0,
   wind: 0,
@@ -73,15 +73,16 @@ export const todaySlice = createSlice({
           return;
         }
 
-        const { city, date, temp, humid, rain, wind, windDirection, pm10, pm25 } = action.payload;
+        const { city, date, temp, humid, rain, rainType, wind, windDirection, pm10, pm25 } = action.payload;
 
         state.city = city;
-        state.today = dayjs(date).subtract(9, "hour").format("MM-DD HH:mm");
+        state.today = formatDate(date);
         state.sky = 1;
         state.temp = temp;
         state.feel = getFeelTemp(temp, wind);
         state.humid = humid;
         state.rain = rain;
+        state.rainType = rainType;
         state.wind = wind;
         state.windDirection = windDirection;
         state.pm10 = pm10;

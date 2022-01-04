@@ -12,6 +12,7 @@ export const MobileTodayDashboard: FC<IMobileTodayDashboardProps> = ({
   pm10,
   pm25,
   wind,
+  windDirection,
   todayForcast,
 }) => {
   return (
@@ -72,7 +73,7 @@ export const MobileTodayDashboard: FC<IMobileTodayDashboardProps> = ({
           title="바람"
           value={wind}
           unit="m/s"
-          chart={<WindIndicator />}
+          chart={<WindIndicator windDirection={windDirection} />}
           w="calc(50% - 1rem)"
           h="17rem"
           p="3rem"

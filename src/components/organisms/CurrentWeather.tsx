@@ -8,9 +8,10 @@ interface ICurrentWeatherProps {
   today: string;
   temp: number;
   sky: number;
+  rainType: number;
 }
 
-export const CurrentWeather: FC<ICurrentWeatherProps> = ({ city, today, temp, sky }) => {
+export const CurrentWeather: FC<ICurrentWeatherProps> = ({ city, today, temp, sky, rainType }) => {
   const history = useHistory();
   const location = useLocation();
   const [showMapIcon, setShowMapIcon] = useState(true);
@@ -45,7 +46,7 @@ export const CurrentWeather: FC<ICurrentWeatherProps> = ({ city, today, temp, sk
         <Text color="white">Today {today}</Text>
       </Box>
 
-      <Flex a="flex-end" j="center" h="8.4rem" m="5rem 0 0">
+      <Flex a="flex-end" j="center" h="8.4rem" m="5rem 0">
         <Title3 color="white" size="6xl" weight="normal">
           {temp}
         </Title3>
@@ -54,9 +55,7 @@ export const CurrentWeather: FC<ICurrentWeatherProps> = ({ city, today, temp, sk
         </Text>
       </Flex>
 
-      <Flex a="center" j="center">
-        <AnimationIcon type={sky} size={32} />
-      </Flex>
+      <AnimationIcon sky={sky} rainType={rainType} size={20} />
     </Box>
   );
 };

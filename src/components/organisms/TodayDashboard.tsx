@@ -5,7 +5,16 @@ import { tempChartOptions, percentChartOptions, pm10ChartOptions, pm25ChartOptio
 
 type ITodayDashboardProps = ITodayWeather;
 
-export const TodayDashboard: FC<ITodayDashboardProps> = ({ feel, humid, rain, pm10, pm25, wind, todayForcast }) => {
+export const TodayDashboard: FC<ITodayDashboardProps> = ({
+  feel,
+  humid,
+  rain,
+  pm10,
+  pm25,
+  wind,
+  windDirection,
+  todayForcast,
+}) => {
   return (
     <Box o="hidden auto" w="100%" h="100%" p="2rem 10rem 4rem">
       <Flex j="space-between">
@@ -56,7 +65,7 @@ export const TodayDashboard: FC<ITodayDashboardProps> = ({ feel, humid, rain, pm
           title="바람"
           value={wind}
           unit="m/s"
-          chart={<WindIndicator />}
+          chart={<WindIndicator windDirection={windDirection} />}
           w="calc((100% - 4rem) / 3)"
           h="17rem"
         />

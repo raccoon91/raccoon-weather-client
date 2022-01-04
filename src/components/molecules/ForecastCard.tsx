@@ -1,7 +1,7 @@
 import { FC } from "react";
-import dayjs from "dayjs";
 import styled from "styled-components";
 import { Box, Flex, Title3, Text, WeatherIcon, WindIndicator, LineChart } from "components/atoms";
+import { formatDate } from "utils";
 
 const ForecastIndex = styled(Flex)`
   border-right: 0.1rem solid darkgray;
@@ -61,19 +61,16 @@ export const ForecastCard: FC<IForecastCardProps> = ({ title, datasets, w, h, m,
           {datasets.map((data) => (
             <Forecast key={data.date} f="0 0 12rem" d="column" a="center" w="12rem">
               <Box h="2rem" m="1rem 0 0">
-                <Text>{dayjs(data.date).subtract(9, "hour").format("HH")}</Text>
+                <Text>{formatDate(data.date, "HH")}</Text>
               </Box>
 
               <Flex d="column" a="center" j="space-around" h="12rem" m="auto 0 0">
-                <Flex a="center" j="center" w="3rem" h="3rem">
-                  <WeatherIcon type={data.sky} size={6} />
-                </Flex>
-
+                <WeatherIcon sky={data.sky} rainType={data.rainType} date={data.date} size={3} />
                 <Text size="xs">{data.feel} °C</Text>
                 <Text size="xs">{data.rain} %</Text>
                 <Text size="xs">{data.humid} %</Text>
                 <Text size="xs">{data.wind} m/s</Text>
-                <WindIndicator size={1.2} onlyIcon />
+                <WindIndicator windDirection={data.windDirection} size={1.4} onlyIcon />
               </Flex>
             </Forecast>
           ))}

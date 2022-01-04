@@ -15,12 +15,28 @@ export const TodayPage: FC = () => {
 
   return device === "desktop" ? (
     <WeatherLayout
-      current={<CurrentWeather city={today.city} today={today.today} temp={today.temp} sky={today.sky} />}
+      current={
+        <CurrentWeather
+          city={today.city}
+          today={today.today}
+          temp={today.temp}
+          sky={today.sky}
+          rainType={today.rainType}
+        />
+      }
       dashboard={<TodayDashboard {...today} />}
     />
   ) : (
     <MobileWeatherLayout
-      current={<MobileCurrentWeather city={today.city} today={today.today} temp={today.temp} sky={today.sky} />}
+      current={
+        <MobileCurrentWeather
+          city={today.city}
+          today={today.today}
+          temp={today.temp}
+          sky={today.sky}
+          rainType={today.rainType}
+        />
+      }
       dashboard={<MobileTodayDashboard {...today} />}
     />
   );

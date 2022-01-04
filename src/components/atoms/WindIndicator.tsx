@@ -1,7 +1,7 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { Text } from "./Text";
 import { ReactComponent as Pointer } from "images/pointer.svg";
+import { Text } from "./Text";
 
 interface IIndicatorWrapperProps {
   size?: number;
@@ -23,16 +23,27 @@ const IndicatorWrapper = styled.div<IIndicatorWrapperProps>`
   }
 `;
 
+interface IPointerWrapperProps {
+  windDirection: number;
+}
+
+const PointerWrapper = styled.div<IPointerWrapperProps>`
+  transform: ${({ windDirection }) => `rotate(${windDirection}deg)`};
+`;
+
 interface IWindIndicatorProps {
+  windDirection?: number;
   size?: number;
   onlyIcon?: boolean;
   fontSize?: TTextSize;
 }
 
-export const WindIndicator: FC<IWindIndicatorProps> = ({ size = 2.5, onlyIcon = false, fontSize }) => {
+export const WindIndicator: FC<IWindIndicatorProps> = ({ windDirection = 0, size = 3, onlyIcon = false, fontSize }) => {
   return (
     <IndicatorWrapper size={size}>
-      <Pointer />
+      <PointerWrapper windDirection={windDirection}>
+        <Pointer />
+      </PointerWrapper>
 
       {!onlyIcon ? (
         <Text size={fontSize || "md"} weight="bold">
