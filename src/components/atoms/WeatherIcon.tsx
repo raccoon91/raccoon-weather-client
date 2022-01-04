@@ -1,22 +1,66 @@
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import styled from "styled-components";
-import Sunny from "images/weather/day.svg";
+import Day from "images/weather/day.svg";
+import Night from "images/weather/night.svg";
+import Cloud from "images/weather/cloudy.svg";
+import CloudDay from "images/weather/cloudy-day.svg";
+import CloudNight from "images/weather/cloudy-night.svg";
+import RainyDay from "images/weather/rainy-day.svg";
+import RainyNight from "images/weather/rainy-night.svg";
+import RainyDrop from "images/weather/rainy-drop.svg";
+import SnowyDay from "images/weather/snowy-day.svg";
+import SnowyNight from "images/weather/snowy-night.svg";
+import { getWeatherType } from "utils";
+
+const weatherTypeDictionary: { [type: string]: { icon: string; name: string } } = {
+  day: { icon: Day, name: "day" },
+  night: { icon: Night, name: "night" },
+  cloud: { icon: Cloud, name: "cloud" },
+  cloudDay: { icon: CloudDay, name: "cloudDay" },
+  cloudNight: { icon: CloudNight, name: "cloudNight" },
+  rainyDay: { icon: RainyDay, name: "rainyDay" },
+  rainyNight: { icon: RainyNight, name: "rainyNight" },
+  rainyDrop: { icon: RainyDrop, name: "rainyDrop" },
+  snowyDay: { icon: SnowyDay, name: "snowyDay" },
+  snowyNight: { icon: SnowyNight, name: "snowyNight" },
+};
 
 interface IStyledImageProps {
   size?: string | number;
 }
 
+const StyledImageWrapper = styled.div<IStyledImageProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: ${({ size }) => (size ? `${size}rem` : "10rem")};
+  height: ${({ size }) => (size ? `${size}rem` : "10rem")};
+`;
+
 const StyledImage = styled.img<IStyledImageProps>`
   width: ${({ size }) => (size ? `${size}rem` : "10rem")};
   height: ${({ size }) => (size ? `${size}rem` : "10rem")};
-  user-select: none;
+  transform: scale(2);
 `;
 
 interface IWeatherIconProps {
-  type: number;
+  sky: number;
+  rainType: number;
+  date?: string;
   size?: string | number;
 }
 
-export const WeatherIcon: FC<IWeatherIconProps> = ({ type, size }) => {
-  return <StyledImage src={Sunny} alt={`${type}`} size={size} />;
+export const WeatherIcon: FC<IWeatherIconProps> = ({ sky = 4, rainType = 0, date, size }) => {
+  const [weatherType, setWeatherType] = useState({ icon: "", name: "" });
+
+  useEffect(() => {
+    const weatherType = getWeatherType(sky, rainType, date);
+    setWeatherType(weatherTypeDictionary[weatherType]);
+  }, [sky, rainType, date]);
+
+  return (
+    <StyledImageWrapper size={size}>
+      <StyledImage src={weatherType.icon} alt={weatherType.name} size={size} />
+    </StyledImageWrapper>
+  );
 };

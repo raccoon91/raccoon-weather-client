@@ -36,8 +36,10 @@ interface ITodayForecast {
   temp: number;
   feel: number;
   rain: number;
-  wind: number;
+  rainType: number;
   humid: number;
+  wind: number;
+  windDirection: number;
 }
 
 interface ITodayWeather {
@@ -49,6 +51,7 @@ interface ITodayWeather {
   feel: number;
   humid: number;
   rain: number;
+  rainType: number;
   pm10: number;
   pm25: number;
   wind: number;
