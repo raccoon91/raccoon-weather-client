@@ -1,10 +1,18 @@
+export const chartTheme = {
+  blue: "#4d99f0",
+  green: "#31a354",
+  yellow: "#ffd60a",
+  red: "#dc2f02",
+  black: "#000000",
+};
+
 const tempRange = [-20, 35];
 const percentRange = [0, 20, 40, 60, 80, 100];
 const pm10Range = [0, 30, 80, 150, 200];
 const pm25Range = [0, 15, 35, 75, 100];
 
-const percentChartColor = "#4d99f0";
-const airChartColor = ["#4d99f0", "#31a354", "#ffd60a", "#dc2f02"];
+const percentChartColor = chartTheme.blue;
+const airChartColor = [chartTheme.blue, chartTheme.green, chartTheme.yellow, chartTheme.red];
 
 export const tempChartOptions = {
   range: tempRange,

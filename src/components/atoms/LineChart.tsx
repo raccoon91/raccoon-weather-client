@@ -1,5 +1,6 @@
 import { FC, useRef, useEffect } from "react";
 import { toDecimal, getDataRange, getCanvasPostion, drawDot, drawLine } from "utils";
+import { chartTheme } from "configs";
 import { Box } from "./Box";
 
 const lineDefaultOptions = {
@@ -13,13 +14,7 @@ const lineDefaultOptions = {
   dataRange: {},
 };
 
-const drawLineChart = (
-  box: HTMLDivElement,
-  canvas: HTMLCanvasElement,
-  datasets: number[],
-  options: ICanvasOptions,
-  hoverId?: number
-) => {
+const drawLineChart = (box: HTMLDivElement, canvas: HTMLCanvasElement, datasets: number[], options: ICanvasOptions) => {
   const { clientWidth, clientHeight } = box;
   const ctx = canvas.getContext("2d");
 
@@ -32,15 +27,11 @@ const drawLineChart = (
   const { drawStartX, drawEndY, drawWidth, drawHeight } = getCanvasPostion(box, options);
   const nodeWidth = toDecimal(drawWidth / datasets.length);
 
+  const dotOptions = { size: 3, color: chartTheme.green, alpha: 1 };
+
   for (let i = 0; i < datasets.length; i++) {
     const positionX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
     const positionY = drawEndY - toDecimal(((datasets[i] - min) * drawHeight) / range);
-
-    const dotOptions = {
-      size: i === hoverId ? 6 : 3,
-      color: "black",
-      alpha: i === hoverId ? 0.7 : 0.3,
-    };
 
     drawDot(ctx, positionX, positionY, dotOptions);
 
@@ -48,7 +39,7 @@ const drawLineChart = (
       const positionStartX = (i - 1) * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
       const positionStartY = drawEndY - toDecimal(((datasets[i - 1] - min) * drawHeight) / range);
 
-      drawLine(ctx, positionStartX, positionStartY, positionX, positionY, { color: "black" });
+      drawLine(ctx, positionStartX, positionStartY, positionX, positionY, { color: chartTheme.green });
     }
   }
 };

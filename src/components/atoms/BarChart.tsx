@@ -1,5 +1,6 @@
 import { FC, useRef, useEffect } from "react";
 import { toDecimal, getDataRange, getCanvasPostion, drawYAxis, drawXAxis, drawYTick, drawXTick, drawBar } from "utils";
+import { theme } from "configs";
 import { Box } from "./Box";
 
 const barChartDefaultOptions = {
@@ -42,10 +43,10 @@ const drawBarChart = (
     const height = drawEndY - positionY;
 
     const barOptions = {
-      barColor: "blue",
-      barAlpha: i === hoverId ? 0.7 : 0.3,
-      strokeColor: "blue",
-      strokeAlpha: i === hoverId ? 0.7 : 0.5,
+      barColor: theme.color.blue,
+      barAlpha: i === hoverId ? 1 : 0.5,
+      strokeColor: theme.color.blue,
+      strokeAlpha: 1,
       strokeWidth: 0.5,
     };
 

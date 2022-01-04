@@ -9,6 +9,7 @@ import {
   drawXTick,
   drawDot,
 } from "utils";
+import { chartTheme } from "configs";
 import { Box } from "./Box";
 
 const scatterPlotDefaultOptions = {
@@ -60,8 +61,8 @@ const drawScatterPlot = (
 
       const dotOptions = {
         size: hoverPosition && i === hoverPosition.x && j === hoverPosition.y ? 6 : 3,
-        color: datasets[i][j] > 30 ? "red" : "blue",
-        alpha: hoverPosition && i === hoverPosition.x && j === hoverPosition.y ? 0.7 : 0.05,
+        color: datasets[i][j] > 30 ? chartTheme.red : chartTheme.blue,
+        alpha: hoverPosition && i === hoverPosition.x && j === hoverPosition.y ? 1 : 0.05,
       };
 
       drawDot(ctx, positionX, positionY, dotOptions);
