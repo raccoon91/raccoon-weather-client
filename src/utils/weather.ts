@@ -1,5 +1,25 @@
 import { getHour } from "utils";
 
+const windDirectionDictionary: { [code: number]: string } = {
+  0: "북풍",
+  1: "북북동풍",
+  2: "북동풍",
+  3: "동북동풍",
+  4: "동풍",
+  5: "동남동풍",
+  6: "남동풍",
+  7: "남남동풍",
+  8: "남풍",
+  9: "남남서풍",
+  10: "남서풍",
+  11: "서남서풍",
+  12: "서풍",
+  13: "서북서풍",
+  14: "북서풍",
+  15: "북북서풍",
+  16: "북풍",
+};
+
 export const getFeelTemp = (temp: number, wind: number) => {
   const windCalib = Math.pow(wind, 0.16);
 
@@ -42,4 +62,10 @@ export const getWeatherType = (sky: number, rainType: number, date?: string) => 
   } else {
     return "cloude";
   }
+};
+
+export const windDirectionName = (windDirection: number) => {
+  const windDirectionCode = Math.floor((windDirection + 22.5 * 0.5) / 22.5);
+
+  return windDirectionDictionary[windDirectionCode];
 };

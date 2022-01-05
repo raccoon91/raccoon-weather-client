@@ -6,7 +6,7 @@ import { WeatherLayout, MobileWeatherLayout } from "components/templates";
 
 export const TodayPage: FC = () => {
   const dispatch = useAppDispatch();
-  const today = useAppSelector((state) => state.today);
+  const { weather, forecasts } = useAppSelector((state) => state.today);
   const device = useLayout();
 
   useEffect(() => {
@@ -15,29 +15,13 @@ export const TodayPage: FC = () => {
 
   return device === "desktop" ? (
     <WeatherLayout
-      current={
-        <CurrentWeather
-          city={today.city}
-          today={today.today}
-          temp={today.temp}
-          sky={today.sky}
-          rainType={today.rainType}
-        />
-      }
-      dashboard={<TodayDashboard {...today} />}
+      current={<CurrentWeather weather={weather} />}
+      dashboard={<TodayDashboard weather={weather} forecasts={forecasts} />}
     />
   ) : (
     <MobileWeatherLayout
-      current={
-        <MobileCurrentWeather
-          city={today.city}
-          today={today.today}
-          temp={today.temp}
-          sky={today.sky}
-          rainType={today.rainType}
-        />
-      }
-      dashboard={<MobileTodayDashboard {...today} />}
+      current={<MobileCurrentWeather weather={weather} />}
+      dashboard={<MobileTodayDashboard weather={weather} forecasts={forecasts} />}
     />
   );
 };

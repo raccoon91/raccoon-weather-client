@@ -2,6 +2,7 @@ import { FC } from "react";
 import styled from "styled-components";
 import { ReactComponent as Pointer } from "images/pointer.svg";
 import { Text } from "./Text";
+import { windDirectionName } from "utils";
 
 interface IIndicatorWrapperProps {
   size?: number;
@@ -47,7 +48,7 @@ export const WindIndicator: FC<IWindIndicatorProps> = ({ windDirection = 0, size
 
       {!onlyIcon ? (
         <Text size={fontSize || "md"} weight="bold">
-          북동쪽
+          {windDirectionName(windDirection)}
         </Text>
       ) : null}
     </IndicatorWrapper>

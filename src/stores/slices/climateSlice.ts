@@ -3,9 +3,10 @@ import { serverApi } from "api";
 import type { AxiosResponse } from "axios";
 
 const initialClimateState: IClimate = {
-  years: [],
-  tempClimates: [],
-  rainClimates: [],
+  years: null,
+  tempClimates: null,
+  feelTempClimates: null,
+  rainClimates: null,
 };
 
 export const getClimate = createAsyncThunk("climate/getClimate", async () => {
@@ -35,10 +36,11 @@ export const climateSlice = createSlice({
         return;
       }
 
-      const { years, tempClimates, rainClimates } = action.payload;
+      const { years, tempClimates, feelTempClimates, rainClimates } = action.payload;
 
       state.years = years;
       state.tempClimates = tempClimates;
+      state.feelTempClimates = feelTempClimates;
       state.rainClimates = rainClimates;
     }),
 });

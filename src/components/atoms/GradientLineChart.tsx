@@ -151,8 +151,8 @@ const gradientLineMouseOver = (
 };
 
 interface IGradientLineChartProps {
-  labels: string[];
-  datasets: number[];
+  labels?: string[] | null;
+  datasets?: number[] | null;
   options?: ICanvasOptions;
 }
 
@@ -168,7 +168,7 @@ export const GradientLineChart: FC<IGradientLineChartProps> = ({
     const box = boxRef.current;
     const canvas = canvasRef.current;
 
-    if (box && canvas && labels.length && datasets.length) {
+    if (box && canvas && labels?.length && datasets?.length) {
       const gradientLineOptions = {
         chart: { ...gradientLineDefaultOptions.chart, ...options.chart },
         draw: { ...gradientLineDefaultOptions.draw, ...options.draw },

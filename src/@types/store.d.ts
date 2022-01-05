@@ -7,13 +7,13 @@ interface ICity {
 interface IWeatherData {
   city: ICity;
   date: string;
-  humid: number;
-  id: number;
+  sky: number;
+  temp: number;
   rain: number;
   rainType: number;
-  temp: number;
   wind: number;
   windDirection: number;
+  humid: number;
   pm10: number;
   pm25: number;
 }
@@ -30,7 +30,7 @@ interface IForecastData {
   windDirection: number;
 }
 
-interface ITodayForecast {
+interface IForecast {
   date: string;
   sky: number;
   temp: number;
@@ -42,9 +42,8 @@ interface ITodayForecast {
   windDirection: number;
 }
 
-interface ITodayWeather {
-  search: string;
-  city: ICity | null;
+interface IWeather {
+  city: ICity;
   today: string;
   sky: number;
   temp: number;
@@ -56,11 +55,17 @@ interface ITodayWeather {
   pm25: number;
   wind: number;
   windDirection: number;
-  todayForcast: ITodayForecast[];
+}
+
+interface ITodayWeather {
+  search: string;
+  weather: IWeather | null;
+  forecasts: IForecast[] | null;
 }
 
 interface IClimate {
-  years: string[];
-  tempClimates: number[][];
-  rainClimates: number[];
+  years: string[] | null;
+  tempClimates: number[][] | null;
+  feelTempClimates: number[][] | null;
+  rainClimates: number[] | null;
 }

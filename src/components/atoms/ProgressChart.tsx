@@ -53,14 +53,14 @@ interface ITick {
 }
 
 interface IProgressChartProps {
-  chartData: number;
+  chartData?: number;
   chartOptions: {
     range: number[];
     colors: string | string[];
   };
 }
 
-export const ProgressChart: FC<IProgressChartProps> = ({ chartData, chartOptions }) => {
+export const ProgressChart: FC<IProgressChartProps> = ({ chartData = 0, chartOptions }) => {
   const [progressList, setProgressList] = useState<IProgress[] | null>(null);
   const [tickList, setTickList] = useState<ITick[] | null>(null);
 

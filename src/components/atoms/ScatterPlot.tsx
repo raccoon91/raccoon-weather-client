@@ -24,8 +24,8 @@ const scatterPlotDefaultOptions = {
     paddingY: 5,
   },
   dataRange: {
-    min: -20,
-    max: 35,
+    min: 30,
+    max: 38,
     range: 55,
   },
 };
@@ -61,15 +61,15 @@ const drawScatterPlot = (
 
       const dotOptions = {
         size: hoverPosition && i === hoverPosition.x && j === hoverPosition.y ? 6 : 3,
-        color: datasets[i][j] > 30 ? chartTheme.red : chartTheme.blue,
-        alpha: hoverPosition && i === hoverPosition.x && j === hoverPosition.y ? 1 : 0.05,
+        color: datasets[i][j] >= 33 ? chartTheme.red : chartTheme.blue,
+        alpha: hoverPosition && i === hoverPosition.x && j === hoverPosition.y ? 1 : 0.5,
       };
 
       drawDot(ctx, positionX, positionY, dotOptions);
     }
   }
 
-  for (let value = min; value <= max; value += 10) {
+  for (let value = min; value <= max; value += 5) {
     const positionY = drawEndY - toDecimal(((value - min) * drawHeight) / range);
 
     drawYTick(ctx, startX, positionY, String(value));
@@ -125,8 +125,8 @@ const scatterPlotMouseOver = (
 };
 
 interface IScatterPlotProps {
-  labels: string[];
-  datasets: number[][];
+  labels?: string[] | null;
+  datasets?: number[][] | null;
   options?: ICanvasOptions;
 }
 
@@ -138,7 +138,7 @@ export const ScatterPlot: FC<IScatterPlotProps> = ({ labels, datasets, options =
     const box = boxRef.current;
     const canvas = canvasRef.current;
 
-    if (box && canvas && labels.length && datasets.length) {
+    if (box && canvas && labels?.length && datasets?.length) {
       const scatterPlotOptions = {
         chart: { ...scatterPlotDefaultOptions.chart, ...options.chart },
         draw: { ...scatterPlotDefaultOptions.draw, ...options.draw },
