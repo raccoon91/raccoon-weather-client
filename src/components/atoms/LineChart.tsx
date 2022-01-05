@@ -45,7 +45,7 @@ const drawLineChart = (box: HTMLDivElement, canvas: HTMLCanvasElement, datasets:
 };
 
 interface ILineChartProps {
-  datasets: number[];
+  datasets?: number[] | null;
   options?: ICanvasOptions;
 }
 
@@ -57,7 +57,7 @@ export const LineChart: FC<ILineChartProps> = ({ datasets, options = lineDefault
     const box = boxRef.current;
     const canvas = canvasRef.current;
 
-    if (box && canvas && datasets.length) {
+    if (box && canvas && datasets?.length) {
       const lineOptions = {
         chart: { ...lineDefaultOptions.chart, ...options.chart },
         draw: { ...lineDefaultOptions.draw, ...options.draw },

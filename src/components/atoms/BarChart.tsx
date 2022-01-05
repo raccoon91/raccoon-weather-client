@@ -107,8 +107,8 @@ const barChartMouseOver = (
 };
 
 interface IBarChartProps {
-  labels: string[];
-  datasets: number[];
+  labels?: string[] | null;
+  datasets?: number[] | null;
   options?: ICanvasOptions;
 }
 
@@ -120,7 +120,7 @@ export const BarChart: FC<IBarChartProps> = ({ labels, datasets, options = barCh
     const box = boxRef.current;
     const canvas = canvasRef.current;
 
-    if (box && canvas && labels.length && datasets.length) {
+    if (box && canvas && labels?.length && datasets?.length) {
       const barOptions = {
         chart: { ...barChartDefaultOptions.chart, ...options.chart },
         draw: { ...barChartDefaultOptions.draw, ...options.draw },

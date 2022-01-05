@@ -8,6 +8,8 @@ export * from "./NavAnchor";
 export * from "./Image";
 export * from "./WeatherIcon";
 export * from "./AnimationIcon";
+export * from "./Skeleton";
+
 export * from "./ProgressChart";
 export * from "./WindIndicator";
 export * from "./ScatterPlot";

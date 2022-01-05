@@ -12,7 +12,12 @@ import SnowyDay from "images/weather/snowy-day.svg";
 import SnowyNight from "images/weather/snowy-night.svg";
 import { getWeatherType } from "utils";
 
-const weatherTypeDictionary: { [type: string]: { icon: string; name: string } } = {
+interface IWeatherType {
+  icon: string;
+  name: string;
+}
+
+const weatherTypeDictionary: { [type: string]: IWeatherType } = {
   day: { icon: Day, name: "day" },
   night: { icon: Night, name: "night" },
   cloud: { icon: Cloud, name: "cloud" },
@@ -50,8 +55,8 @@ interface IWeatherIconProps {
   size?: string | number;
 }
 
-export const WeatherIcon: FC<IWeatherIconProps> = ({ sky = 4, rainType = 0, date, size }) => {
-  const [weatherType, setWeatherType] = useState({ icon: "", name: "" });
+export const WeatherIcon: FC<IWeatherIconProps> = ({ sky, rainType, date, size }) => {
+  const [weatherType, setWeatherType] = useState<IWeatherType | null>(null);
 
   useEffect(() => {
     const weatherType = getWeatherType(sky, rainType, date);
@@ -60,7 +65,7 @@ export const WeatherIcon: FC<IWeatherIconProps> = ({ sky = 4, rainType = 0, date
 
   return (
     <StyledImageWrapper size={size}>
-      <StyledImage src={weatherType.icon} alt={weatherType.name} size={size} />
+      {weatherType ? <StyledImage src={weatherType.icon} alt={weatherType.name} size={size} /> : null}
     </StyledImageWrapper>
   );
 };

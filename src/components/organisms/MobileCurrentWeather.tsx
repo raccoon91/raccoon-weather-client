@@ -1,36 +1,50 @@
 import { FC } from "react";
-import { Box, Flex, Title2, Title3, Text, AnimationIcon } from "components/atoms";
+import { Box, Flex, Title2, Title3, Text, AnimationIcon, Skeleton } from "components/atoms";
 
 interface IMobileCurrentWeatherProps {
-  city: ICity | null;
-  today: string;
-  temp: number;
-  sky: number;
-  rainType: number;
+  weather: IWeather | null;
 }
 
-export const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ city, today, temp, sky, rainType }) => {
+export const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ weather }) => {
   return (
     <Flex a="flex-end" j="flex-start">
-      <AnimationIcon sky={sky} rainType={rainType} size={10} imageSize={15} />
+      {weather ? (
+        <AnimationIcon sky={weather.sky} rainType={weather.rainType} size={10} imageSize={15} />
+      ) : (
+        <Skeleton w="10rem" h="10rem" />
+      )}
 
       <Flex a="flex-end" m="0 0 0 4rem">
-        <Title3 color="white" size="6xl" weight="normal">
-          {temp}
-        </Title3>
-        <Text color="white" size="5xl" m="0 0 1rem 1rem">
-          °C
-        </Text>
+        {weather ? (
+          <>
+            <Title3 color="white" size="6xl" weight="normal">
+              {weather.temp}
+            </Title3>
+            <Text color="white" size="5xl" m="0 0 1rem 1rem">
+              °C
+            </Text>
+          </>
+        ) : (
+          <Skeleton w="16rem" h="7.5rem" />
+        )}
       </Flex>
 
       <Box m="0 0 0 auto">
-        <Text size="md" color="white">
-          Today {today}
-        </Text>
-
-        <Title2 color="white" m="1rem 0 0">
-          {city?.korName || ""}
-        </Title2>
+        {weather ? (
+          <>
+            <Text size="md" color="white">
+              Today {weather.today}
+            </Text>
+            <Title2 color="white" m="1rem 0 0">
+              {weather.city.korName}
+            </Title2>
+          </>
+        ) : (
+          <>
+            <Skeleton w="12rem" h="1.4rem" />
+            <Skeleton w="10rem" h="3.2rem" m="1rem 0 0" />
+          </>
+        )}
       </Box>
     </Flex>
   );
