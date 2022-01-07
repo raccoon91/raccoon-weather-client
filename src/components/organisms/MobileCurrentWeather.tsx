@@ -1,11 +1,11 @@
-import { FC } from "react";
+import { memo, FC } from "react";
 import { Box, Flex, Title2, Title3, Text, AnimationIcon, Skeleton } from "components/atoms";
 
 interface IMobileCurrentWeatherProps {
   weather: IWeather | null;
 }
 
-export const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ weather }) => {
+const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ weather }) => {
   return (
     <Flex a="flex-end" j="flex-start">
       {weather ? (
@@ -49,3 +49,5 @@ export const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ weather }
     </Flex>
   );
 };
+
+export default memo(MobileCurrentWeather);

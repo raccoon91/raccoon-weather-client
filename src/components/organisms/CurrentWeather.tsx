@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { memo, FC, useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { Box, Flex, Title2, Title3, Text, Image, AnimationIcon, Skeleton } from "components/atoms";
 import MapIcon from "images/map.svg";
@@ -7,7 +7,7 @@ interface ICurrentWeatherProps {
   weather: IWeather | null;
 }
 
-export const CurrentWeather: FC<ICurrentWeatherProps> = ({ weather }) => {
+const CurrentWeather: FC<ICurrentWeatherProps> = ({ weather }) => {
   const history = useHistory();
   const location = useLocation();
   const [showMapIcon, setShowMapIcon] = useState(true);
@@ -70,3 +70,5 @@ export const CurrentWeather: FC<ICurrentWeatherProps> = ({ weather }) => {
     </Box>
   );
 };
+
+export default memo(CurrentWeather);
