@@ -1,8 +1,8 @@
-export * from "./CurrentWeather";
+export { default as CurrentWeather } from "./CurrentWeather";
 export * from "./TodayDashboard";
-export * from "./ClimateDashboard";
+export { default as ClimateDashboard } from "./ClimateDashboard";
 export * from "./MapModal";
 
-export * from "./MobileCurrentWeather";
+export { default as MobileCurrentWeather } from "./MobileCurrentWeather";
 export * from "./MobileTodayDashboard";
-export * from "./MobileClimateDashboard";
+export { default as MobileClimateDashboard } from "./MobileClimateDashboard";

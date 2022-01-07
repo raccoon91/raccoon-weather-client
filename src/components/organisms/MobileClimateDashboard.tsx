@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { memo, FC } from "react";
 import { Box, ScatterPlot, BarChart, GradientLineChart } from "components/atoms";
 import { ClimateCard } from "components/molecules";
 import { globalSurfaceAirTemp } from "configs";
@@ -7,7 +7,7 @@ interface IMobileClimateDashboardProps {
   climate: IClimate;
 }
 
-export const MobileClimateDashboard: FC<IMobileClimateDashboardProps> = ({
+const MobileClimateDashboard: FC<IMobileClimateDashboardProps> = ({
   climate: { years, feelTempClimates, rainClimates },
 }) => {
   return (
@@ -40,3 +40,5 @@ export const MobileClimateDashboard: FC<IMobileClimateDashboardProps> = ({
     </Box>
   );
 };
+
+export default memo(MobileClimateDashboard);

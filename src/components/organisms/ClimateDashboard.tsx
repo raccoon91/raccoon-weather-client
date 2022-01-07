@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { memo, FC } from "react";
 import { Box, Flex, MapChart, ScatterPlot, BarChart, GradientLineChart } from "components/atoms";
 import { ClimateCard } from "components/molecules";
 import { globalSurfaceAirTemp } from "configs";
@@ -7,9 +7,7 @@ interface IClimateDashboardProps {
   climate: IClimate;
 }
 
-export const ClimateDashboard: FC<IClimateDashboardProps> = ({
-  climate: { years, feelTempClimates, rainClimates },
-}) => {
+const ClimateDashboard: FC<IClimateDashboardProps> = ({ climate: { years, feelTempClimates, rainClimates } }) => {
   return (
     <Box o="hidden auto" w="100%" h="100%" p="2rem 10rem 4rem">
       <Flex j="space-between">
@@ -51,3 +49,5 @@ export const ClimateDashboard: FC<IClimateDashboardProps> = ({
     </Box>
   );
 };
+
+export default memo(ClimateDashboard);
