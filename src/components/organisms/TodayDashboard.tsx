@@ -71,7 +71,7 @@ export const TodayDashboard: FC<ITodayDashboardProps> = ({ weather, forecasts })
         />
       </Flex>
 
-      <ForecastCard isLaod={forecasts ? true : false} title="오늘의 날씨" datasets={forecasts} h="40rem" m="2rem 0 0" />
+      <ForecastCard isLoad={forecasts ? true : false} title="오늘의 날씨" datasets={forecasts} h="40rem" m="2rem 0 0" />
     </Box>
   );
 };

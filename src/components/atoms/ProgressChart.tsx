@@ -1,10 +1,17 @@
 import { FC, useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
+import { toDecimal } from "utils";
 import { Flex } from "./Flex";
+
+const fillChart = (percent: number) => keyframes`
+  0% { width: 0%; }
+  100% { width: ${percent}% }
+`;
 
 interface IStyledProgressChartProps {
   width: number;
   percent: number;
+  delay?: number;
   color?: string;
 }
 const StyledProgressChart = styled.div<IStyledProgressChartProps>`
@@ -19,9 +26,12 @@ const StyledProgressChart = styled.div<IStyledProgressChartProps>`
     content: "";
     position: absolute;
     left: 0;
-    width: ${({ percent }) => `${percent}%`};
     height: 1.2rem;
     background-color: ${({ color, theme }) => color || theme.color.blue};
+    animation: ${({ percent, delay }) =>
+      css`
+        ${fillChart(percent)} 0.3s linear ${delay}s forwards
+      `};
   }
 `;
 
@@ -42,8 +52,9 @@ const StyledProgressTick = styled.p<IStyledProgressTickProps>`
 `;
 
 interface IProgress {
-  percent: number;
   width: number;
+  percent: number;
+  delay?: number;
   color: string;
 }
 
@@ -57,27 +68,35 @@ interface IProgressChartProps {
   chartOptions: {
     range: number[];
     colors: string | string[];
+    defaultTicks?: number[];
   };
 }
 
 export const ProgressChart: FC<IProgressChartProps> = ({ chartData = 0, chartOptions }) => {
   const [progressList, setProgressList] = useState<IProgress[] | null>(null);
   const [tickList, setTickList] = useState<ITick[] | null>(null);
+  const [defaultTickList, setDefaultTickList] = useState<ITick[] | null>(null);
 
   useEffect(() => {
     if (chartOptions) {
-      const { range, colors } = chartOptions;
-      const width = Math.floor(100 / (range.length - 1));
+      const { range, colors, defaultTicks } = chartOptions;
+      const width = toDecimal(100 / (range.length - 1));
       const progressList = [];
       const tickList = [];
       let chartValue = chartData - range[0];
+      const defaultTickList =
+        defaultTicks?.map((tick) => ({
+          tick,
+          position: toDecimal(((tick - range[0]) * 100) / (range[range.length - 1] - range[0])),
+        })) || null;
 
       for (let i = 0; i < range.length; i++) {
         if (i < range.length - 1) {
           const rangeValue = range[i + 1] - range[i];
           const progress: IProgress = {
-            percent: 0,
             width,
+            percent: 0,
+            delay: (i + 1) * 0.3,
             color: typeof colors === "string" ? colors : colors[i],
           };
 
@@ -85,7 +104,7 @@ export const ProgressChart: FC<IProgressChartProps> = ({ chartData = 0, chartOpt
             progress.percent = 100;
             chartValue -= rangeValue;
           } else {
-            progress.percent = Math.floor((chartValue / rangeValue) * 100);
+            progress.percent = toDecimal((chartValue / rangeValue) * 100);
             chartValue = 0;
           }
 
@@ -100,29 +119,33 @@ export const ProgressChart: FC<IProgressChartProps> = ({ chartData = 0, chartOpt
 
       setProgressList(progressList);
       setTickList(tickList);
+      setDefaultTickList(defaultTickList);
     }
   }, [chartData, chartOptions]);
 
-  if (!progressList || !tickList) {
-    return null;
-  }
-
   return (
     <Flex po="relative" d="row" j="space-between" w="100%" h="1.2rem">
-      {progressList.map((progress, index) => (
+      {tickList?.map((data) => (
+        <StyledProgressTick key={`ct-${data.tick}`} position={data.position}>
+          {data.tick}
+        </StyledProgressTick>
+      )) || null}
+
+      {defaultTickList?.map((data) => (
+        <StyledProgressTick key={`cdt-${data.tick}`} position={data.position}>
+          {data.tick}
+        </StyledProgressTick>
+      )) || null}
+
+      {progressList?.map((progress, index) => (
         <StyledProgressChart
           key={`pc-${index}`}
           width={progress.width}
           percent={progress.percent}
+          delay={progress?.delay}
           color={progress.color}
         />
-      ))}
-
-      {tickList.map((data) => (
-        <StyledProgressTick key={`act-${data.tick}`} position={data.position}>
-          {data.tick}
-        </StyledProgressTick>
-      ))}
+      )) || null}
     </Flex>
   );
 };

@@ -20,7 +20,7 @@ const Forecast = styled(Flex)`
 `;
 
 interface IForecastCardProps {
-  isLaod: boolean;
+  isLoad: boolean;
   title: string;
   datasets?: IForecast[] | null;
   w?: string;
@@ -29,13 +29,13 @@ interface IForecastCardProps {
   p?: string;
 }
 
-export const ForecastCard: FC<IForecastCardProps> = ({ isLaod, title, datasets, w, h, m, p = "3rem 4rem 2rem" }) => {
+export const ForecastCard: FC<IForecastCardProps> = ({ isLoad, title, datasets, w, h, m, p = "3rem 4rem 2rem" }) => {
   return (
     <Box w={w} h={h} m={m} p={p} br="3rem" bgc="white">
-      {isLaod ? <Title3 size="sm">{title}</Title3> : <Skeleton w="10rem" h="1.6rem" />}
+      {isLoad ? <Title3 size="sm">{title}</Title3> : <Skeleton w="10rem" h="1.6rem" />}
 
       <Flex w="100%" h="calc(100% - 2.6rem)" m="1rem 0 0" p="0 0 1rem">
-        {isLaod ? (
+        {isLoad ? (
           <>
             <ForecastIndex d="column" a="center" w="6rem" h="100%">
               <Box h="2rem">

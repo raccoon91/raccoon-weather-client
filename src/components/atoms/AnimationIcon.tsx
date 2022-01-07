@@ -46,6 +46,7 @@ const StyledImage = styled.img<IStyledImageProps>`
   width: ${({ size }) => (size ? `${size}rem` : "10rem")};
   height: ${({ size }) => (size ? `${size}rem` : "10rem")};
   transform: scale(1.5);
+  user-select: none;
 `;
 
 interface IAnimationIconProps {

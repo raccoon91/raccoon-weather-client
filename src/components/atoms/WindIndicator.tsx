@@ -1,5 +1,5 @@
 import { FC } from "react";
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import { ReactComponent as Pointer } from "images/pointer.svg";
 import { Text } from "./Text";
 import { windDirectionName } from "utils";
@@ -7,7 +7,6 @@ import { windDirectionName } from "utils";
 interface IIndicatorWrapperProps {
   size?: number;
 }
-
 const IndicatorWrapper = styled.div<IIndicatorWrapperProps>`
   display: flex;
   align-items: center;
@@ -24,12 +23,19 @@ const IndicatorWrapper = styled.div<IIndicatorWrapperProps>`
   }
 `;
 
+const rotate = (windDirection: number) => keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(${windDirection}deg) }
+`;
+
 interface IPointerWrapperProps {
   windDirection: number;
 }
-
 const PointerWrapper = styled.div<IPointerWrapperProps>`
-  transform: ${({ windDirection }) => `rotate(${windDirection}deg)`};
+  animation: ${({ windDirection }) =>
+    css`
+      ${rotate(windDirection)} 0.5s linear forwards
+    `};
 `;
 
 interface IWindIndicatorProps {
