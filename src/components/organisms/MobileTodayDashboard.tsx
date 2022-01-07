@@ -80,7 +80,7 @@ export const MobileTodayDashboard: FC<IMobileTodayDashboardProps> = ({ weather, 
         />
       </Flex>
 
-      <ForecastCard isLaod={forecasts ? true : false} title="오늘의 날씨" datasets={forecasts} h="38rem" m="2rem 0 0" />
+      <ForecastCard isLoad={forecasts ? true : false} title="오늘의 날씨" datasets={forecasts} h="38rem" m="2rem 0 0" />
     </Box>
   );
 };

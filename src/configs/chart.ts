@@ -17,6 +17,7 @@ const airChartColor = [chartTheme.blue, chartTheme.green, chartTheme.yellow, cha
 export const tempChartOptions = {
   range: tempRange,
   colors: percentChartColor,
+  defaultTicks: [0],
 };
 
 export const percentChartOptions = {

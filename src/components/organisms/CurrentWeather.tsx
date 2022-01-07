@@ -58,7 +58,7 @@ export const CurrentWeather: FC<ICurrentWeatherProps> = ({ weather }) => {
             </Text>
           </>
         ) : (
-          <Skeleton w="80%" h="100%" />
+          <Skeleton w="100%" h="100%" />
         )}
       </Flex>
 
