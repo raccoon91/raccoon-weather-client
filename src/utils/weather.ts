@@ -58,9 +58,9 @@ export const getWeatherType = (sky: number, rainType: number, date?: string) => 
       return "snowyNight";
     }
   } else if (rainType === 4 || rainType === 5 || rainType === 6) {
-    return "rainDrop";
+    return "rainyDrop";
   } else {
-    return "cloude";
+    return "cloud";
   }
 };
 
