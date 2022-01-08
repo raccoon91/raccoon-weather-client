@@ -4,61 +4,53 @@ export const toDecimal = (value: number, digits = 2) => {
   return Number(value.toFixed(digits));
 };
 
-export const getDataRange = (datasets: number[], dataRange: { min?: number; max?: number }) => {
-  if (dataRange.min !== undefined && dataRange.max !== undefined) {
-    return { min: dataRange.min, max: dataRange.max, range: dataRange.max - dataRange.min };
-  } else {
-    let min = dataRange.min === undefined ? datasets[0] : dataRange.min;
-    let max = dataRange.max === undefined ? datasets[0] : dataRange.max;
+const getDataRange = (datasets: number[], data: { min?: number; max?: number }) => {
+  let min = data.min === undefined ? datasets[0] : data.min;
+  let max = data.max === undefined ? datasets[0] : data.max;
 
-    datasets.forEach((data) => {
-      if (dataRange.min === undefined && data < min) {
-        min = data;
-      }
+  datasets.forEach((value) => {
+    if (data.min === undefined && value < min) min = value;
+    if (data.max === undefined && value > max) max = value;
+  });
 
-      if (dataRange.max === undefined && data > max) {
-        max = data;
-      }
-    });
-
-    return {
-      min: dataRange.min === undefined ? min : dataRange.min,
-      max: dataRange.max === undefined ? max : dataRange.max,
-      range: max - min,
-    };
-  }
+  return {
+    min: data.min === undefined ? min : data.min,
+    max: data.max === undefined ? max : data.max,
+    range: max - min,
+  };
 };
 
-export const getStackDataRange = (datasets: number[][], dataRange: { min?: number; max?: number }) => {
-  if (dataRange.min !== undefined && dataRange.max !== undefined) {
-    return { min: dataRange.min, max: dataRange.max, range: dataRange.max - dataRange.min };
-  } else {
-    let min = datasets[0][0];
-    let max = datasets[0][0];
+const getStackDataRange = (datasets: number[][], data: { min?: number; max?: number }) => {
+  let min = data.min === undefined ? datasets[0][0] : data.min;
+  let max = data.max === undefined ? datasets[0][0] : data.max;
 
-    datasets.forEach((nestedDatas) => {
-      nestedDatas.forEach((data) => {
-        if (dataRange.min === undefined && data < min) {
-          min = data;
-        }
-
-        if (dataRange.max === undefined && data > max) {
-          max = data;
-        }
-      });
+  datasets.forEach((nestedDatas) => {
+    nestedDatas.forEach((value) => {
+      if (data.min === undefined && value < min) min = value;
+      if (data.max === undefined && value > max) max = value;
     });
+  });
 
-    return {
-      min: dataRange.min === undefined ? min : dataRange.min,
-      max: dataRange.max === undefined ? max : dataRange.max,
-      range: max - min,
-    };
+  return {
+    min: data.min === undefined ? min : data.min,
+    max: data.max === undefined ? max : data.max,
+    range: max - min,
+  };
+};
+
+export const getChartDataRange = (datasets: number[] | number[][], data: { min?: number; max?: number }) => {
+  if (data.min !== undefined && data.max !== undefined) {
+    return { min: data.min, max: data.max, range: data.max - data.min };
+  } else if (Array.isArray(datasets[0])) {
+    return getStackDataRange(datasets as number[][], data);
+  } else {
+    return getDataRange(datasets as number[], data);
   }
 };
 
 export const getCanvasPostion = (box: HTMLDivElement, canvasOptions: ICanvasOptions) => {
   const { clientWidth, clientHeight } = box;
-  const { chart, draw } = canvasOptions;
+  const { chart } = canvasOptions;
 
   return {
     startX: chart.paddingX + chart.yAxisWidth,
@@ -67,15 +59,36 @@ export const getCanvasPostion = (box: HTMLDivElement, canvasOptions: ICanvasOpti
     endY: clientHeight - chart.paddingY - chart.xAxisHeight,
     chartWidth: clientWidth - 2 * chart.paddingX - chart.yAxisWidth,
     chartHeight: clientHeight - 2 * chart.paddingY - chart.xAxisHeight,
+  };
+};
 
+export const getDrawPostion = (box: HTMLDivElement, canvasOptions: ICanvasOptions, dataLength: number) => {
+  const { clientWidth, clientHeight } = box;
+  const { chart, draw } = canvasOptions;
+
+  return {
     drawStartX: chart.paddingX + chart.yAxisWidth + draw.paddingX,
     drawStartY: chart.paddingY + draw.paddingY,
     drawEndX: clientWidth - chart.paddingX - draw.paddingX,
     drawEndY: clientHeight - chart.paddingY - chart.xAxisHeight - draw.paddingY,
     drawWidth: clientWidth - 2 * chart.paddingX - chart.yAxisWidth - 2 * draw.paddingX,
     drawHeight: clientHeight - 2 * chart.paddingY - chart.xAxisHeight - 2 * draw.paddingY,
+    nodeWidth: toDecimal((clientWidth - 2 * chart.paddingX - chart.yAxisWidth - 2 * draw.paddingX) / dataLength),
   };
 };
+
+export const getChartOptions = ({
+  box,
+  dataLength,
+  options,
+}: {
+  box: HTMLDivElement;
+  dataLength: number;
+  options: ICanvasOptions;
+}) => ({
+  ...getCanvasPostion(box, options),
+  ...getDrawPostion(box, options, dataLength),
+});
 
 const axisDefaultOptions = {
   alpha: 1,
@@ -165,6 +178,66 @@ export const drawXTick = (
   ctx.moveTo(positionX + 0.5, endY);
   ctx.lineTo(positionX + 0.5, endY + 5);
   ctx.stroke();
+};
+
+export const drawChartYTicks = ({
+  ctx,
+  min,
+  max,
+  range,
+  startX,
+  drawEndY,
+  drawHeight,
+  increment,
+  formatter,
+}: {
+  ctx: CanvasRenderingContext2D;
+  min: number;
+  max: number;
+  range: number;
+  startX: number;
+  drawEndY: number;
+  drawHeight: number;
+  increment: number;
+  formatter?: (value: number) => string;
+}) => {
+  for (let value = min; value <= max; value += increment) {
+    const positionY = drawEndY - toDecimal(((value - min) * drawHeight) / range);
+
+    drawYTick(ctx, startX, positionY, formatter ? formatter(value) : String(value));
+  }
+};
+
+export const drawChartXTicks = ({
+  ctx,
+  labels,
+  nodeWidth,
+  endY,
+  drawStartX,
+  maxCount,
+  minCount,
+}: {
+  ctx: CanvasRenderingContext2D;
+  labels: string[];
+  nodeWidth: number;
+  endY: number;
+  drawStartX: number;
+  maxCount: number;
+  minCount: number;
+}) => {
+  let xTickSkip = 1;
+
+  if (window.innerWidth > 1024) {
+    xTickSkip = Math.ceil(labels.length / maxCount);
+  } else {
+    xTickSkip = Math.ceil(labels.length / minCount);
+  }
+
+  for (let i = 0; i < labels.length; i += xTickSkip) {
+    const positionMidX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
+
+    drawXTick(ctx, positionMidX, endY, labels[i].slice(2));
+  }
 };
 
 const dotDefaultOptions = {

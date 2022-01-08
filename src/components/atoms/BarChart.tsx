@@ -1,5 +1,5 @@
 import { FC, useRef, useEffect } from "react";
-import { animateBarChart, drawBarChart, barChartMouseOver } from "utils";
+import { getChartDataRange, animateBarChart, drawBarChart, barChartMouseOver } from "utils";
 import { Box } from "./Box";
 
 const barChartDefaultOptions = {
@@ -10,7 +10,7 @@ const barChartDefaultOptions = {
     xAxisHeight: 10,
   },
   draw: { paddingX: 0, paddingY: 0 },
-  dataRange: { min: 0 },
+  data: { min: 0 },
 };
 
 interface IBarChartProps {
@@ -31,19 +31,20 @@ export const BarChart: FC<IBarChartProps> = ({ labels, datasets, options = barCh
       const barOptions = {
         chart: { ...barChartDefaultOptions.chart, ...options.chart },
         draw: { ...barChartDefaultOptions.draw, ...options.draw },
-        dataRange: { ...barChartDefaultOptions.dataRange, ...options.dataRange },
+        data: { ...barChartDefaultOptions.data, ...options.data },
       };
+      const dataRange = getChartDataRange(datasets, barOptions.data);
 
-      animateBarChart(box, canvas, labels, datasets, barOptions);
+      animateBarChart(box, canvas, labels, datasets, dataRange, barOptions);
 
       if (window.innerWidth > 1024) {
         canvas.onmousemove = (event: MouseEvent) => {
-          barChartMouseOver(event, box, canvas, labels, datasets, barOptions);
+          barChartMouseOver(event, box, canvas, labels, datasets, dataRange, barOptions);
         };
       }
 
       const redrawBarChart = () => {
-        drawBarChart(box, canvas, labels, datasets, barOptions);
+        drawBarChart(box, canvas, labels, datasets, dataRange, barOptions);
       };
 
       window.addEventListener("resize", redrawBarChart);

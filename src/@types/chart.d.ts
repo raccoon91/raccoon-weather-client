@@ -1,24 +1,40 @@
-interface IChartOptions {
-  paddingX: number;
-  paddingY: number;
-  yAxisWidth: number;
-  xAxisHeight: number;
+interface ICanvasOptions {
+  chart: {
+    paddingX: number;
+    paddingY: number;
+    yAxisWidth: number;
+    xAxisHeight: number;
+  };
+  draw: {
+    paddingX: number;
+    paddingY: number;
+  };
+  data: {
+    min?: number;
+    max?: number;
+  };
 }
 
-interface IDrawOptions {
-  paddingX: number;
-  paddingY: number;
+interface IChartOptinos {
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+  chartWidth: number;
+  chartHeight: number;
+  drawStartX: number;
+  drawStartY: number;
+  drawEndX: number;
+  drawEndY: number;
+  drawWidth: number;
+  drawHeight: number;
+  nodeWidth: number;
 }
 
 interface IDataRange {
-  min?: number;
-  max?: number;
-}
-
-interface ICanvasOptions {
-  chart: IChartOptions;
-  draw: IDrawOptions;
-  dataRange: IDataRange;
+  min: number;
+  max: number;
+  range: number;
 }
 
 interface IAxisOptions {

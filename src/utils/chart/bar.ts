@@ -1,22 +1,57 @@
-import { theme } from "configs";
-import {
-  toDecimal,
-  getDataRange,
-  getCanvasPostion,
-  drawYAxis,
-  drawXAxis,
-  drawYTick,
-  drawXTick,
-  drawBar,
-} from "./common";
+import { chartTheme } from "configs";
+import { toDecimal, getChartOptions, drawYAxis, drawXAxis, drawChartYTicks, drawChartXTicks, drawBar } from "./common";
 
-let percent = 0;
+const createBarChartFrames = (
+  datasets: number[],
+  range: number,
+  drawStartX: number,
+  drawEndY: number,
+  nodeWidth: number,
+  drawHeight: number
+) => {
+  const frames = [];
+
+  for (let i = 0; i < datasets.length; i++) {
+    const x = i * nodeWidth + drawStartX;
+    const y = drawEndY;
+    const w = nodeWidth;
+    const originH = -toDecimal((datasets[i] * drawHeight) / range);
+
+    for (let j = 0; j < 3; j++) {
+      const h = toDecimal((originH * j) / 3);
+
+      frames.push({ x, y, w, h });
+    }
+
+    frames.push({ x, y, w, h: originH });
+  }
+
+  return frames;
+};
+
+const requestBarChartAnimationFrame = (
+  ctx: CanvasRenderingContext2D,
+  index: number,
+  nodeWidth: number,
+  frames: { x: number; y: number; w: number; h: number }[],
+  barOptions: IBarOptions
+) => {
+  ctx.clearRect(frames[index].x, frames[index].y, frames[index].w, frames[index].h);
+  drawBar(ctx, frames[index].x, frames[index].y, frames[index].w, frames[index].h, barOptions);
+
+  if (index < frames.length - 1) {
+    requestAnimationFrame(() => requestBarChartAnimationFrame(ctx, index + 1, nodeWidth, frames, barOptions));
+  }
+};
+
+const yTickFormatter = (value: number) => value.toFixed(0);
 
 export const animateBarChart = (
   box: HTMLDivElement,
   canvas: HTMLCanvasElement,
   labels: string[],
   datasets: number[],
+  dataRange: IDataRange,
   options: ICanvasOptions
 ) => {
   const { clientWidth, clientHeight } = box;
@@ -24,56 +59,32 @@ export const animateBarChart = (
 
   if (!ctx) return;
 
-  if (percent < 100) {
-    percent += 2;
-    requestAnimationFrame(() => animateBarChart(box, canvas, labels, datasets, options));
-  }
-
   canvas.width = clientWidth;
   canvas.height = clientHeight;
 
-  const { min, max, range } = getDataRange(datasets, options.dataRange);
-  const { startX, startY, endX, endY, drawStartX, drawEndY, drawWidth, drawHeight } = getCanvasPostion(box, options);
-  const nodeWidth = toDecimal(drawWidth / datasets.length);
+  const { min, max, range } = dataRange;
+  const { startX, startY, endX, endY, drawStartX, drawEndY, drawHeight, nodeWidth } = getChartOptions({
+    box,
+    dataLength: datasets.length,
+    options,
+  });
 
   drawYAxis(ctx, startX, startY, endY);
   drawXAxis(ctx, startX, endX, endY);
 
-  for (let i = 0; i < datasets.length; i++) {
-    const positionX = i * nodeWidth + drawStartX;
-    const positionY = drawEndY - toDecimal((toDecimal((datasets[i] * percent) / 100) * drawHeight) / range);
-    const height = drawEndY - positionY;
+  const barOptions = {
+    barColor: chartTheme.blue,
+    barAlpha: 0.5,
+    strokeColor: chartTheme.blue,
+    strokeAlpha: 1,
+    strokeWidth: 0.5,
+  };
 
-    const barOptions = {
-      barColor: theme.color.blue,
-      barAlpha: 0.5,
-      strokeColor: theme.color.blue,
-      strokeAlpha: 1,
-      strokeWidth: 0.5,
-    };
+  const frames = createBarChartFrames(datasets, range, drawStartX, drawEndY, nodeWidth, drawHeight);
+  requestBarChartAnimationFrame(ctx, 0, nodeWidth, frames, barOptions);
 
-    drawBar(ctx, positionX, positionY, nodeWidth, height, barOptions);
-  }
-
-  for (let value = min; value <= max; value += 500) {
-    const positionY = drawEndY - toDecimal((value * drawHeight) / range);
-
-    drawYTick(ctx, startX, positionY, value.toFixed(0));
-  }
-
-  let xTickSkip = 1;
-
-  if (window.innerWidth > 1024) {
-    xTickSkip = Math.ceil(labels.length / 10);
-  } else {
-    xTickSkip = Math.ceil(labels.length / 8);
-  }
-
-  for (let i = 0; i < labels.length; i += xTickSkip) {
-    const middleX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
-
-    drawXTick(ctx, middleX, endY, labels[i].slice(2));
-  }
+  drawChartYTicks({ ctx, min, max, range, startX, drawEndY, drawHeight, increment: 500, formatter: yTickFormatter });
+  drawChartXTicks({ ctx, labels, nodeWidth, endY, drawStartX, maxCount: 10, minCount: 8 });
 };
 
 export const drawBarChart = (
@@ -81,6 +92,7 @@ export const drawBarChart = (
   canvas: HTMLCanvasElement,
   labels: string[],
   datasets: number[],
+  dataRange: IDataRange,
   options: ICanvasOptions,
   hoverId?: number
 ) => {
@@ -92,22 +104,25 @@ export const drawBarChart = (
   canvas.width = clientWidth;
   canvas.height = clientHeight;
 
-  const { min, max, range } = getDataRange(datasets, options.dataRange);
-  const { startX, startY, endX, endY, drawStartX, drawEndY, drawWidth, drawHeight } = getCanvasPostion(box, options);
-  const nodeWidth = toDecimal(drawWidth / datasets.length);
+  const { min, max, range } = dataRange;
+  const { startX, startY, endX, endY, drawStartX, drawEndY, drawHeight, nodeWidth } = getChartOptions({
+    box,
+    dataLength: datasets.length,
+    options,
+  });
 
   drawYAxis(ctx, startX, startY, endY);
   drawXAxis(ctx, startX, endX, endY);
 
   for (let i = 0; i < datasets.length; i++) {
     const positionX = i * nodeWidth + drawStartX;
-    const positionY = drawEndY - toDecimal((datasets[i] * drawHeight) / range);
-    const height = drawEndY - positionY;
+    const positionY = drawEndY;
+    const height = -toDecimal((datasets[i] * drawHeight) / range);
 
     const barOptions = {
-      barColor: theme.color.blue,
+      barColor: chartTheme.blue,
       barAlpha: i === hoverId ? 1 : 0.5,
-      strokeColor: theme.color.blue,
+      strokeColor: chartTheme.blue,
       strokeAlpha: 1,
       strokeWidth: 0.5,
     };
@@ -115,25 +130,8 @@ export const drawBarChart = (
     drawBar(ctx, positionX, positionY, nodeWidth, height, barOptions);
   }
 
-  for (let value = min; value <= max; value += 500) {
-    const positionY = drawEndY - toDecimal((value * drawHeight) / range);
-
-    drawYTick(ctx, startX, positionY, value.toFixed(0));
-  }
-
-  let xTickSkip = 1;
-
-  if (window.innerWidth > 1024) {
-    xTickSkip = Math.ceil(labels.length / 10);
-  } else {
-    xTickSkip = Math.ceil(labels.length / 8);
-  }
-
-  for (let i = 0; i < labels.length; i += xTickSkip) {
-    const middleX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
-
-    drawXTick(ctx, middleX, endY, labels[i].slice(2));
-  }
+  drawChartYTicks({ ctx, min, max, range, startX, drawEndY, drawHeight, increment: 500, formatter: yTickFormatter });
+  drawChartXTicks({ ctx, labels, nodeWidth, endY, drawStartX, maxCount: 10, minCount: 8 });
 };
 
 export const barChartMouseOver = (
@@ -142,14 +140,14 @@ export const barChartMouseOver = (
   canvas: HTMLCanvasElement,
   labels: string[],
   datasets: number[],
+  dataRange: IDataRange,
   options: ICanvasOptions
 ) => {
   const mouseX = event.offsetX;
   const mouseY = event.offsetY;
 
-  const { range } = getDataRange(datasets, { min: 0 });
-  const { startX, endY, drawHeight, drawWidth } = getCanvasPostion(box, options);
-  const nodeWidth = toDecimal(drawWidth / datasets.length);
+  const { range } = dataRange;
+  const { startX, endY, drawHeight, nodeWidth } = getChartOptions({ box, dataLength: datasets.length, options });
 
   let hoverId: number | undefined;
 
@@ -165,5 +163,5 @@ export const barChartMouseOver = (
     }
   }
 
-  drawBarChart(box, canvas, labels, datasets, options, hoverId);
+  drawBarChart(box, canvas, labels, datasets, dataRange, options, hoverId);
 };

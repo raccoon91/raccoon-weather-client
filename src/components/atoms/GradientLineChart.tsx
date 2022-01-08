@@ -1,5 +1,5 @@
 import { FC, useRef, useEffect } from "react";
-import { drawGradientLineChart, gradientLineMouseOver } from "utils";
+import { getChartDataRange, animateGradientLineChart, drawGradientLineChart, gradientLineMouseOver } from "utils";
 import { Box } from "./Box";
 
 const gradientLineDefaultOptions = {
@@ -13,7 +13,7 @@ const gradientLineDefaultOptions = {
     paddingX: 0,
     paddingY: 10,
   },
-  dataRange: {
+  data: {
     min: -0.5,
     max: 1,
   },
@@ -41,19 +41,20 @@ export const GradientLineChart: FC<IGradientLineChartProps> = ({
       const gradientLineOptions = {
         chart: { ...gradientLineDefaultOptions.chart, ...options.chart },
         draw: { ...gradientLineDefaultOptions.draw, ...options.draw },
-        dataRange: { ...gradientLineDefaultOptions.dataRange, ...options.dataRange },
+        data: { ...gradientLineDefaultOptions.data, ...options.data },
       };
+      const dataRange = getChartDataRange(datasets, gradientLineOptions.data);
 
-      drawGradientLineChart(box, canvas, labels, datasets, gradientLineOptions);
+      animateGradientLineChart(box, canvas, labels, datasets, dataRange, gradientLineOptions);
 
       if (window.innerWidth > 1024) {
         canvas.onmousemove = (event: MouseEvent) => {
-          gradientLineMouseOver(event, box, canvas, labels, datasets, gradientLineOptions);
+          gradientLineMouseOver(event, box, canvas, labels, datasets, dataRange, gradientLineOptions);
         };
       }
 
       const redrawGradientLineChart = () => {
-        drawGradientLineChart(box, canvas, labels, datasets, gradientLineOptions);
+        drawGradientLineChart(box, canvas, labels, datasets, dataRange, gradientLineOptions);
       };
 
       window.addEventListener("resize", redrawGradientLineChart);

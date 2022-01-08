@@ -1,5 +1,5 @@
 import { FC, useRef, useEffect } from "react";
-import { animateScatterPlot, drawScatterPlot, scatterPlotMouseOver } from "utils";
+import { getChartDataRange, animateScatterPlot, drawScatterPlot, scatterPlotMouseOver } from "utils";
 import { Box } from "./Box";
 
 const scatterPlotDefaultOptions = {
@@ -13,7 +13,7 @@ const scatterPlotDefaultOptions = {
     paddingX: 5,
     paddingY: 5,
   },
-  dataRange: {
+  data: {
     min: 30,
     max: 38,
     range: 55,
@@ -38,19 +38,20 @@ export const ScatterPlot: FC<IScatterPlotProps> = ({ labels, datasets, options =
       const scatterPlotOptions = {
         chart: { ...scatterPlotDefaultOptions.chart, ...options.chart },
         draw: { ...scatterPlotDefaultOptions.draw, ...options.draw },
-        dataRange: { ...scatterPlotDefaultOptions.dataRange, ...options.dataRange },
+        data: { ...scatterPlotDefaultOptions.data, ...options.data },
       };
+      const dataRange = getChartDataRange(datasets, scatterPlotOptions.data);
 
-      animateScatterPlot(box, canvas, labels, datasets, scatterPlotOptions);
+      animateScatterPlot(box, canvas, labels, datasets, dataRange, scatterPlotOptions);
 
       if (window.innerWidth > 1024) {
         canvas.onmousemove = (event: MouseEvent) => {
-          scatterPlotMouseOver(event, box, canvas, labels, datasets, scatterPlotOptions);
+          scatterPlotMouseOver(event, box, canvas, labels, datasets, dataRange, scatterPlotOptions);
         };
       }
 
       const redrawScatterPlot = () => {
-        drawScatterPlot(box, canvas, labels, datasets, scatterPlotOptions);
+        drawScatterPlot(box, canvas, labels, datasets, dataRange, scatterPlotOptions);
       };
 
       window.addEventListener("resize", redrawScatterPlot);
