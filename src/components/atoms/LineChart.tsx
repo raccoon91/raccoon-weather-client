@@ -1,5 +1,5 @@
 import { FC, useRef, useEffect } from "react";
-import { animateLineChart, drawLineChart } from "utils";
+import { getChartDataRange, animateLineChart, drawLineChart } from "utils";
 import { Box } from "./Box";
 
 const lineDefaultOptions = {
@@ -10,7 +10,7 @@ const lineDefaultOptions = {
     xAxisHeight: 0,
   },
   draw: { paddingX: 0, paddingY: 0 },
-  dataRange: {},
+  data: {},
 };
 
 interface ILineChartProps {
@@ -30,13 +30,14 @@ export const LineChart: FC<ILineChartProps> = ({ datasets, options = lineDefault
       const lineOptions = {
         chart: { ...lineDefaultOptions.chart, ...options.chart },
         draw: { ...lineDefaultOptions.draw, ...options.draw },
-        dataRange: { ...lineDefaultOptions.dataRange, ...options.dataRange },
+        data: { ...lineDefaultOptions.data, ...options.data },
       };
+      const dataRange = getChartDataRange(datasets, lineOptions.data);
 
-      animateLineChart(box, canvas, datasets, lineOptions);
+      animateLineChart(box, canvas, datasets, dataRange, lineOptions);
 
       const redrawLineChart = () => {
-        drawLineChart(box, canvas, datasets, lineOptions);
+        drawLineChart(box, canvas, datasets, dataRange, lineOptions);
       };
 
       window.addEventListener("resize", redrawLineChart);

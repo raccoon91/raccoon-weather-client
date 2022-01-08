@@ -1,54 +1,61 @@
 import { chartTheme } from "configs";
-import { toDecimal, getDataRange, getCanvasPostion, drawDot, drawLine } from "./common";
+import { toDecimal, getChartOptions, drawDot, drawLine } from "./common";
 
-const getLinePoints = (
+const getPoint = (
+  index: number,
+  value: number,
+  min: number,
+  range: number,
+  drawStartX: number,
+  drawEndY: number,
+  nodeWidth: number,
+  drawHeight: number
+) => ({
+  x: index * nodeWidth + drawStartX + toDecimal(nodeWidth / 2),
+  y: drawEndY - toDecimal(((value - min) * drawHeight) / range),
+});
+
+const createLineChartFrames = (
   datasets: number[],
   min: number,
   range: number,
-  startX: number,
-  endY: number,
-  width: number,
-  height: number
+  drawStartX: number,
+  drawEndY: number,
+  nodeWidth: number,
+  drawHeight: number
 ) => {
-  const waypoints = [];
+  const frames = [];
+  const count = 7;
 
   for (let i = 1; i < datasets.length; i++) {
-    const pt0 = {
-      x: (i - 1) * width + startX + toDecimal(width / 2),
-      y: endY - toDecimal(((datasets[i - 1] - min) * height) / range),
-    };
-    const pt1 = {
-      x: i * width + startX + toDecimal(width / 2),
-      y: endY - toDecimal(((datasets[i] - min) * height) / range),
-    };
-    const dx = pt1.x - pt0.x;
-    const dy = pt1.y - pt0.y;
+    const ps = getPoint(i - 1, datasets[i - 1], min, range, drawStartX, drawEndY, nodeWidth, drawHeight);
+    const pe = getPoint(i, datasets[i], min, range, drawStartX, drawEndY, nodeWidth, drawHeight);
 
-    for (let j = 0; j < 5; j++) {
-      const x = pt0.x + toDecimal((dx * j) / 5);
-      const y = pt0.y + toDecimal((dy * j) / 5);
+    let x0 = ps.x;
+    let y0 = ps.y;
+    const dx = toDecimal((pe.x - ps.x) / count);
+    const dy = toDecimal((pe.y - ps.y) / count);
 
-      waypoints.push({ x, y });
+    for (let j = 0; j < count - 1; j++) {
+      frames.push({ x0, y0, x1: (x0 += dx), y1: (y0 += dy) });
     }
 
-    if (i === datasets.length - 1) {
-      waypoints.push({ x: pt1.x, y: pt1.y });
-    }
+    frames.push({ x0, y0, x1: pe.x, y1: pe.y });
   }
 
-  return waypoints;
+  return frames;
 };
 
-const requestLineChartAnimate = (
+const requestLineChartAnimationFrame = (
   ctx: CanvasRenderingContext2D,
   index: number,
-  points: { x: number; y: number }[],
+  frames: { x0: number; y0: number; x1: number; y1: number }[],
   lineOptions?: ILineOptions
 ) => {
-  drawLine(ctx, points[index - 1].x, points[index - 1].y, points[index].x, points[index].y, lineOptions);
+  drawLine(ctx, frames[index].x0, frames[index].y0, frames[index].x1, frames[index].y1, lineOptions);
 
-  if (index < points.length - 1) {
-    requestAnimationFrame(() => requestLineChartAnimate(ctx, index + 1, points, lineOptions));
+  if (index < frames.length - 1) {
+    requestAnimationFrame(() => requestLineChartAnimationFrame(ctx, index + 1, frames, lineOptions));
   }
 };
 
@@ -56,6 +63,7 @@ export const animateLineChart = (
   box: HTMLDivElement,
   canvas: HTMLCanvasElement,
   datasets: number[],
+  dataRange: IDataRange,
   options: ICanvasOptions
 ) => {
   const { clientWidth, clientHeight } = box;
@@ -66,9 +74,12 @@ export const animateLineChart = (
   canvas.width = clientWidth;
   canvas.height = clientHeight;
 
-  const { min, range } = getDataRange(datasets, options.dataRange);
-  const { drawStartX, drawEndY, drawWidth, drawHeight } = getCanvasPostion(box, options);
-  const nodeWidth = toDecimal(drawWidth / datasets.length);
+  const { min, range } = dataRange;
+  const { drawStartX, drawEndY, drawHeight, nodeWidth } = getChartOptions({
+    box,
+    dataLength: datasets.length,
+    options,
+  });
 
   const dotOptions = { size: 3, color: chartTheme.green, alpha: 1 };
 
@@ -79,14 +90,15 @@ export const animateLineChart = (
     drawDot(ctx, positionX, positionY, dotOptions);
   }
 
-  const points = getLinePoints(datasets, min, range, drawStartX, drawEndY, nodeWidth, drawHeight);
-  requestLineChartAnimate(ctx, 1, points, { color: chartTheme.green });
+  const frames = createLineChartFrames(datasets, min, range, drawStartX, drawEndY, nodeWidth, drawHeight);
+  requestLineChartAnimationFrame(ctx, 0, frames, { color: chartTheme.green });
 };
 
 export const drawLineChart = (
   box: HTMLDivElement,
   canvas: HTMLCanvasElement,
   datasets: number[],
+  dataRange: IDataRange,
   options: ICanvasOptions
 ) => {
   const { clientWidth, clientHeight } = box;
@@ -97,9 +109,12 @@ export const drawLineChart = (
   canvas.width = clientWidth;
   canvas.height = clientHeight;
 
-  const { min, range } = getDataRange(datasets, options.dataRange);
-  const { drawStartX, drawEndY, drawWidth, drawHeight } = getCanvasPostion(box, options);
-  const nodeWidth = toDecimal(drawWidth / datasets.length);
+  const { min, range } = dataRange;
+  const { drawStartX, drawEndY, drawHeight, nodeWidth } = getChartOptions({
+    box,
+    dataLength: datasets.length,
+    options,
+  });
 
   const dotOptions = { size: 3, color: chartTheme.green, alpha: 1 };
 
