@@ -88,7 +88,7 @@ export const MobileNavigation: FC = () => {
         <Text>Climate</Text>
       </MobileNavAnchor>
 
-      <MobileNavAnchor to="/today/map" end size="xl" weight="bold">
+      <MobileNavAnchor to="/map" end size="xl" weight="bold">
         <ImageWrapper>
           <MapIcon />
         </ImageWrapper>

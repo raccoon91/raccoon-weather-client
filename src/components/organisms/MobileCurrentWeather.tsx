@@ -1,11 +1,10 @@
 import { memo, FC } from "react";
+import { useAppSelector } from "hooks";
 import { Box, Flex, Title2, Title3, Text, AnimationIcon, Skeleton } from "components/atoms";
 
-interface IMobileCurrentWeatherProps {
-  weather: IWeather | null;
-}
+const MobileCurrentWeather: FC = () => {
+  const { weather } = useAppSelector((state) => state.today);
 
-const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ weather }) => {
   return (
     <Flex a="flex-end" j="flex-start">
       {weather ? (

@@ -1,36 +1,27 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useAppDispatch } from "hooks";
-import { getCurrentWeather } from "stores/slices/todaySlice";
 import { TodayPage } from "./TodayPage";
 import { ClimatePage } from "./ClimatePage";
-import { MapModalPage } from "./MapModalPage";
+import { MapPage } from "./MapPage";
 import { NotFoundPage } from "./NotFoundPage";
+import { WeatherLayout, ModalLayout } from "components/templates";
 
 const Pages: FC = () => {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getCurrentWeather());
-  }, []);
-
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/today" />} />
         <Route path="404" element={<NotFoundPage />} />
 
-        <Route path="today" element={<TodayPage />} />
-        <Route
-          path="today/map"
-          element={
-            <>
-              <TodayPage />
-              <MapModalPage />
-            </>
-          }
-        />
-        <Route path="climate" element={<ClimatePage />} />
+        <Route element={<WeatherLayout />}>
+          <Route path="today" element={<TodayPage />} />
+          <Route path="climate" element={<ClimatePage />} />
+        </Route>
+
+        <Route path=":map" element={<ModalLayout />}>
+          <Route index element={<MapPage />} />
+        </Route>
+
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
     </Router>
