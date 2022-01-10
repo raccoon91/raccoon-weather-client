@@ -1,16 +1,14 @@
 import { memo, FC, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAppSelector } from "hooks";
 import { Box, Flex, Title2, Title3, Text, Image, AnimationIcon, Skeleton } from "components/atoms";
 import MapIcon from "images/map.svg";
 
-interface ICurrentWeatherProps {
-  weather: IWeather | null;
-}
-
-const CurrentWeather: FC<ICurrentWeatherProps> = ({ weather }) => {
+const CurrentWeather: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showMapIcon, setShowMapIcon] = useState(true);
+  const { weather } = useAppSelector((state) => state.today);
 
   useEffect(() => {
     const [, path] = location.pathname.split("/");
@@ -23,9 +21,7 @@ const CurrentWeather: FC<ICurrentWeatherProps> = ({ weather }) => {
   }, []);
 
   const handleClickMapIcon = () => {
-    const [, path] = location.pathname.split("/");
-
-    navigate(`/${path}/map`);
+    navigate("/map");
   };
 
   return (
