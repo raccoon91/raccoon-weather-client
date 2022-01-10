@@ -34,13 +34,13 @@ interface INavAnchorProps {
   color?: string;
   size?: TTextSize;
   weight?: string;
-  exact?: boolean;
+  end?: boolean;
   children?: string | React.ReactNode;
 }
 
-export const NavAnchor: FC<INavAnchorProps> = ({ to, exact, children, ...style }) => {
+export const NavAnchor: FC<INavAnchorProps> = ({ to, end, children, ...style }) => {
   return (
-    <StyledNavLink to={to} exact={exact} activeClassName="active" {...style}>
+    <StyledNavLink to={to} end={end} className={({ isActive }) => (isActive ? " active" : "")} {...style}>
       {children}
     </StyledNavLink>
   );

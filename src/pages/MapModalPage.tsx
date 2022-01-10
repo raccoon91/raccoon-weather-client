@@ -1,15 +1,15 @@
 import { FC } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLayout } from "hooks";
 import { ModalLayout, MobileModalLayout } from "components/templates";
 import { MapModal } from "components/organisms";
 
 export const MapModalPage: FC = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const device = useLayout();
 
   const onCloseModal = () => {
-    history.goBack();
+    navigate(-1);
   };
 
   return device === "desktop" ? (

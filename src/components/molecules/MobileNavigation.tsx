@@ -74,21 +74,21 @@ const MobileNavAnchor = styled(NavAnchor)`
 export const MobileNavigation: FC = () => {
   return (
     <Flex po="relative" a="center" j="space-around" h="100%" bgc="white">
-      <MobileNavAnchor to="/today" exact size="xl" weight="bold">
+      <MobileNavAnchor to="/today" end size="xl" weight="bold">
         <ImageWrapper>
           <SunIcon />
         </ImageWrapper>
         <Text>Today</Text>
       </MobileNavAnchor>
 
-      <MobileNavAnchor to="/climate" exact size="xl" weight="bold">
+      <MobileNavAnchor to="/climate" end size="xl" weight="bold">
         <ImageWrapper>
           <CloudIcon />
         </ImageWrapper>
         <Text>Climate</Text>
       </MobileNavAnchor>
 
-      <MobileNavAnchor to="/today/map" exact size="xl" weight="bold">
+      <MobileNavAnchor to="/today/map" end size="xl" weight="bold">
         <ImageWrapper>
           <MapIcon />
         </ImageWrapper>
