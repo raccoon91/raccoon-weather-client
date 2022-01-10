@@ -1,5 +1,5 @@
 import { memo, FC, useState, useEffect } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Box, Flex, Title2, Title3, Text, Image, AnimationIcon, Skeleton } from "components/atoms";
 import MapIcon from "images/map.svg";
 
@@ -8,7 +8,7 @@ interface ICurrentWeatherProps {
 }
 
 const CurrentWeather: FC<ICurrentWeatherProps> = ({ weather }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const [showMapIcon, setShowMapIcon] = useState(true);
 
@@ -25,7 +25,7 @@ const CurrentWeather: FC<ICurrentWeatherProps> = ({ weather }) => {
   const handleClickMapIcon = () => {
     const [, path] = location.pathname.split("/");
 
-    history.push(`/${path}/map`);
+    navigate(`/${path}/map`);
   };
 
   return (
