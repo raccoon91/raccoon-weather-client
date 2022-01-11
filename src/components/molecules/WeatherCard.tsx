@@ -1,5 +1,6 @@
 import React, { FC } from "react";
-import { Box, Flex, Title3, Text, Skeleton } from "components/atoms";
+import { Box, Flex, Title3, Skeleton } from "components/atoms";
+import { UnitText } from "components/molecules";
 
 interface IWeatherCardProps {
   isLoad: boolean;
@@ -19,22 +20,9 @@ export const WeatherCard: FC<IWeatherCardProps> = ({ isLoad, title, value, unit,
       {isLoad ? <Title3 size="sm">{title}</Title3> : <Skeleton w="10rem" h="1.6rem" />}
 
       <Flex d="column" h="calc(100% - 2.6rem)" m="1rem 0 0">
-        <Flex a="flex-end" j="center" h="4rem">
-          {isLoad ? (
-            <>
-              <Text size="4xl" weight="bold">
-                {value}
-              </Text>
-              <Text size="xl" weight="bold" m="0 0 0.2rem 0.5rem">
-                {unit}
-              </Text>
-            </>
-          ) : (
-            <Skeleton w="8rem" h="4rem" />
-          )}
-        </Flex>
+        {isLoad ? <UnitText value={value} unit={unit} h="4rem" /> : <Skeleton w="8rem" h="4rem" />}
 
-        {isLoad ? <Box m="auto 0 0">{chart}</Box> : <Skeleton w="100%" h="2rem" m="auto 0 0" />}
+        {isLoad ? <Box m="auto 0 0">{chart}</Box> : <Skeleton h="2rem" m="auto 0 0" />}
       </Flex>
     </Box>
   );

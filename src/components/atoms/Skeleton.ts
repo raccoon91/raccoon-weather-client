@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 interface ISkeletonProps {
-  w: string;
+  w?: string;
   h: string;
   m?: string;
 }
 
 export const Skeleton = styled.div<ISkeletonProps>`
-  width: ${({ w }) => w};
+  width: ${({ w }) => w || "100%"};
   height: ${({ h }) => h};
   ${({ m }) => m && `margin: ${m};`}
   border-radius: 0.5rem;
