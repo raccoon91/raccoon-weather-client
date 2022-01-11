@@ -17,7 +17,7 @@ export const ClimateCard: FC<IClimateCardProps> = ({ isLoad, title, chart, w, h,
       {isLoad ? <Title3 size="sm">{title}</Title3> : <Skeleton w="10rem" h="1.6rem" />}
 
       <Box h="calc(100% - 2.6rem)" m="1rem 0 0">
-        {isLoad ? chart : <Skeleton w="100%" h="100%" />}
+        {isLoad ? chart : <Skeleton h="100%" />}
       </Box>
     </Box>
   );
