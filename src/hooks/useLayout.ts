@@ -1,7 +1,7 @@
 import { useState, useLayoutEffect } from "react";
 
 export const useLayout = () => {
-  const [device, setDevice] = useState<string | null>("mobile");
+  const [device, setDevice] = useState<"desktop" | "mobile">("mobile");
 
   useLayoutEffect(() => {
     const detectPageWidth = () => {
