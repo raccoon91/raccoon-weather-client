@@ -1,11 +1,29 @@
 import { FC } from "react";
-import { useOutletContext } from "react-router-dom";
 import { useAppSelector } from "hooks";
-import { ClimateDashboard, MobileClimateDashboard } from "components/organisms";
+import { CurrentWeather, MobileCurrentWeather, ClimateDashboard, MobileClimateDashboard } from "components/organisms";
+import { WeatherTemplate, MobileWeatherTemplate } from "components/templates";
 
-export const ClimatePage: FC = () => {
-  const device = useOutletContext<"desktop" | "mobile">();
+interface IClimatePageProps {
+  device: "desktop" | "mobile";
+}
+
+export const ClimatePage: FC<IClimatePageProps> = ({ device }) => {
+  const { weather } = useAppSelector((state) => state.today);
   const climate = useAppSelector((state) => state.climate);
 
-  return device === "desktop" ? <ClimateDashboard climate={climate} /> : <MobileClimateDashboard climate={climate} />;
+  if (device === "desktop") {
+    return (
+      <WeatherTemplate
+        current={<CurrentWeather weather={weather} />}
+        dashboard={<ClimateDashboard climate={climate} />}
+      />
+    );
+  }
+
+  return (
+    <MobileWeatherTemplate
+      current={<MobileCurrentWeather weather={weather} />}
+      dashboard={<MobileClimateDashboard climate={climate} />}
+    />
+  );
 };
