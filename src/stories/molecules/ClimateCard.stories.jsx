@@ -1,18 +1,23 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { ClimateCard } from "components/molecules";
 
 export default {
-  title: "Moleules/Climate Card",
+  title: "Molecules/Climate Card",
   component: ClimateCard,
   argTypes: {
     title: { control: "text" },
+    isLoad: { table: { disable: true } },
+    chart: { table: { disable: true } },
+    w: { table: { disable: true } },
+    h: { table: { disable: true } },
+    p: { table: { disable: true } },
+    m: { table: { disable: true } },
   },
-} as ComponentMeta<typeof ClimateCard>;
+};
 
-const Template: ComponentStory<typeof ClimateCard> = (args) => <ClimateCard {...args} />;
+const Template = (args) => <ClimateCard {...args} />;
 
-export const Loaded = Template.bind({});
-Loaded.args = {
+export const Card = Template.bind({});
+Card.args = {
   isLoad: true,
   title: "타이틀",
   chart: null,
