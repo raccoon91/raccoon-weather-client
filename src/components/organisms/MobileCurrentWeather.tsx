@@ -15,11 +15,13 @@ const MobileCurrentWeather: FC<IMobileCurrentWeatherProps> = ({ weather }) => {
         <Skeleton w="10rem" h="10rem" />
       )}
 
-      {weather ? (
-        <UnitText value={weather.temp} unit="°C" m="0 0 0 4rem" vSize="5xl" uSize="4xl" color="white" />
-      ) : (
-        <Skeleton w="16rem" h="7.5rem" m="0 0 0 4rem" />
-      )}
+      <Flex f="1" j="center">
+        {weather ? (
+          <UnitText value={weather.temp} unit="°C" vSize="5xl" uSize="4xl" color="white" />
+        ) : (
+          <Skeleton w="16rem" h="7.5rem" />
+        )}
+      </Flex>
 
       {weather ? (
         <Box m="0 0 0 auto">
