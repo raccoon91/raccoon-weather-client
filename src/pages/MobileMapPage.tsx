@@ -1,7 +1,8 @@
 import { FC, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Box } from "components/atoms";
 import { MapModal } from "components/organisms";
-import { MobileModalTemplate } from "components/templates";
+import { MobileDashboardTemplate } from "components/templates";
 
 interface IMobileMapPageProps {
   device: "desktop" | "mobile";
@@ -16,13 +17,11 @@ export const MobileMapPage: FC<IMobileMapPageProps> = ({ device }) => {
     }
   }, [device]);
 
-  const handleCloseModal = () => {
-    navigate(-1);
-  };
-
   return (
-    <MobileModalTemplate close={handleCloseModal}>
-      <MapModal />
-    </MobileModalTemplate>
+    <MobileDashboardTemplate>
+      <Box w="100%" h="100%" p="3rem 4rem" bgc="skyBlue">
+        <MapModal />
+      </Box>
+    </MobileDashboardTemplate>
   );
 };

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useAppDispatch, useLayout } from "hooks";
 import { getCurrentWeather, getTodayForecast } from "stores/slices/todaySlice";
 import { getClimate } from "stores/slices/climateSlice";
+import { WeatherPageTemplate } from "components/templates";
 import { TodayPage } from "./TodayPage";
 import { ClimatePage } from "./ClimatePage";
 import { MobileMapPage } from "./MobileMapPage";
@@ -24,9 +25,11 @@ const Pages: FC = () => {
         <Route path="/" element={<Navigate to="/today" />} />
         <Route path="404" element={<NotFoundPage />} />
 
-        <Route path="today" element={<TodayPage device={device} />} />
-        <Route path="climate" element={<ClimatePage device={device} />} />
-        <Route path="map" element={<MobileMapPage device={device} />} />
+        <Route element={<WeatherPageTemplate device={device} />}>
+          <Route path="today" element={<TodayPage device={device} />} />
+          <Route path="climate" element={<ClimatePage device={device} />} />
+          <Route path="map" element={<MobileMapPage device={device} />} />
+        </Route>
 
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
