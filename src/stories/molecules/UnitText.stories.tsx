@@ -1,5 +1,6 @@
 import { UnitText } from "components/molecules";
-import { colorOptions, titleSizeOptions, textSizeOptions } from "../configs";
+import { colorOptions, titleSizeOptions, textSizeOptions } from "stories/configs";
+import type { Story } from "stories/storybook";
 
 export default {
   title: "Molecules/Unit Text",
@@ -25,7 +26,15 @@ export default {
   },
 };
 
-const Template = (args) => <UnitText {...args} />;
+interface TemplateProps {
+  value: number;
+  unit: string;
+  vSize: TTitleSize;
+  uSize: TTextSize;
+  color: TColor;
+}
+
+const Template: Story<TemplateProps> = (args) => <UnitText {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

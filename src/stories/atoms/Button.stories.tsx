@@ -1,5 +1,6 @@
 import { Button } from "components/atoms";
-import { variantOptions, textSizeOptions } from "../configs";
+import { variantOptions, textSizeOptions } from "stories/configs";
+import type { Story } from "stories/storybook";
 
 export default {
   title: "Atoms/Button",
@@ -20,7 +21,13 @@ export default {
   },
 };
 
-const Template = (args) => {
+interface TemplateProps {
+  variant: TVariant;
+  size: TTextSize;
+  weight: string;
+}
+
+const Template: Story<TemplateProps> = (args) => {
   return <Button {...args}>클릭</Button>;
 };
 
