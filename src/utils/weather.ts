@@ -26,7 +26,9 @@ export const getFeelTemp = (temp: number, wind: number) => {
   return Number((13.12 + 0.6215 * temp - 11.37 * windCalib + 0.3965 * windCalib * temp).toFixed(1));
 };
 
-export const getWeatherType = (sky: number, rainType: number, date?: string) => {
+export const getWeatherType = (sky?: number, rainType?: number, date?: string) => {
+  if (sky === undefined || rainType === undefined || date === undefined) return null;
+
   const hour = getHour(date);
 
   if (rainType === 0) {

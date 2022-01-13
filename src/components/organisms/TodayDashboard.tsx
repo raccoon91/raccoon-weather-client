@@ -1,7 +1,33 @@
 import { FC } from "react";
-import { Box, Flex, ProgressChart, WindIndicator } from "components/atoms";
+import styled from "styled-components";
+import { Grid, ProgressChart, WindIndicator } from "components/atoms";
 import { WeatherCard, ForecastCard } from "components/molecules";
 import { tempChartOptions, percentChartOptions, pm10ChartOptions, pm25ChartOptions } from "configs";
+
+const TodayDashboardContainer = styled(Grid)`
+  @media ${({ theme }) => theme.device.desktop} {
+    gap: 2rem;
+    grid-template-columns: repeat(3, minmax(31%, 1fr));
+    grid-template-rows: 17rem 17rem 40rem;
+    grid-template-areas:
+      "  feel    humid    rain   "
+      "  pm10    pm25     wind   "
+      "forecast forecast forecast";
+    padding: 2rem 10rem 4rem;
+  }
+
+  @media ${({ theme }) => theme.device.mobile} {
+    gap: 2rem;
+    grid-template-columns: repeat(2, minmax(48%, 1fr));
+    grid-template-rows: 17rem 17rem 17rem 40rem;
+    grid-template-areas:
+      "   feel    rain  "
+      "   humid   wind  "
+      "   pm10    pm25  "
+      "forecast forecast";
+    padding: 1rem 3rem 3rem;
+  }
+`;
 
 interface ITodayDashboardProps {
   weather: IWeather | null;
@@ -10,68 +36,56 @@ interface ITodayDashboardProps {
 
 export const TodayDashboard: FC<ITodayDashboardProps> = ({ weather, forecasts }) => {
   return (
-    <Box o="hidden auto" w="100%" h="100%" p="2rem 10rem 4rem">
-      <Flex j="space-between">
-        <WeatherCard
-          isLoad={weather ? true : false}
-          title="체감온도"
-          w="calc((100% - 4rem) / 3)"
-          h="17rem"
-          unit="°C"
-          value={weather?.feel}
-          chart={<ProgressChart chartData={weather?.feel} chartOptions={tempChartOptions} />}
-        />
-        <WeatherCard
-          isLoad={weather ? true : false}
-          title="습도"
-          w="calc((100% - 4rem) / 3)"
-          h="17rem"
-          unit="%"
-          value={weather?.humid}
-          chart={<ProgressChart chartData={weather?.humid} chartOptions={percentChartOptions} />}
-        />
-        <WeatherCard
-          isLoad={weather ? true : false}
-          title="강수확률"
-          w="calc((100% - 4rem) / 3)"
-          h="17rem"
-          unit="%"
-          value={weather?.rain}
-          chart={<ProgressChart chartData={weather?.rain} chartOptions={percentChartOptions} />}
-        />
-      </Flex>
-
-      <Flex j="space-between" m="2rem 0 0">
-        <WeatherCard
-          isLoad={weather ? true : false}
-          title="미세먼지(PM10)"
-          w="calc((100% - 4rem) / 3)"
-          h="17rem"
-          unit="㎍/㎥"
-          value={weather?.pm10}
-          chart={<ProgressChart chartData={weather?.pm10} chartOptions={pm10ChartOptions} />}
-        />
-        <WeatherCard
-          isLoad={weather ? true : false}
-          title="미세먼지(PM25)"
-          w="calc((100% - 4rem) / 3)"
-          h="17rem"
-          unit="㎍/㎥"
-          value={weather?.pm25}
-          chart={<ProgressChart chartData={weather?.pm25} chartOptions={pm25ChartOptions} />}
-        />
-        <WeatherCard
-          isLoad={weather ? true : false}
-          title="바람"
-          w="calc((100% - 4rem) / 3)"
-          h="17rem"
-          unit="m/s"
-          value={weather?.wind}
-          chart={<WindIndicator windDirection={weather?.windDirection} />}
-        />
-      </Flex>
-
-      <ForecastCard isLoad={forecasts ? true : false} title="오늘의 날씨" datasets={forecasts} h="40rem" m="2rem 0 0" />
-    </Box>
+    <TodayDashboardContainer o="hidden auto" w="100%" h="100%">
+      <WeatherCard
+        area="feel"
+        isLoad={weather ? true : false}
+        title="체감온도"
+        unit="°C"
+        value={weather?.feel}
+        chart={<ProgressChart chartData={weather?.feel} chartOptions={tempChartOptions} />}
+      />
+      <WeatherCard
+        area="humid"
+        isLoad={weather ? true : false}
+        title="습도"
+        unit="%"
+        value={weather?.humid}
+        chart={<ProgressChart chartData={weather?.humid} chartOptions={percentChartOptions} />}
+      />
+      <WeatherCard
+        area="rain"
+        isLoad={weather ? true : false}
+        title="강수확률"
+        unit="%"
+        value={weather?.rain}
+        chart={<ProgressChart chartData={weather?.rain} chartOptions={percentChartOptions} />}
+      />
+      <WeatherCard
+        area="pm10"
+        isLoad={weather ? true : false}
+        title="미세먼지(PM10)"
+        unit="㎍/㎥"
+        value={weather?.pm10}
+        chart={<ProgressChart chartData={weather?.pm10} chartOptions={pm10ChartOptions} />}
+      />
+      <WeatherCard
+        area="pm25"
+        isLoad={weather ? true : false}
+        title="미세먼지(PM25)"
+        unit="㎍/㎥"
+        value={weather?.pm25}
+        chart={<ProgressChart chartData={weather?.pm25} chartOptions={pm25ChartOptions} />}
+      />
+      <WeatherCard
+        area="wind"
+        isLoad={weather ? true : false}
+        title="바람"
+        unit="m/s"
+        value={weather?.wind}
+        chart={<WindIndicator windDirection={weather?.windDirection} />}
+      />
+      <ForecastCard area="forecast" isLoad={forecasts ? true : false} title="오늘의 날씨" datasets={forecasts} />
+    </TodayDashboardContainer>
   );
 };

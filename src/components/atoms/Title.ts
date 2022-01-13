@@ -3,7 +3,7 @@ import styled from "styled-components";
 interface ITitleProps {
   m?: string;
   p?: string;
-  color?: string;
+  color?: TColor;
   size?: TTitleSize;
   weight?: string;
 }

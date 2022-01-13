@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-interface IBoxProps {
+interface IGridProps {
   po?: string;
   t?: string;
   r?: string;
@@ -9,37 +9,34 @@ interface IBoxProps {
   o?: string;
   gc?: string;
   gr?: string;
-  ga?: string;
+  gap?: string;
   w?: string;
   minw?: string;
   maxw?: string;
   h?: string;
   m?: string;
   p?: string;
-  br?: string;
   bgc?: TColor;
-  op?: string;
   z?: string;
 }
 
-export const Box = styled.div<IBoxProps>`
+export const Grid = styled.div<IGridProps>`
   ${({ po }) => po && `position: ${po};`}
   ${({ t }) => t && `top: ${t};`}
   ${({ r }) => r && `right: ${r};`}
   ${({ b }) => b && `bottom: ${b};`}
   ${({ l }) => l && `left: ${l};`}
   ${({ o }) => o && `overflow: ${o};`}
-  ${({ gr }) => gr && `grid-row: ${gr};`}
-  ${({ gc }) => gc && `grid-column: ${gc};`}  
-  ${({ ga }) => ga && `grid-area: ${ga};`}  
+  display: grid;
+  ${({ gap }) => gap && `grid-gap: ${gap};`}
+  ${({ gr }) => gr && `grid-template-rows: ${gr};`}
+  ${({ gc }) => gc && `grid-template-columns: ${gc};`}  
   ${({ w }) => w && `width: ${w};`}
   ${({ minw }) => minw && `min-width: ${minw};`}
   ${({ maxw }) => maxw && `max-width: ${maxw};`}
   ${({ h }) => h && `height: ${h};`}
   ${({ m }) => m && `margin: ${m};`}
   ${({ p }) => p && `padding: ${p};`}
-  ${({ br }) => br && `border-radius: ${br};`}
   ${({ bgc, theme }) => bgc && `background-color: ${theme.color[bgc] || "none"};`}
-  ${({ op }) => op && `opacity: ${op};`}
   ${({ z }) => z && `z-index: ${z};`}
 `;

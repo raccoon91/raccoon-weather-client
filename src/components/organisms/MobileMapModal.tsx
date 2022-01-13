@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import { changeCity } from "stores/slices";
+import { changeCity } from "stores/slices/todaySlice";
 import { Box, Flex, Image, MapChart } from "components/atoms";
 import CloseIcon from "images/close.svg";
 

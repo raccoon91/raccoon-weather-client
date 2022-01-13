@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 interface IStyledNavLinkProps {
   m?: string;
   p?: string;
-  color?: string;
+  color?: TColor;
   size?: TTextSize;
   weight?: string;
 }
@@ -31,7 +31,7 @@ interface INavAnchorProps {
   to: string;
   m?: string;
   p?: string;
-  color?: string;
+  color?: TColor;
   size?: TTextSize;
   weight?: string;
   end?: boolean;

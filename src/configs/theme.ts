@@ -1,3 +1,5 @@
+import type { DefaultTheme } from "styled-components";
+
 const color: { [key in TColor]: string } = {
   black: "#000000",
   white: "#ffffff",
@@ -58,9 +60,15 @@ const variant = (variant?: TVariant): string => {
   }
 };
 
-export const theme = {
+const device = {
+  desktop: "screen and (min-width: 1024px)",
+  mobile: "screen and (max-width: 1023px)",
+};
+
+export const theme: DefaultTheme = {
   color,
   textSize,
   titleSize,
   variant,
+  device,
 };

@@ -26,8 +26,8 @@ const Pages: FC = () => {
         <Route path="404" element={<NotFoundPage />} />
 
         <Route element={<WeatherPageTemplate device={device} />}>
-          <Route path="today" element={<TodayPage device={device} />} />
-          <Route path="climate" element={<ClimatePage device={device} />} />
+          <Route path="today" element={<TodayPage />} />
+          <Route path="climate" element={<ClimatePage />} />
           <Route path="map" element={<MobileMapPage device={device} />} />
         </Route>
 
