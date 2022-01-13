@@ -1,5 +1,6 @@
 import { Text } from "components/atoms";
-import { colorOptions, textSizeOptions } from "../configs";
+import { colorOptions, textSizeOptions } from "stories/configs";
+import type { Story } from "stories/storybook";
 
 export default {
   title: "Atoms/Text",
@@ -20,7 +21,13 @@ export default {
   },
 };
 
-const Template = (args) => {
+interface TemplateProps {
+  color: TColor;
+  size: TTextSize;
+  weight: string;
+}
+
+const Template: Story<TemplateProps> = (args) => {
   return <Text {...args}>텍스트</Text>;
 };
 

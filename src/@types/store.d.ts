@@ -1,6 +1,6 @@
 interface ICity {
-  id: number;
-  name: string;
+  id?: number;
+  name?: string;
   korName: string;
 }
 

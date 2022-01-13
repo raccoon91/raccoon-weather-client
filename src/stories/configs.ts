@@ -6,7 +6,7 @@ export const titleSizeOptions = ["2xs", "xs", "sm", "md", "lg", "xl", "2xl", "3x
 
 export const variantOptions = ["primary", "primary-outline"];
 
-export const weatherOptions = {
+export const weatherOptions: { [key: string]: { sky: number; rainType: number; date: string } } = {
   Day: { sky: 1, rainType: 0, date: "2022-01-01 08:00" },
   Night: { sky: 1, rainType: 0, date: "2022-01-01 20:00" },
   CloudDay: { sky: 3, rainType: 0, date: "2022-01-01 08:00" },

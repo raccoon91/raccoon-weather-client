@@ -1,5 +1,6 @@
 import { Title1 } from "components/atoms";
-import { colorOptions, titleSizeOptions } from "../configs";
+import { colorOptions, titleSizeOptions } from "stories/configs";
+import type { Story } from "stories/storybook";
 
 export default {
   title: "Atoms/Title",
@@ -20,7 +21,13 @@ export default {
   },
 };
 
-const Template = (args) => {
+interface TemplateProps {
+  color: TColor;
+  size: TTitleSize;
+  weight: string;
+}
+
+const Template: Story<TemplateProps> = (args) => {
   return <Title1 {...args}>타이틀</Title1>;
 };
 

@@ -1,5 +1,6 @@
 import { WeatherIcon } from "components/atoms";
-import { weatherOptions } from "../configs";
+import { weatherOptions } from "stories/configs";
+import type { Story } from "stories/storybook";
 
 export default {
   title: "Atoms/Weather Icon",
@@ -16,10 +17,15 @@ export default {
   },
 };
 
-const Template = ({ type }) => {
-  const args = weatherOptions[type];
+interface TemplateProps {
+  type: string;
+  size: number;
+}
 
-  return <WeatherIcon {...args} />;
+const Template: Story<TemplateProps> = (args) => {
+  const props = weatherOptions[args.type];
+
+  return <WeatherIcon {...props} size={args.size} />;
 };
 
 export const Default = Template.bind({});
