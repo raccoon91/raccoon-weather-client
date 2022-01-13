@@ -2,13 +2,27 @@ import { FC, useState, useEffect } from "react";
 import styled from "styled-components";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAppSelector } from "hooks";
-import { Box, Flex } from "components/atoms";
+import { Grid, Box } from "components/atoms";
 import { Navigation, MobileNavigation } from "components/molecules";
-import { CurrentWeather, MobileCurrentWeather, MapModal } from "components/organisms";
+import { CurrentWeather, MapModal } from "components/organisms";
 import { ModalTemplate } from "components/templates";
 
 const DashboardWrapper = styled(Box)`
   border-top-left-radius: 3rem;
+`;
+
+const WeatherPageTemplateContainer = styled(Grid)`
+  @media ${({ theme }) => theme.device.desktop} {
+    grid-template-columns: 26rem calc(100vw - 26rem);
+    grid-template-rows: 100vh;
+    grid-template-areas: "current dashboard";
+  }
+
+  @media ${({ theme }) => theme.device.mobile} {
+    grid-template-columns: 100vw;
+    grid-template-rows: 16rem calc(100vh - 16rem);
+    grid-template-areas: "current" "dashboard";
+  }
 `;
 
 interface IWeatherPageTemplateProps {
@@ -40,49 +54,39 @@ export const WeatherPageTemplate: FC<IWeatherPageTemplateProps> = ({ device }) =
     }
   };
 
-  if (device === "desktop") {
-    return (
-      <>
+  return (
+    <>
+      {device === "desktop" ? (
         <ModalTemplate isOpen={isOpenMapModal} close={handleCloseMapModal}>
           <MapModal />
         </ModalTemplate>
+      ) : null}
 
-        <Box w="100vw" h="100vh" bgc="background">
-          <Flex o="hidden" w="100%" maxw="1920px" h="100%" m="0 auto" bgc="blue">
-            <Box w="26rem" p="9rem 3rem 3rem">
-              <CurrentWeather
-                weather={weather}
-                showMapModalButton={location.pathname === "/today"}
-                openMapModal={handleOpenMapModal}
-              />
+      <WeatherPageTemplateContainer o="hidden" maxw="1920px" m="0 auto" bgc="blue">
+        <Box ga="current">
+          <CurrentWeather
+            weather={weather}
+            showMapModalButton={device === "desktop" && location.pathname === "/today"}
+            openMapModal={handleOpenMapModal}
+          />
+        </Box>
+
+        <DashboardWrapper ga="dashboard" p="4rem 0 0" bgc="skyBlue">
+          {device === "desktop" ? (
+            <Box h="2rem" m="0 10rem 2rem">
+              <Navigation />
             </Box>
+          ) : null}
 
-            <DashboardWrapper w="calc(100% - 26rem)" p="4rem 0 0" bgc="skyBlue">
-              <Box h="2rem" m="0 10rem 2rem">
-                <Navigation />
-              </Box>
+          <Outlet />
 
-              <Outlet />
-            </DashboardWrapper>
-          </Flex>
-        </Box>
-      </>
-    );
-  }
-
-  return (
-    <Box o="hidden" w="100vw" h="100vh" bgc="blue">
-      <Box h="16rem" p="3rem 1rem 3rem 4rem">
-        <MobileCurrentWeather weather={weather} />
-      </Box>
-
-      <DashboardWrapper h="calc(100% - 16rem)" p="4rem 0 0" bgc="skyBlue">
-        <Outlet />
-
-        <Box h="7rem">
-          <MobileNavigation />
-        </Box>
-      </DashboardWrapper>
-    </Box>
+          {device === "mobile" ? (
+            <Box h="7rem">
+              <MobileNavigation />
+            </Box>
+          ) : null}
+        </DashboardWrapper>
+      </WeatherPageTemplateContainer>
+    </>
   );
 };

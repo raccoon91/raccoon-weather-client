@@ -3,7 +3,7 @@ import styled from "styled-components";
 interface ITextProps {
   m?: string;
   p?: string;
-  color?: string;
+  color?: TColor;
   size?: TTextSize;
   weight?: string;
 }

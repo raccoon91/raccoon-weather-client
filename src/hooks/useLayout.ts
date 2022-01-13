@@ -5,7 +5,7 @@ export const useLayout = () => {
 
   useLayoutEffect(() => {
     const detectPageWidth = () => {
-      if (window.innerWidth > 1024) {
+      if (window.innerWidth >= 1024) {
         setDevice("desktop");
       } else {
         setDevice("mobile");

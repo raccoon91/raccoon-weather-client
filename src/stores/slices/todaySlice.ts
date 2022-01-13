@@ -87,3 +87,5 @@ export const todaySlice = createSlice({
         state.forecasts = forecasts;
       }),
 });
+
+export const { changeCity } = todaySlice.actions;

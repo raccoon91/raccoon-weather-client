@@ -1,4 +1,4 @@
-import { memo, FC } from "react";
+import { FC } from "react";
 import styled from "styled-components";
 import { Box, Flex, Title3, Text, WeatherIcon, WindIndicator, LineChart, Skeleton } from "components/atoms";
 import { formatDate } from "utils";
@@ -20,18 +20,15 @@ const Forecast = styled(Flex)`
 `;
 
 interface IForecastCardProps {
+  area?: string;
   isLoad: boolean;
   title: string;
   datasets?: IForecast[] | null;
-  w?: string;
-  h?: string;
-  m?: string;
-  p?: string;
 }
 
-const ForecastCard: FC<IForecastCardProps> = ({ isLoad, title, datasets, w, h, m, p = "3rem 4rem 2rem" }) => {
+export const ForecastCard: FC<IForecastCardProps> = ({ area, isLoad, title, datasets }) => {
   return (
-    <Box w={w} h={h} m={m} p={p} br="3rem" bgc="white">
+    <Box ga={area} p="3rem 4rem 2rem" br="3rem" bgc="white">
       {isLoad ? <Title3 size="sm">{title}</Title3> : <Skeleton w="10rem" h="1.6rem" />}
 
       {isLoad ? (
@@ -94,5 +91,3 @@ const ForecastCard: FC<IForecastCardProps> = ({ isLoad, title, datasets, w, h, m
     </Box>
   );
 };
-
-export default memo(ForecastCard);
