@@ -1,17 +1,16 @@
 import styled from "styled-components";
-import { Grid } from "components/atoms";
+import { Box, Grid } from "components/atoms";
 import { CurrentWeather } from "components/organisms";
 import type { Story } from "stories/storybook";
 
-const CurrentWeatherContainer = styled(Grid)`
+const Wrapper = styled(Grid)`
   @media ${({ theme }) => theme.device.desktop} {
-    overflow: hidden auto;
     width: 26rem;
-    height: 100vh;
+    height: 80rem;
   }
 
   @media ${({ theme }) => theme.device.mobile} {
-    width: 100vw;
+    width: 100%;
     height: 16rem;
   }
 `;
@@ -30,9 +29,11 @@ interface TemplateProps {
 }
 
 const Template: Story<TemplateProps> = (args) => (
-  <CurrentWeatherContainer bgc="blue">
-    <CurrentWeather {...args} />
-  </CurrentWeatherContainer>
+  <Box o="auto" w="100%" h="100%">
+    <Wrapper bgc="blue">
+      <CurrentWeather {...args} />
+    </Wrapper>
+  </Box>
 );
 
 export const Weather = Template.bind({});
