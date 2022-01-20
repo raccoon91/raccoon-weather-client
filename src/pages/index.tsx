@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useAppDispatch, useLayout } from "hooks";
-import { getCurrentWeather, getTodayForecast } from "stores/slices/todaySlice";
+import { getWeather, getForecast } from "stores/slices/todaySlice";
 import { getClimate } from "stores/slices/climateSlice";
 import { WeatherPageTemplate } from "components/templates";
 import { TodayPage } from "./TodayPage";
@@ -14,8 +14,8 @@ const Pages: FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getCurrentWeather());
-    dispatch(getTodayForecast());
+    dispatch(getWeather());
+    dispatch(getForecast());
     dispatch(getClimate());
   }, []);
 

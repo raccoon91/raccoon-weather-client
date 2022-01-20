@@ -32,9 +32,7 @@ export const climateSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder.addCase(getClimate.fulfilled, (state, action) => {
-      if (!action.payload) {
-        return;
-      }
+      if (!action.payload) return;
 
       const { years, tempClimates, feelTempClimates, rainClimates } = action.payload;
 

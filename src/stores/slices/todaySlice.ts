@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { delayRequest, serverApi } from "api";
+import { serverApi } from "api";
 import { formatDate, getFeelTemp } from "utils";
 import type { AxiosResponse } from "axios";
 
@@ -9,11 +9,9 @@ const initialTodayState: ITodayWeather = {
   forecasts: null,
 };
 
-export const getCurrentWeather = createAsyncThunk("current/getCurrentWeather", async () => {
+export const getWeather = createAsyncThunk("today/getWeather", async () => {
   try {
     const search = window.localStorage.getItem("search") || "seoul";
-
-    await delayRequest();
 
     const response: AxiosResponse<IWeatherData> = await serverApi({
       method: "get",
@@ -28,11 +26,9 @@ export const getCurrentWeather = createAsyncThunk("current/getCurrentWeather", a
   }
 });
 
-export const getTodayForecast = createAsyncThunk("today/getTodayForecast", async () => {
+export const getForecast = createAsyncThunk("today/getForecast", async () => {
   try {
     const search = window.localStorage.getItem("search") || "seoul";
-
-    await delayRequest();
 
     const response: AxiosResponse<IForecastData[]> = await serverApi({
       method: "get",
@@ -61,10 +57,8 @@ export const todaySlice = createSlice({
   },
   extraReducers: (builder) =>
     builder
-      .addCase(getCurrentWeather.fulfilled, (state, action) => {
-        if (!action.payload) {
-          return;
-        }
+      .addCase(getWeather.fulfilled, (state, action) => {
+        if (!action.payload) return;
 
         const weather = action.payload;
 
@@ -74,10 +68,8 @@ export const todaySlice = createSlice({
           feel: getFeelTemp(weather.temp, weather.wind),
         };
       })
-      .addCase(getTodayForecast.fulfilled, (state, action) => {
-        if (!action.payload) {
-          return;
-        }
+      .addCase(getForecast.fulfilled, (state, action) => {
+        if (!action.payload) return;
 
         const forecasts = action?.payload?.map((forecast) => ({
           ...forecast,

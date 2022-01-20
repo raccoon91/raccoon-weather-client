@@ -1,6 +1,6 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { Grid, ProgressChart, WindIndicator } from "components/atoms";
+import { Grid, Text, Span, ProgressChart, WindIndicator } from "components/atoms";
 import { WeatherCard, ForecastCard } from "components/molecules";
 import { tempChartOptions, percentChartOptions, pm10ChartOptions, pm25ChartOptions } from "configs";
 
@@ -10,8 +10,8 @@ const TodayDashboardContainer = styled(Grid)`
     grid-template-columns: repeat(3, minmax(31%, 1fr));
     grid-template-rows: 17rem 17rem 40rem;
     grid-template-areas:
-      "  feel    humid    rain   "
-      "  pm10    pm25     wind   "
+      "  feel    rainProb  covid "
+      "  pm10    pm25      wind  "
       "forecast forecast forecast";
     padding: 2rem 10rem 4rem;
   }
@@ -21,8 +21,8 @@ const TodayDashboardContainer = styled(Grid)`
     grid-template-columns: repeat(2, minmax(48%, 1fr));
     grid-template-rows: 17rem 17rem 17rem 40rem;
     grid-template-areas:
-      "   feel    rain  "
-      "   humid   wind  "
+      "   feel    covid "
+      " rainProb  wind  "
       "   pm10    pm25  "
       "forecast forecast";
     padding: 1rem 3rem 3rem;
@@ -46,20 +46,24 @@ export const TodayDashboard: FC<ITodayDashboardProps> = ({ weather, forecasts })
         chart={<ProgressChart chartData={weather?.feel} chartOptions={tempChartOptions} />}
       />
       <WeatherCard
-        area="humid"
-        isLoad={weather ? true : false}
-        title="습도"
-        unit="%"
-        value={weather?.humid}
-        chart={<ProgressChart chartData={weather?.humid} chartOptions={percentChartOptions} />}
-      />
-      <WeatherCard
-        area="rain"
+        area="rainProb"
         isLoad={weather ? true : false}
         title="강수확률"
         unit="%"
-        value={weather?.rain}
-        chart={<ProgressChart chartData={weather?.rain} chartOptions={percentChartOptions} />}
+        value={weather?.rainProb}
+        chart={<ProgressChart chartData={weather?.rainProb} chartOptions={percentChartOptions} />}
+      />
+      <WeatherCard
+        area="covid"
+        isLoad={weather ? true : false}
+        title={`${weather?.city?.korName} 신규 확진자`}
+        unit="명"
+        value={weather?.caseIncrement?.toLocaleString()}
+        chart={
+          <Text size="xs" align="right">
+            누적 확진자 <Span weight="bold">{weather?.case?.toLocaleString()}</Span>명
+          </Text>
+        }
       />
       <WeatherCard
         area="pm10"

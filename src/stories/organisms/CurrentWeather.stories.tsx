@@ -47,10 +47,13 @@ Weather.args = {
     humid: 10,
     rain: 0,
     rainType: 0,
+    rainProb: 0,
     pm10: 10,
     pm25: 16,
     wind: 10,
     windDirection: 170,
+    case: 100,
+    caseIncrement: 10,
   },
 };
 
