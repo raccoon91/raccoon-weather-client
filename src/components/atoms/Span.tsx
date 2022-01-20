@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-interface ITextProps {
+interface ISpanProps {
   m?: string;
   p?: string;
   color?: TColor;
@@ -9,7 +9,7 @@ interface ITextProps {
   align?: string;
 }
 
-export const Text = styled.p<ITextProps>`
+export const Span = styled.span<ISpanProps>`
   ${({ m }) => m && `margin: ${m};`}
   ${({ p }) => p && `padding: ${p};`}
   ${({ color, theme }) => color && `color: ${theme.color[color] || "black"};`}

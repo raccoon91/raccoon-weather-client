@@ -6,7 +6,7 @@ interface IWeatherCardProps {
   area?: string;
   isLoad: boolean;
   title: string;
-  value?: number;
+  value?: number | string;
   unit: string;
   chart: React.ReactNode;
 }

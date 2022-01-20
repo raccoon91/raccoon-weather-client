@@ -11,11 +11,14 @@ interface IWeatherData {
   temp: number;
   rain: number;
   rainType: number;
+  rainProb: number;
   wind: number;
   windDirection: number;
   humid: number;
   pm10: number;
   pm25: number;
+  case: number;
+  caseIncrement: number;
 }
 
 interface IForecastData {
@@ -51,10 +54,13 @@ interface IWeather {
   humid: number;
   rain: number;
   rainType: number;
+  rainProb: number;
   pm10: number;
   pm25: number;
   wind: number;
   windDirection: number;
+  case: number;
+  caseIncrement: number;
 }
 
 interface ITodayWeather {
