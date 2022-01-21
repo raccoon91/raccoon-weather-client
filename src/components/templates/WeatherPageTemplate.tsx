@@ -36,28 +36,24 @@ export const WeatherPageTemplate: FC<IWeatherPageTemplateProps> = ({ device }) =
   const { weather } = useAppSelector((state) => state.today);
 
   useEffect(() => {
-    if (device === "mobile" && location.pathname === "/today" && isOpenMapModal) {
-      navigate("/map");
+    if (device === "mobile" && isOpenMapModal) {
       setIsOpenMapModal(false);
+      navigate("/map");
     }
   }, [device, location, isOpenMapModal]);
 
   const handleOpenMapModal = () => {
-    if (location.pathname === "/today") {
-      setIsOpenMapModal(true);
-    }
+    setIsOpenMapModal(true);
   };
 
   const handleCloseMapModal = () => {
-    if (location.pathname === "/today") {
-      setIsOpenMapModal(false);
-    }
+    setIsOpenMapModal(false);
   };
 
   return (
     <>
       {device === "desktop" ? (
-        <ModalTemplate isOpen={isOpenMapModal} close={handleCloseMapModal}>
+        <ModalTemplate title="지역 변경" isOpen={isOpenMapModal} close={handleCloseMapModal}>
           <MapModal />
         </ModalTemplate>
       ) : null}
@@ -66,7 +62,7 @@ export const WeatherPageTemplate: FC<IWeatherPageTemplateProps> = ({ device }) =
         <Box ga="current">
           <CurrentWeather
             weather={weather}
-            showMapModalButton={device === "desktop" && location.pathname === "/today"}
+            showMapModalButton={device === "desktop"}
             openMapModal={handleOpenMapModal}
           />
         </Box>

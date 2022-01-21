@@ -3,10 +3,11 @@ import { drawMap, mapMouseOver, mapMouseClick } from "utils";
 import { Box } from "./Box";
 
 interface IMapChartProps {
-  onClick?: (city: string) => void;
+  cityName?: string;
+  onClick?: (cityName: string) => void;
 }
 
-export const MapChart: FC<IMapChartProps> = ({ onClick }) => {
+export const MapChart: FC<IMapChartProps> = ({ cityName = "", onClick }) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -15,10 +16,10 @@ export const MapChart: FC<IMapChartProps> = ({ onClick }) => {
     const canvas = canvasRef.current;
 
     if (box && canvas) {
-      drawMap(box, canvas);
+      drawMap(box, canvas, cityName);
 
       const redrawMap = () => {
-        drawMap(box, canvas);
+        drawMap(box, canvas, cityName);
       };
 
       window.addEventListener("resize", redrawMap);
@@ -27,7 +28,7 @@ export const MapChart: FC<IMapChartProps> = ({ onClick }) => {
         window.removeEventListener("resize", redrawMap);
       };
     }
-  }, [boxRef.current, canvasRef.current]);
+  }, [boxRef.current, canvasRef.current, cityName]);
 
   useEffect(() => {
     const box = boxRef.current;
@@ -36,7 +37,7 @@ export const MapChart: FC<IMapChartProps> = ({ onClick }) => {
     if (box && canvas) {
       if (window.innerWidth > 1024) {
         canvas.onmousemove = (event: MouseEvent) => {
-          mapMouseOver(event, box, canvas);
+          mapMouseOver(event, box, canvas, cityName);
         };
       }
 
@@ -46,7 +47,7 @@ export const MapChart: FC<IMapChartProps> = ({ onClick }) => {
         };
       }
     }
-  }, [boxRef.current, canvasRef.current, onClick]);
+  }, [boxRef.current, canvasRef.current, cityName, onClick]);
 
   return (
     <Box w="100%" h="100%" ref={boxRef}>

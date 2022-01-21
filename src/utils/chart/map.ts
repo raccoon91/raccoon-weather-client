@@ -2,7 +2,7 @@ import { geoMercator, geoPath, geoContains } from "d3-geo";
 import { koreaGeoJson } from "configs";
 import { chartTheme } from "configs";
 
-export const drawMap = (box: HTMLDivElement, canvas: HTMLCanvasElement, hoverCity?: string) => {
+export const drawMap = (box: HTMLDivElement, canvas: HTMLCanvasElement, cityName: string, hoverCity?: string) => {
   const { clientWidth, clientHeight } = box;
   const ctx = canvas.getContext("2d");
 
@@ -40,6 +40,8 @@ export const drawMap = (box: HTMLDivElement, canvas: HTMLCanvasElement, hoverCit
     pathGenerator.context(featureCtx)(feature);
 
     if (city === hoverCity) {
+      featureCtx.globalAlpha = 0.7;
+    } else if (city === cityName) {
       featureCtx.globalAlpha = 1;
     } else {
       featureCtx.globalAlpha = 0.5;
@@ -75,16 +77,16 @@ export const getMousePostionCity = (event: MouseEvent, box: HTMLDivElement) => {
   }
 };
 
-export const mapMouseOver = (event: MouseEvent, box: HTMLDivElement, canvas: HTMLCanvasElement) => {
+export const mapMouseOver = (event: MouseEvent, box: HTMLDivElement, canvas: HTMLCanvasElement, cityName: string) => {
   const hoverCity = getMousePostionCity(event, box);
 
-  drawMap(box, canvas, hoverCity);
+  drawMap(box, canvas, cityName, hoverCity);
 };
 
-export const mapMouseClick = (event: MouseEvent, box: HTMLDivElement, onClick: (city: string) => void) => {
-  const city = getMousePostionCity(event, box);
+export const mapMouseClick = (event: MouseEvent, box: HTMLDivElement, onClick: (cityName: string) => void) => {
+  const clickedCity = getMousePostionCity(event, box);
 
-  if (city && onClick) {
-    onClick(city);
+  if (clickedCity && onClick) {
+    onClick(clickedCity);
   }
 };

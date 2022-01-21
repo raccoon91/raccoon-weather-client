@@ -1,80 +1,72 @@
-import { chartTheme } from "configs";
+import {
+  chartTheme,
+  axisDefaultOptions,
+  tickDefaultOptions,
+  dotDefaultOptions,
+  barDefaultOptions,
+  lineDefaultOptions,
+} from "configs";
 
 export const toDecimal = (value: number, digits = 2) => {
   return Number(value.toFixed(digits));
 };
 
-const getDataRange = (datasets: number[], data: { min?: number; max?: number }) => {
-  let min = data.min === undefined ? datasets[0] : data.min;
-  let max = data.max === undefined ? datasets[0] : data.max;
+export const mergeCanvasOptions = (defaultOptions: ICanvasOptions, options?: ICanvasOptionsPrpos): ICanvasOptions => {
+  return options
+    ? {
+        chart: { ...defaultOptions.chart, ...options.chart },
+        tick: { ...defaultOptions.tick, ...options.tick },
+        draw: { ...defaultOptions.draw, ...options.draw },
+        data: { ...defaultOptions.data, ...options.data },
+        animation: { ...defaultOptions.animation, ...options.animation },
+        tooltip: { ...defaultOptions.tooltip, ...options.tooltip },
+      }
+    : defaultOptions;
+};
+
+const getDataRange = (datasets: number[], dataOptions?: IOptionsData) => {
+  let min = !dataOptions || dataOptions.min === undefined ? datasets[0] : dataOptions.min;
+  let max = !dataOptions || dataOptions.max === undefined ? datasets[0] : dataOptions.max;
 
   datasets.forEach((value) => {
-    if (data.min === undefined && value < min) min = value;
-    if (data.max === undefined && value > max) max = value;
+    if ((!dataOptions || dataOptions.min === undefined) && value < min) min = value;
+    if ((!dataOptions || dataOptions.max === undefined) && value > max) max = value;
   });
 
   return {
-    min: data.min === undefined ? min : data.min,
-    max: data.max === undefined ? max : data.max,
+    min: !dataOptions || dataOptions.min === undefined ? min : dataOptions.min,
+    max: !dataOptions || dataOptions.max === undefined ? max : dataOptions.max,
     range: max - min,
   };
 };
 
-const getStackDataRange = (datasets: number[][], data: { min?: number; max?: number }) => {
-  let min = data.min === undefined ? datasets[0][0] : data.min;
-  let max = data.max === undefined ? datasets[0][0] : data.max;
+const getStackDataRange = (datasets: number[][], dataOptions?: IOptionsData) => {
+  let min = !dataOptions || dataOptions.min === undefined ? datasets[0][0] : dataOptions.min;
+  let max = !dataOptions || dataOptions.max === undefined ? datasets[0][0] : dataOptions.max;
+  let dataCount = 0;
 
   datasets.forEach((nestedDatas) => {
     nestedDatas.forEach((value) => {
-      if (data.min === undefined && value < min) min = value;
-      if (data.max === undefined && value > max) max = value;
+      if ((!dataOptions || dataOptions.min === undefined) && value < min) min = value;
+      if ((!dataOptions || dataOptions.max === undefined) && value > max) max = value;
+      dataCount += 1;
     });
   });
 
   return {
-    min: data.min === undefined ? min : data.min,
-    max: data.max === undefined ? max : data.max,
+    min: !dataOptions || dataOptions.min === undefined ? min : dataOptions.min,
+    max: !dataOptions || dataOptions.max === undefined ? max : dataOptions.max,
     range: max - min,
+    dataCount,
   };
 };
 
-export const getChartDataRange = (datasets: number[] | number[][], data: { min?: number; max?: number }) => {
-  if (data.min !== undefined && data.max !== undefined) {
-    return { min: data.min, max: data.max, range: data.max - data.min };
-  } else if (Array.isArray(datasets[0])) {
-    return getStackDataRange(datasets as number[][], data);
+export const getChartDataRange = (datasets: number[] | number[][], dataOptions?: IOptionsData) => {
+  if (Array.isArray(datasets[0])) {
+    return getStackDataRange(datasets as number[][], dataOptions);
   } else {
-    return getDataRange(datasets as number[], data);
+    return getDataRange(datasets as number[], dataOptions);
   }
-};
-
-export const getCanvasPostion = (box: HTMLDivElement, canvasOptions: ICanvasOptions) => {
-  const { clientWidth, clientHeight } = box;
-  const { chart } = canvasOptions;
-
-  return {
-    startX: chart.paddingX + chart.yAxisWidth,
-    startY: chart.paddingY,
-    endX: clientWidth - chart.paddingX,
-    endY: clientHeight - chart.paddingY - chart.xAxisHeight,
-    chartWidth: clientWidth - 2 * chart.paddingX - chart.yAxisWidth,
-    chartHeight: clientHeight - 2 * chart.paddingY - chart.xAxisHeight,
-  };
-};
-
-export const getDrawPostion = (box: HTMLDivElement, canvasOptions: ICanvasOptions, dataLength: number) => {
-  const { clientWidth, clientHeight } = box;
-  const { chart, draw } = canvasOptions;
-
-  return {
-    drawStartX: chart.paddingX + chart.yAxisWidth + draw.paddingX,
-    drawStartY: chart.paddingY + draw.paddingY,
-    drawEndX: clientWidth - chart.paddingX - draw.paddingX,
-    drawEndY: clientHeight - chart.paddingY - chart.xAxisHeight - draw.paddingY,
-    drawWidth: clientWidth - 2 * chart.paddingX - chart.yAxisWidth - 2 * draw.paddingX,
-    drawHeight: clientHeight - 2 * chart.paddingY - chart.xAxisHeight - 2 * draw.paddingY,
-    nodeWidth: toDecimal((clientWidth - 2 * chart.paddingX - chart.yAxisWidth - 2 * draw.paddingX) / dataLength),
-  };
 };
 
 export const getChartOptions = ({
@@ -85,14 +77,38 @@ export const getChartOptions = ({
   box: HTMLDivElement;
   dataLength: number;
   options: ICanvasOptions;
-}) => ({
-  ...getCanvasPostion(box, options),
-  ...getDrawPostion(box, options, dataLength),
-});
+}) => {
+  const { clientWidth, clientHeight } = box;
+  const { chart, draw } = options;
 
-const axisDefaultOptions = {
-  alpha: 1,
-  style: chartTheme.black,
+  return {
+    startX: chart.displayYAxis ? chart.paddingX + chart.yAxisWidth : chart.paddingX,
+    startY: chart.paddingY,
+    endX: clientWidth - chart.paddingX,
+    endY: chart.displayXAxis ? clientHeight - chart.paddingY - chart.xAxisHeight : clientHeight - chart.paddingY,
+    chartWidth: chart.displayYAxis
+      ? clientWidth - 2 * chart.paddingX - chart.yAxisWidth
+      : clientWidth - 2 * chart.paddingX,
+    chartHeight: chart.displayXAxis
+      ? clientHeight - 2 * chart.paddingY - chart.xAxisHeight
+      : clientHeight - 2 * chart.paddingY,
+
+    drawStartX: chart.displayYAxis ? chart.paddingX + chart.yAxisWidth + draw.paddingX : chart.paddingX + draw.paddingX,
+    drawStartY: chart.paddingY + draw.paddingY,
+    drawEndX: clientWidth - chart.paddingX - draw.paddingX,
+    drawEndY: chart.displayXAxis
+      ? clientHeight - chart.paddingY - chart.xAxisHeight - draw.paddingY
+      : clientHeight - chart.paddingY - draw.paddingY,
+    drawWidth: chart.displayYAxis
+      ? clientWidth - 2 * chart.paddingX - chart.yAxisWidth - 2 * draw.paddingX
+      : clientWidth - 2 * chart.paddingX - 2 * draw.paddingX,
+    drawHeight: chart.displayXAxis
+      ? clientHeight - 2 * chart.paddingY - chart.xAxisHeight - 2 * draw.paddingY
+      : clientHeight - 2 * chart.paddingY - 2 * draw.paddingY,
+    nodeWidth: chart.displayYAxis
+      ? toDecimal((clientWidth - 2 * chart.paddingX - chart.yAxisWidth - 2 * draw.paddingX) / dataLength)
+      : toDecimal((clientWidth - 2 * chart.paddingX - 2 * draw.paddingX) / dataLength),
+  };
 };
 
 export const drawYAxis = (
@@ -131,13 +147,6 @@ export const drawXAxis = (
   ctx.stroke();
 };
 
-const tickDefaultOptions = {
-  textAlpha: 1,
-  textStyle: chartTheme.black,
-  strokeAlpha: 1,
-  strokeStyle: chartTheme.black,
-};
-
 export const drawYTick = (
   ctx: CanvasRenderingContext2D,
   startX: number,
@@ -149,7 +158,8 @@ export const drawYTick = (
 
   ctx.globalAlpha = textAlpha;
   ctx.fillStyle = textStyle;
-  ctx.fillText(value, startX - 27, positionY + 4);
+  ctx.textAlign = "right";
+  ctx.fillText(value, startX - 8, positionY + 4);
 
   ctx.globalAlpha = strokeAlpha;
   ctx.strokeStyle = strokeStyle;
@@ -170,7 +180,8 @@ export const drawXTick = (
 
   ctx.globalAlpha = textAlpha;
   ctx.fillStyle = textStyle;
-  ctx.fillText(value, positionX - 4, endY + 15);
+  ctx.textAlign = "center";
+  ctx.fillText(value, positionX, endY + 15);
 
   ctx.globalAlpha = strokeAlpha;
   ctx.strokeStyle = strokeStyle;
@@ -188,8 +199,7 @@ export const drawChartYTicks = ({
   startX,
   drawEndY,
   drawHeight,
-  increment,
-  formatter,
+  options,
 }: {
   ctx: CanvasRenderingContext2D;
   min: number;
@@ -198,13 +208,14 @@ export const drawChartYTicks = ({
   startX: number;
   drawEndY: number;
   drawHeight: number;
-  increment: number;
-  formatter?: (value: number) => string;
+  options: IOptinosTick;
 }) => {
-  for (let value = min; value <= max; value += increment) {
+  const yTickIncrement = options.yTickIncrement || 500;
+
+  for (let value = min; value <= max; value += yTickIncrement) {
     const positionY = drawEndY - toDecimal(((value - min) * drawHeight) / range);
 
-    drawYTick(ctx, startX, positionY, formatter ? formatter(value) : String(value));
+    drawYTick(ctx, startX, positionY, options?.yTickFormatter ? options.yTickFormatter(value) : String(value));
   }
 };
 
@@ -214,36 +225,33 @@ export const drawChartXTicks = ({
   nodeWidth,
   endY,
   drawStartX,
-  maxCount,
-  minCount,
+  options,
 }: {
   ctx: CanvasRenderingContext2D;
   labels: string[];
   nodeWidth: number;
   endY: number;
   drawStartX: number;
-  maxCount: number;
-  minCount: number;
+  options: IOptinosTick;
 }) => {
   let xTickSkip = 1;
 
   if (window.innerWidth > 1024) {
-    xTickSkip = Math.ceil(labels.length / maxCount);
+    xTickSkip = Math.ceil(labels.length / (options?.xTickMax || 10));
   } else {
-    xTickSkip = Math.ceil(labels.length / minCount);
+    xTickSkip = Math.ceil(labels.length / (options?.xTickMin || 8));
   }
 
   for (let i = 0; i < labels.length; i += xTickSkip) {
     const positionMidX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
 
-    drawXTick(ctx, positionMidX, endY, labels[i].slice(2));
+    drawXTick(
+      ctx,
+      positionMidX,
+      endY,
+      options?.xTickFormatter ? options.xTickFormatter(labels[i]) : labels[i].slice(2)
+    );
   }
-};
-
-const dotDefaultOptions = {
-  size: 3,
-  color: chartTheme.blue,
-  alpha: 0.5,
 };
 
 export const drawDot = (
@@ -260,14 +268,6 @@ export const drawDot = (
   ctx.beginPath();
   ctx.arc(positionX, positionY, size || 3, 0, Math.PI * 2);
   ctx.fill();
-};
-
-const barDefaultOptions = {
-  barColor: chartTheme.blue,
-  barAlpha: 0.3,
-  strokeColor: chartTheme.blue,
-  strokeAlpha: 0.5,
-  strokeWidth: 0.5,
 };
 
 export const drawBar = (
@@ -290,10 +290,6 @@ export const drawBar = (
   ctx.strokeRect(positionX, positionY, width, height);
 };
 
-const lineDefaultOptions = {
-  color: chartTheme.blue,
-};
-
 export const drawLine = (
   ctx: CanvasRenderingContext2D,
   startX: number,
@@ -311,4 +307,29 @@ export const drawLine = (
   ctx.moveTo(startX, startY + 0.5);
   ctx.lineTo(endX, endY + 0.5);
   ctx.stroke();
+};
+
+export const drawTooltip = (
+  tooltip: HTMLDivElement,
+  x: number,
+  y: number,
+  label: string,
+  value: number,
+  options: IOptionsTooltip
+) => {
+  if (options.on) {
+    tooltip.style.opacity = "1";
+    tooltip.style.top = `${y}px`;
+    tooltip.style.left = `${x}px`;
+    tooltip.innerHTML = `
+      <div class="tooltip-wrapper">
+        <p class="tooltip-label">${options?.xLabel || "x값"} :</p>
+        <p class="tooltip-value">${options?.xFormatter ? options.xFormatter(label) : label}</p>
+      </div>
+      <div class="tooltip-wrapper">
+        <p class="tooltip-label">${options?.yLabel || "y값"} :</p>
+        <p class="tooltip-value">${options?.yFormatter ? options.yFormatter(value) : value}</p>
+      </div>
+    `;
+  }
 };
