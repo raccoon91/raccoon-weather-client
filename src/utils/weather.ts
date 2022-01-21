@@ -20,6 +20,30 @@ const windDirectionDictionary: { [code: number]: string } = {
   16: "북풍",
 };
 
+const enCityNameDictionary: { [enName: string]: string } = {
+  seoul: "서울",
+  gangwon: "강원",
+  gyeonggi: "경기",
+  gyeongnam: "경남",
+  gyeongbuk: "경북",
+  gwangju: "광주",
+  daegu: "대구",
+  daejeon: "대전",
+  busan: "부산",
+  sejong: "세종",
+  ulsan: "울산",
+  incheon: "인천",
+  jeonnam: "전남",
+  jeonbuk: "전북",
+  jeju: "제주",
+  chungnam: "충남",
+  chungbuk: "충북",
+};
+
+export const convertCityName = (cityName: string) => {
+  return enCityNameDictionary[cityName];
+};
+
 export const getFeelTemp = (temp: number, wind: number) => {
   const windCalib = Math.pow(wind, 0.16);
 

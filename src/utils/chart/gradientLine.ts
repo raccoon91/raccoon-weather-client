@@ -8,7 +8,16 @@ import {
   drawChartXTicks,
   drawDot,
   drawLine,
+  drawTooltip,
 } from "./common";
+
+interface IGradientLineChartFrame {
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+  c: string;
+}
 
 const getPoint = (
   index: number,
@@ -31,9 +40,12 @@ const createGradientLineChartFrames = (
   drawStartX: number,
   drawEndY: number,
   nodeWidth: number,
-  drawHeight: number
+  drawHeight: number,
+  duration: number
 ) => {
-  const frames = [];
+  const frames: IGradientLineChartFrame[] = [];
+  const totalFrames = 60 * duration;
+  const frameCount = Math.ceil(datasets.length / totalFrames);
 
   for (let i = 1; i < datasets.length; i++) {
     if ((datasets[i - 1] <= 0 && datasets[i] <= 0) || (datasets[i - 1] >= 0 && datasets[i] >= 0)) {
@@ -55,20 +67,27 @@ const createGradientLineChartFrames = (
     }
   }
 
-  return frames;
+  return { frames, frameCount };
 };
 
 const requestGradientLineChartAnimationFrame = (
   ctx: CanvasRenderingContext2D,
   index: number,
-  frames: { x0: number; y0: number; x1: number; y1: number; c: string }[]
+  frames: IGradientLineChartFrame[],
+  frameCount: number
 ) => {
-  const color = frames[index].c === "red" ? chartTheme.red : chartTheme.blue;
+  for (let i = 0; i < frameCount; i++) {
+    if (frames[index + i]) {
+      const color = frames[index + i].c === "red" ? chartTheme.red : chartTheme.blue;
 
-  drawLine(ctx, frames[index].x0, frames[index].y0, frames[index].x1, frames[index].y1, { color });
+      drawLine(ctx, frames[index + i].x0, frames[index + i].y0, frames[index + i].x1, frames[index + i].y1, { color });
+    } else {
+      break;
+    }
+  }
 
   if (index < frames.length - 1) {
-    requestAnimationFrame(() => requestGradientLineChartAnimationFrame(ctx, index + 1, frames));
+    requestAnimationFrame(() => requestGradientLineChartAnimationFrame(ctx, index + frameCount, frames, frameCount));
   }
 };
 
@@ -86,6 +105,7 @@ export const animateGradientLineChart = (
 
   if (!ctx) return;
 
+  ctx.clearRect(0, 0, clientWidth, clientHeight);
   canvas.width = clientWidth;
   canvas.height = clientHeight;
 
@@ -96,8 +116,13 @@ export const animateGradientLineChart = (
     options,
   });
 
-  drawYAxis(ctx, startX, startY, endY);
-  drawXAxis(ctx, startX, endX, endY);
+  if (options.chart.displayYAxis) {
+    drawYAxis(ctx, startX, startY, endY);
+  }
+
+  if (options.chart.displayXAxis) {
+    drawXAxis(ctx, startX, endX, endY);
+  }
 
   for (let i = 0; i < datasets.length; i++) {
     const positionX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
@@ -112,27 +137,59 @@ export const animateGradientLineChart = (
     drawDot(ctx, positionX, positionY, dotOptions);
   }
 
-  const frames = createGradientLineChartFrames(datasets, min, range, drawStartX, drawEndY, nodeWidth, drawHeight);
-  requestGradientLineChartAnimationFrame(ctx, 0, frames);
+  const { frames, frameCount } = createGradientLineChartFrames(
+    datasets,
+    min,
+    range,
+    drawStartX,
+    drawEndY,
+    nodeWidth,
+    drawHeight,
+    options.animation.duration
+  );
+  requestGradientLineChartAnimationFrame(ctx, 0, frames, frameCount);
 
-  drawChartYTicks({ ctx, min, max, range, startX, drawEndY, drawHeight, increment: 0.5 });
-  drawChartXTicks({ ctx, labels, nodeWidth, endY, drawStartX, maxCount: 16, minCount: 10 });
+  if (options.chart.displayYAxis) {
+    drawChartYTicks({
+      ctx,
+      min,
+      max,
+      range,
+      startX,
+      drawEndY,
+      drawHeight,
+      options: options.tick,
+    });
+  }
+
+  if (options.chart.displayXAxis) {
+    drawChartXTicks({
+      ctx,
+      labels,
+      nodeWidth,
+      endY,
+      drawStartX,
+      options: options.tick,
+    });
+  }
 };
 
 export const drawGradientLineChart = (
   box: HTMLDivElement,
   canvas: HTMLCanvasElement,
+  tooltip: HTMLDivElement,
   labels: string[],
   datasets: number[],
   dataRange: IDataRange,
   options: ICanvasOptions,
-  hoverId?: number
+  hover?: { id?: number; x?: number; y?: number }
 ) => {
   const { clientWidth, clientHeight } = box;
   const ctx = canvas.getContext("2d");
 
   if (!ctx) return;
 
+  ctx.clearRect(0, 0, clientWidth, clientHeight);
   canvas.width = clientWidth;
   canvas.height = clientHeight;
 
@@ -143,8 +200,13 @@ export const drawGradientLineChart = (
     options,
   });
 
-  drawYAxis(ctx, startX, startY, endY);
-  drawXAxis(ctx, startX, endX, endY);
+  if (options.chart.displayYAxis) {
+    drawYAxis(ctx, startX, startY, endY);
+  }
+
+  if (options.chart.displayXAxis) {
+    drawXAxis(ctx, startX, endX, endY);
+  }
 
   const redLineOptions = { color: chartTheme.red };
   const blueLineOptions = { color: chartTheme.blue };
@@ -154,9 +216,9 @@ export const drawGradientLineChart = (
     const positionY = drawEndY - toDecimal(((datasets[i] - min) * drawHeight) / range);
 
     const dotOptions = {
-      size: i === hoverId ? 6 : 2,
-      color: i === hoverId ? (datasets[i] > 0 ? chartTheme.red : chartTheme.blue) : chartTheme.black,
-      alpha: i === hoverId ? 1 : 0.3,
+      size: i === hover?.id ? 6 : 2,
+      color: i === hover?.id ? (datasets[i] > 0 ? chartTheme.red : chartTheme.blue) : chartTheme.black,
+      alpha: i === hover?.id ? 1 : 0.3,
     };
 
     drawDot(ctx, positionX, positionY, dotOptions);
@@ -192,14 +254,42 @@ export const drawGradientLineChart = (
     }
   }
 
-  drawChartYTicks({ ctx, min, max, range, startX, drawEndY, drawHeight, increment: 0.5 });
-  drawChartXTicks({ ctx, labels, nodeWidth, endY, drawStartX, maxCount: 16, minCount: 10 });
+  if (options.chart.displayYAxis) {
+    drawChartYTicks({
+      ctx,
+      min,
+      max,
+      range,
+      startX,
+      drawEndY,
+      drawHeight,
+      options: options.tick,
+    });
+  }
+
+  if (options.chart.displayXAxis) {
+    drawChartXTicks({
+      ctx,
+      labels,
+      nodeWidth,
+      endY,
+      drawStartX,
+      options: options.tick,
+    });
+  }
+
+  if (options.tooltip.on && hover?.id !== undefined && hover?.x && hover?.y) {
+    drawTooltip(tooltip, hover.x, hover.y, labels[hover.id], datasets[hover.id], options.tooltip);
+  } else {
+    tooltip.style.opacity = "0";
+  }
 };
 
 export const gradientLineMouseOver = (
   event: MouseEvent,
   box: HTMLDivElement,
   canvas: HTMLCanvasElement,
+  tooltip: HTMLDivElement,
   labels: string[],
   datasets: number[],
   dataRange: IDataRange,
@@ -208,24 +298,25 @@ export const gradientLineMouseOver = (
   const mouseX = event.offsetX;
   const mouseY = event.offsetY;
 
-  const { min, range } = dataRange;
-  const { drawStartX, drawEndY, drawHeight, nodeWidth } = getChartOptions({
+  const { drawStartX, drawStartY, drawEndY, nodeWidth } = getChartOptions({
     box,
     dataLength: datasets.length,
     options,
   });
 
-  let hoverId: number | undefined;
+  const hover: { id?: number; x?: number; y?: number } = {};
 
   for (let i = 0; i < datasets.length; i++) {
     const positionX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
-    const positionY = drawEndY - toDecimal(((datasets[i] - min) * drawHeight) / range);
 
-    if (mouseX > positionX - 4 && mouseX < positionX + 4 && mouseY > positionY - 4 && mouseY < positionY + 4) {
-      hoverId = i;
+    if (mouseX > positionX - 4 && mouseX < positionX + 4 && mouseY > drawStartY && mouseY < drawEndY) {
+      hover.id = i;
+      hover.x = mouseX;
+      hover.y = mouseY;
+
       break;
     }
   }
 
-  drawGradientLineChart(box, canvas, labels, datasets, dataRange, options, hoverId);
+  drawGradientLineChart(box, canvas, tooltip, labels, datasets, dataRange, options, hover);
 };

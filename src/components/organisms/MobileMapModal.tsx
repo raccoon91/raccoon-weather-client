@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "hooks";
 import { changeCity } from "stores/slices/todaySlice";
 import { Box, Flex, Image, MapChart } from "components/atoms";
 import CloseIcon from "images/close.svg";
@@ -9,7 +9,7 @@ interface IMobileMapModalProps {
 }
 
 export const MobileMapModal: FC<IMobileMapModalProps> = ({ onClose }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleCloseModal = () => {
     onClose();

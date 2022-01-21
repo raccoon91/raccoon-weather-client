@@ -1,18 +1,65 @@
+interface IOptionsChart {
+  paddingX: number;
+  paddingY: number;
+  yAxisWidth: number;
+  xAxisHeight: number;
+  displayYAxis: boolean;
+  displayXAxis: boolean;
+}
+
+interface IOptinosTick {
+  yTickMax?: number;
+  yTickMin?: number;
+  xTickMax?: number;
+  xTickMin?: number;
+  yTickIncrement?: number;
+  yTickFormatter?: (value: number) => string;
+  xTickFormatter?: (label: string) => string;
+}
+
+interface IOptionsDraw {
+  paddingX: number;
+  paddingY: number;
+  dot?: boolean;
+  dotColor?: string;
+  lineColor?: string;
+  barColor?: string;
+}
+
+interface IOptionsData {
+  min?: number;
+  max?: number;
+}
+
+interface IOptionsAnimation {
+  on: boolean;
+  duration: number;
+}
+
+interface IOptionsTooltip {
+  on: boolean;
+  yLabel: string;
+  xLabel: string;
+  yFormatter: (value: number) => string;
+  xFormatter: (label: string) => string;
+}
+
 interface ICanvasOptions {
-  chart: {
-    paddingX: number;
-    paddingY: number;
-    yAxisWidth: number;
-    xAxisHeight: number;
-  };
-  draw: {
-    paddingX: number;
-    paddingY: number;
-  };
-  data: {
-    min?: number;
-    max?: number;
-  };
+  chart: IOptionsChart;
+  tick: IOptinosTick;
+  draw: IOptionsDraw;
+  data: IOptionsData;
+  animation: IOptionsAnimation;
+  tooltip: IOptionsTooltip;
+}
+
+interface ICanvasOptionsPrpos {
+  chart?: Partial<IOptionsChart>;
+  tick?: Partial<IOptinosTick>;
+  draw?: Partial<IOptionsDraw>;
+  data?: Partial<IOptionsData>;
+  animation?: Partial<IOptionsAnimation>;
+  tooltip?: Partial<IOptionsTooltip>;
 }
 
 interface IChartOptinos {
@@ -35,6 +82,7 @@ interface IDataRange {
   min: number;
   max: number;
   range: number;
+  dataCount?: number;
 }
 
 interface IAxisOptions {

@@ -72,6 +72,9 @@ interface ITodayWeather {
 interface IClimate {
   years: string[] | null;
   tempClimates: number[][] | null;
-  feelTempClimates: number[][] | null;
+  maxTempClimates: number[][] | null;
   rainClimates: number[] | null;
+  covidDates: string[] | null;
+  cases: number[] | null;
+  caseIncrements: number[] | null;
 }

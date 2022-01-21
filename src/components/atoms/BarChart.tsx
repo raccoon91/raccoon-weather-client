@@ -1,17 +1,8 @@
 import { FC, useRef, useEffect } from "react";
-import { getChartDataRange, animateBarChart, drawBarChart, barChartMouseOver } from "utils";
+import { mergeCanvasOptions, getChartDataRange, animateBarChart, drawBarChart, barChartMouseOver } from "utils";
+import { barChartDefaultOptions } from "configs";
 import { Box } from "./Box";
-
-const barChartDefaultOptions = {
-  chart: {
-    paddingX: 5,
-    paddingY: 8,
-    yAxisWidth: 25,
-    xAxisHeight: 10,
-  },
-  draw: { paddingX: 0, paddingY: 0 },
-  data: { min: 0 },
-};
+import { Tooltip } from "./Tooltip";
 
 interface IBarChartProps {
   labels?: string[] | null;
@@ -19,32 +10,36 @@ interface IBarChartProps {
   options?: ICanvasOptions;
 }
 
-export const BarChart: FC<IBarChartProps> = ({ labels, datasets, options = barChartDefaultOptions }) => {
+export const BarChart: FC<IBarChartProps> = ({ labels, datasets, options }) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const box = boxRef.current;
     const canvas = canvasRef.current;
+    const tooltip = tooltipRef.current;
 
-    if (box && canvas && labels?.length && datasets?.length) {
-      const barOptions = {
-        chart: { ...barChartDefaultOptions.chart, ...options.chart },
-        draw: { ...barChartDefaultOptions.draw, ...options.draw },
-        data: { ...barChartDefaultOptions.data, ...options.data },
-      };
+    if (box && canvas && tooltip && labels?.length && datasets?.length) {
+      const barOptions = mergeCanvasOptions(barChartDefaultOptions, options);
       const dataRange = getChartDataRange(datasets, barOptions.data);
 
-      animateBarChart(box, canvas, labels, datasets, dataRange, barOptions);
+      if (barOptions.animation.on) {
+        animateBarChart(box, canvas, labels, datasets, dataRange, barOptions);
+      } else {
+        drawBarChart(box, canvas, tooltip, labels, datasets, dataRange, barOptions);
+      }
 
       if (window.innerWidth > 1024) {
-        canvas.onmousemove = (event: MouseEvent) => {
-          barChartMouseOver(event, box, canvas, labels, datasets, dataRange, barOptions);
-        };
+        setTimeout(() => {
+          canvas.onmousemove = (event: MouseEvent) => {
+            barChartMouseOver(event, box, canvas, tooltip, labels, datasets, dataRange, barOptions);
+          };
+        }, barOptions.animation.duration * 1000);
       }
 
       const redrawBarChart = () => {
-        drawBarChart(box, canvas, labels, datasets, dataRange, barOptions);
+        drawBarChart(box, canvas, tooltip, labels, datasets, dataRange, barOptions);
       };
 
       window.addEventListener("resize", redrawBarChart);
@@ -53,11 +48,12 @@ export const BarChart: FC<IBarChartProps> = ({ labels, datasets, options = barCh
         window.removeEventListener("resize", redrawBarChart);
       };
     }
-  }, [boxRef.current, canvasRef.current, labels, datasets]);
+  }, [boxRef.current, canvasRef.current, tooltipRef.current, labels, datasets]);
 
   return (
-    <Box w="100%" h="100%" ref={boxRef}>
-      <canvas ref={canvasRef}></canvas>
+    <Box ref={boxRef} po="relative" w="100%" h="100%">
+      <canvas ref={canvasRef} />
+      <Tooltip ref={tooltipRef} />
     </Box>
   );
 };

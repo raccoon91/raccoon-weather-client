@@ -1,29 +1,30 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { Grid, MapChart, ScatterPlot, BarChart, GradientLineChart } from "components/atoms";
+import { Grid, ScatterPlot, LineChart, BarChart, GradientLineChart } from "components/atoms";
 import { ClimateCard } from "components/molecules";
-import { globalSurfaceAirTemp } from "configs";
+import { globalSurfaceAirTemp, covidChartOptions } from "configs";
 
 const ClimateDashboardContainer = styled(Grid)`
   @media ${({ theme }) => theme.device.desktop} {
     gap: 2rem;
-    grid-template-columns: repeat(2, minmax(48%, 1fr));
-    grid-template-rows: 32rem 26rem 26rem;
+    grid-template-columns: 42% calc(100% - 42% - 2rem);
+    grid-template-rows: 22rem 22rem 26rem;
     grid-template-areas:
-      "  map     feel  "
-      "  map     rain  "
-      "climate climate";
+      "  feel    covid  "
+      "  feel     rain  "
+      "climate  climate ";
     padding: 2rem 10rem 4rem;
   }
 
   @media ${({ theme }) => theme.device.mobile} {
     gap: 2rem;
     grid-template-columns: 100%;
-    grid-template-rows: 32rem 26rem 26rem;
+    grid-template-rows: 32rem 26rem 26rem 26rem;
     grid-template-areas:
-      "  feel "
-      "  rain "
-      "climate";
+      "  feel  "
+      "  covid "
+      "  rain  "
+      " climate";
     padding: 1rem 3rem 3rem;
   }
 `;
@@ -33,16 +34,21 @@ interface IClimateDashboardProps {
 }
 
 export const ClimateDashboard: FC<IClimateDashboardProps> = ({
-  climate: { years, feelTempClimates, rainClimates },
+  climate: { years, maxTempClimates, rainClimates, covidDates, caseIncrements },
 }) => {
   return (
     <ClimateDashboardContainer o="hidden auto" w="100%" h="100%">
-      <ClimateCard area="map" isLoad={years !== null ? true : false} title="지역" chart={<MapChart />} desktopOnly />
       <ClimateCard
         area="feel"
         isLoad={years !== null ? true : false}
-        title="체감온도"
-        chart={<ScatterPlot labels={years} datasets={feelTempClimates} />}
+        title="최고온도"
+        chart={<ScatterPlot labels={years} datasets={maxTempClimates} />}
+      />
+      <ClimateCard
+        area="covid"
+        isLoad={covidDates !== null ? true : false}
+        title="확진자"
+        chart={<LineChart labels={covidDates} datasets={caseIncrements} options={covidChartOptions} />}
       />
       <ClimateCard
         area="rain"

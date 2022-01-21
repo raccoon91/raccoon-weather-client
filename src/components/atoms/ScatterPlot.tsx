@@ -1,24 +1,14 @@
 import { FC, useRef, useEffect } from "react";
-import { getChartDataRange, animateScatterPlot, drawScatterPlot, scatterPlotMouseOver } from "utils";
+import {
+  mergeCanvasOptions,
+  getChartDataRange,
+  animateScatterPlot,
+  drawScatterPlot,
+  scatterPlotMouseOver,
+} from "utils";
+import { scatterPlotDefaultOptions } from "configs";
 import { Box } from "./Box";
-
-const scatterPlotDefaultOptions = {
-  chart: {
-    paddingX: 5,
-    paddingY: 8,
-    yAxisWidth: 25,
-    xAxisHeight: 10,
-  },
-  draw: {
-    paddingX: 5,
-    paddingY: 5,
-  },
-  data: {
-    min: 30,
-    max: 38,
-    range: 55,
-  },
-};
+import { Tooltip } from "./Tooltip";
 
 interface IScatterPlotProps {
   labels?: string[] | null;
@@ -26,32 +16,36 @@ interface IScatterPlotProps {
   options?: ICanvasOptions;
 }
 
-export const ScatterPlot: FC<IScatterPlotProps> = ({ labels, datasets, options = scatterPlotDefaultOptions }) => {
+export const ScatterPlot: FC<IScatterPlotProps> = ({ labels, datasets, options }) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const box = boxRef.current;
     const canvas = canvasRef.current;
+    const tooltip = tooltipRef.current;
 
-    if (box && canvas && labels?.length && datasets?.length) {
-      const scatterPlotOptions = {
-        chart: { ...scatterPlotDefaultOptions.chart, ...options.chart },
-        draw: { ...scatterPlotDefaultOptions.draw, ...options.draw },
-        data: { ...scatterPlotDefaultOptions.data, ...options.data },
-      };
+    if (box && canvas && tooltip && labels?.length && datasets?.length) {
+      const scatterPlotOptions = mergeCanvasOptions(scatterPlotDefaultOptions, options);
       const dataRange = getChartDataRange(datasets, scatterPlotOptions.data);
 
-      animateScatterPlot(box, canvas, labels, datasets, dataRange, scatterPlotOptions);
+      if (scatterPlotOptions.animation.on) {
+        animateScatterPlot(box, canvas, labels, datasets, dataRange, scatterPlotOptions);
+      } else {
+        drawScatterPlot(box, canvas, tooltip, labels, datasets, dataRange, scatterPlotOptions);
+      }
 
       if (window.innerWidth > 1024) {
-        canvas.onmousemove = (event: MouseEvent) => {
-          scatterPlotMouseOver(event, box, canvas, labels, datasets, dataRange, scatterPlotOptions);
-        };
+        setTimeout(() => {
+          canvas.onmousemove = (event: MouseEvent) => {
+            scatterPlotMouseOver(event, box, canvas, tooltip, labels, datasets, dataRange, scatterPlotOptions);
+          };
+        }, scatterPlotOptions.animation.duration * 1000);
       }
 
       const redrawScatterPlot = () => {
-        drawScatterPlot(box, canvas, labels, datasets, dataRange, scatterPlotOptions);
+        drawScatterPlot(box, canvas, tooltip, labels, datasets, dataRange, scatterPlotOptions);
       };
 
       window.addEventListener("resize", redrawScatterPlot);
@@ -60,11 +54,12 @@ export const ScatterPlot: FC<IScatterPlotProps> = ({ labels, datasets, options =
         window.removeEventListener("resize", redrawScatterPlot);
       };
     }
-  }, [boxRef.current, canvasRef.current, labels, datasets]);
+  }, [boxRef.current, canvasRef.current, tooltipRef.current, labels, datasets]);
 
   return (
-    <Box w="100%" h="100%" ref={boxRef}>
-      <canvas ref={canvasRef}></canvas>
+    <Box po="relative" w="100%" h="100%" ref={boxRef}>
+      <canvas ref={canvasRef} />
+      <Tooltip ref={tooltipRef} />
     </Box>
   );
 };
