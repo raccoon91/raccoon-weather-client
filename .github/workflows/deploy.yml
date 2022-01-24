@@ -36,12 +36,16 @@ jobs:
         run: |
           aws s3 rm s3://raccoon-weather-client \
           --recursive \
-          --include '*'
+          --exclude '*' \
+          --include 'static/*' \
+          --include 'index.html'
 
       - name: Upload to S3
         run: |
           aws s3 sync ./build s3://raccoon-weather-client \
-          --include '*'
+          --exclude '*' \
+          --include 'static/*' \
+          --include 'index.html'
 
       - name: Cache Control Static
         run: |
