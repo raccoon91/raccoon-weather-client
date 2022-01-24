@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { serverApi } from "api";
 import { formatDate, getFeelTemp } from "utils";
+import { getClimate } from "./climateSlice";
 import type { AxiosResponse } from "axios";
 
 const initialTodayState: ITodayWeather = {
@@ -46,14 +47,24 @@ export const getForecast = createAsyncThunk("today/getForecast", async (cityName
   }
 });
 
+export const changeCity = createAsyncThunk<void, string>("today/changeCity", async (cityName, { dispatch }) => {
+  try {
+    localStorage.setItem("search", cityName);
+
+    dispatch(getWeather(cityName));
+    dispatch(getForecast(cityName));
+    dispatch(getClimate(cityName));
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 export const todaySlice = createSlice({
   name: "todaySlice",
   initialState: initialTodayState,
   reducers: {
-    changeCity: (state, action) => {
+    changeSearchCity: (state, action) => {
       const search = action.payload;
-
-      // localStorage.setItem("search", search);
 
       state.search = search;
     },
@@ -84,4 +95,4 @@ export const todaySlice = createSlice({
       }),
 });
 
-export const { changeCity } = todaySlice.actions;
+export const { changeSearchCity } = todaySlice.actions;

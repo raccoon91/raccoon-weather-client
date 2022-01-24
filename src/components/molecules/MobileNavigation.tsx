@@ -20,8 +20,8 @@ const MobileNavAnchor = styled(NavAnchor)`
   z-index: 5;
 
   svg {
-    width: 3rem;
-    height: 3rem;
+    width: 3.5rem;
+    height: 3.5rem;
     stroke: black;
   }
 
@@ -40,11 +40,11 @@ const MobileNavAnchor = styled(NavAnchor)`
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 5rem;
-        height: 5rem;
-        border-radius: 2.5rem;
+        width: 6rem;
+        height: 6rem;
+        border-radius: 3rem;
         background-color: ${({ theme }) => theme.color.blue};
-        transform: translate(-2.5rem, -2.5rem);
+        transform: translate(-3rem, -3rem);
         z-index: 2;
       }
 
@@ -53,20 +53,20 @@ const MobileNavAnchor = styled(NavAnchor)`
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 6.5rem;
-        height: 6.5rem;
-        border-radius: 3.25rem;
+        width: 8rem;
+        height: 8rem;
+        border-radius: 4rem;
         border-top: ${({ theme }) => `1rem solid ${theme.color.skyBlue}`};
         border-right: ${({ theme }) => `1rem solid ${theme.color.skyBlue}`};
         border-bottom: 1rem solid transparent;
         border-left: 1rem solid transparent;
-        transform: translate(-3.25rem, -3.25rem) rotate(135deg);
+        transform: translate(-4rem, -4rem) rotate(135deg);
         z-index: 1;
       }
     }
 
     ${Text} {
-      margin: 1.5rem 0 0;
+      margin: 2rem 0 0;
     }
   }
 `;
@@ -78,21 +78,21 @@ export const MobileNavigation: FC = () => {
         <ImageWrapper>
           <SunIcon />
         </ImageWrapper>
-        <Text>Today</Text>
+        <Text size="lg">Today</Text>
       </MobileNavAnchor>
 
       <MobileNavAnchor to="/climate" end size="xl" weight="bold">
         <ImageWrapper>
           <CloudIcon />
         </ImageWrapper>
-        <Text>Climate</Text>
+        <Text size="lg">Climate</Text>
       </MobileNavAnchor>
 
       <MobileNavAnchor to="/map" end size="xl" weight="bold">
         <ImageWrapper>
           <MapIcon />
         </ImageWrapper>
-        <Text>Region</Text>
+        <Text size="lg">Region</Text>
       </MobileNavAnchor>
     </Flex>
   );

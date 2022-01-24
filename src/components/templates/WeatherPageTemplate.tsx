@@ -54,7 +54,7 @@ export const WeatherPageTemplate: FC<IWeatherPageTemplateProps> = ({ device }) =
     <>
       {device === "desktop" ? (
         <ModalTemplate title="지역 변경" isOpen={isOpenMapModal} close={handleCloseMapModal}>
-          <MapModal />
+          <MapModal close={handleCloseMapModal} />
         </ModalTemplate>
       ) : null}
 
@@ -77,7 +77,7 @@ export const WeatherPageTemplate: FC<IWeatherPageTemplateProps> = ({ device }) =
           <Outlet />
 
           {device === "mobile" ? (
-            <Box po="absolute" l="0" b="0" w="100vw" h="7rem">
+            <Box po="absolute" l="0" b="0" w="100vw" h="9rem">
               <MobileNavigation />
             </Box>
           ) : null}

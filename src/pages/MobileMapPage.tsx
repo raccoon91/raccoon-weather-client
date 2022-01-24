@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "hooks";
 import { Box, Flex, Text, Button, MapChart } from "components/atoms";
 import { DashboardTemplate } from "components/templates";
-import { changeCity } from "stores/slices/todaySlice";
+import { changeSearchCity, changeCity } from "stores/slices/todaySlice";
 import { convertCityName } from "utils";
 
 interface IMobileMapPageProps {
@@ -15,7 +15,7 @@ export const MobileMapPage: FC<IMobileMapPageProps> = ({ device }) => {
 
   useEffect(() => {
     if (device === "desktop") {
-      navigate("/today");
+      navigate("/");
     }
   }, [device]);
 
@@ -23,21 +23,26 @@ export const MobileMapPage: FC<IMobileMapPageProps> = ({ device }) => {
   const { search, weather } = useAppSelector((state) => state.today);
 
   const handleClickCity = (cityName: string) => {
-    dispatch(changeCity(cityName));
+    dispatch(changeSearchCity(cityName));
+  };
+
+  const handleClickChangeCity = () => {
+    if (search) {
+      dispatch(changeCity(search));
+      navigate("/");
+    }
   };
 
   return (
     <DashboardTemplate>
-      <Box w="100%" h="100%" p="3rem 4rem" bgc="skyBlue">
-        <Box h="calc(100% - 6rem)">
-          <MapChart cityName={search} onClick={handleClickCity} />
-        </Box>
+      <Box po="relative" w="100%" h="100%" p="3rem 4rem" bgc="skyBlue">
+        <MapChart cityName={search} onClick={handleClickCity} />
 
-        <Flex a="center" j="flex-end" h="4rem" m="0 0 2rem">
+        <Flex po="absolute" r="3rem" b="4rem" a="center" j="flex-end" h="4rem" m="0 0 4rem">
           <Text size="2xl" m="0 3rem 0 0">
             {convertCityName(search)}
           </Text>
-          <Button size="2xl" weight="bold" disabled={weather?.city?.name === search}>
+          <Button size="2xl" weight="bold" disabled={weather?.city?.name === search} onClick={handleClickChangeCity}>
             변경
           </Button>
         </Flex>

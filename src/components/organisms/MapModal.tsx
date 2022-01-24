@@ -2,7 +2,7 @@ import { FC } from "react";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "hooks";
 import { Grid, Box, Flex, Text, Button, MapChart } from "components/atoms";
-import { changeCity } from "stores/slices/todaySlice";
+import { changeSearchCity, changeCity } from "stores/slices/todaySlice";
 import { convertCityName } from "utils";
 
 const MapModalContainer = styled(Grid)`
@@ -14,12 +14,23 @@ const MapModalContainer = styled(Grid)`
     " map  submit ";
 `;
 
-export const MapModal: FC = () => {
+interface IMapModalProps {
+  close: () => void;
+}
+
+export const MapModal: FC<IMapModalProps> = ({ close }) => {
   const dispatch = useAppDispatch();
   const { search, weather } = useAppSelector((state) => state.today);
 
   const handleClickCity = (cityName: string) => {
-    dispatch(changeCity(cityName));
+    dispatch(changeSearchCity(cityName));
+  };
+
+  const handleClickChangeCity = () => {
+    if (search) {
+      dispatch(changeCity(search));
+      close();
+    }
   };
 
   return (
@@ -33,7 +44,7 @@ export const MapModal: FC = () => {
       </Flex>
 
       <Flex ga="submit" a="flex-end" j="flex-end">
-        <Button size="md" weight="bold" disabled={weather?.city?.name === search}>
+        <Button size="md" weight="bold" disabled={weather?.city?.name === search} onClick={handleClickChangeCity}>
           변경
         </Button>
       </Flex>
