@@ -18,4 +18,11 @@ export const Button = styled.button<IButtonProps>`
   ${({ weight }) => weight && `font-weight: ${weight};`}
   cursor: pointer;
   user-select: none;
+
+  &:disabled {
+    background-color: ${({ theme }) => theme.color.darkGray};
+    border-color: ${({ theme }) => theme.color.darkGray};
+    color: ${({ theme }) => theme.color.white};
+    cursor: not-allowed;
+  }
 `;

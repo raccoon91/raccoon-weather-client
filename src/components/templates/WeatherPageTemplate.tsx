@@ -77,7 +77,7 @@ export const WeatherPageTemplate: FC<IWeatherPageTemplateProps> = ({ device }) =
           <Outlet />
 
           {device === "mobile" ? (
-            <Box h="7rem">
+            <Box po="absolute" l="0" b="0" w="100vw" h="7rem">
               <MobileNavigation />
             </Box>
           ) : null}
