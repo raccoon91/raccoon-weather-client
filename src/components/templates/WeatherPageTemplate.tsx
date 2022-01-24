@@ -20,7 +20,7 @@ const WeatherPageTemplateContainer = styled(Grid)`
 
   @media ${({ theme }) => theme.device.mobile} {
     grid-template-columns: 100vw;
-    grid-template-rows: 16rem calc(100vh - 16rem);
+    grid-template-rows: 16rem calc(100vh - 18rem);
     grid-template-areas: "current" "dashboard";
   }
 `;
