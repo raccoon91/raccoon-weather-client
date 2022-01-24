@@ -98,7 +98,7 @@ export const GlobalStyle = createGlobalStyle`
 
   @media (max-width: 479px) {
     html {
-      font-size: 6px;
+      font-size: 7px;
     }
   }
 `;
