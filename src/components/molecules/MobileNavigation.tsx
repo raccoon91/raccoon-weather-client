@@ -73,7 +73,7 @@ const MobileNavAnchor = styled(NavAnchor)`
 
 export const MobileNavigation: FC = () => {
   return (
-    <Flex po="relative" a="center" j="space-around" h="100%" bgc="white">
+    <Flex po="relative" a="center" j="space-around" h="100%" bgc="white" z="10">
       <MobileNavAnchor to="/today" end size="xl" weight="bold">
         <ImageWrapper>
           <SunIcon />
