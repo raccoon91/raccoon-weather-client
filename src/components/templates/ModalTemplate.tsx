@@ -21,7 +21,7 @@ export const ModalTemplate: FC<IModalTemplateProps> = ({ title, isOpen, close, c
 
   return createPortal(
     isOpen ? (
-      <Flex po="fixed" t="0" l="0" a="center" j="center" w="100vw" h="100vh" z="10">
+      <Flex po="fixed" t="0" l="0" a="center" j="center" w="100vw" h="100vh" z="15">
         <Box po="absolute" w="100%" h="100%" bgc="black" op="0.5" onClick={handleClickClose} />
 
         <Box po="relative" w="70rem" h="50rem" z="5">
