@@ -79,7 +79,7 @@ export const todaySlice = createSlice({
         state.search = search;
         state.weather = {
           ...weather,
-          today: formatDate(weather.date),
+          today: formatDate(weather.date, "MM월 DD일"),
           feel: getFeelTemp(weather.temp, weather.wind),
         };
       })

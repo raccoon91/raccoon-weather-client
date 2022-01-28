@@ -13,7 +13,7 @@ const CurrentWeatherContainer = styled(Grid)`
   }
 
   @media ${({ theme }) => theme.device.mobile} {
-    grid-template-columns: 6.4rem 1fr 6rem 8rem;
+    grid-template-columns: 10rem 1fr 4rem 7rem;
     grid-template-rows: 2rem 1.4rem 2rem 3.6rem 1rem;
     grid-template-areas:
       "icon temp  .     . "
