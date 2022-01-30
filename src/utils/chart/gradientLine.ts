@@ -129,7 +129,7 @@ export const animateGradientLineChart = (
     const positionY = drawEndY - toDecimal(((datasets[i] - min) * drawHeight) / range);
 
     const dotOptions = {
-      size: i === hoverId ? 6 : 2,
+      size: i === hoverId ? 4 : 1,
       color: i === hoverId ? (datasets[i] > 0 ? chartTheme.red : chartTheme.blue) : chartTheme.black,
       alpha: i === hoverId ? 1 : 0.3,
     };
@@ -216,7 +216,7 @@ export const drawGradientLineChart = (
     const positionY = drawEndY - toDecimal(((datasets[i] - min) * drawHeight) / range);
 
     const dotOptions = {
-      size: i === hover?.id ? 6 : 2,
+      size: i === hover?.id ? 4 : 1,
       color: i === hover?.id ? (datasets[i] > 0 ? chartTheme.red : chartTheme.blue) : chartTheme.black,
       alpha: i === hover?.id ? 1 : 0.3,
     };
@@ -280,8 +280,6 @@ export const drawGradientLineChart = (
 
   if (options.tooltip.on && hover?.id !== undefined && hover?.x && hover?.y) {
     drawTooltip(tooltip, hover.x, hover.y, labels[hover.id], datasets[hover.id], options.tooltip);
-  } else {
-    tooltip.style.opacity = "0";
   }
 };
 
@@ -309,7 +307,7 @@ export const gradientLineMouseOver = (
   for (let i = 0; i < datasets.length; i++) {
     const positionX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
 
-    if (mouseX > positionX - 4 && mouseX < positionX + 4 && mouseY > drawStartY && mouseY < drawEndY) {
+    if (mouseX > positionX - 4 && mouseX < positionX + 4 && mouseY >= drawStartY && mouseY <= drawEndY) {
       hover.id = i;
       hover.x = mouseX;
       hover.y = mouseY;

@@ -36,6 +36,10 @@ export const BarChart: FC<IBarChartProps> = ({ labels, datasets, options }) => {
             barChartMouseOver(event, box, canvas, tooltip, labels, datasets, dataRange, barOptions);
           };
         }, barOptions.animation.duration * 1000);
+
+        canvas.onmouseleave = () => {
+          tooltip.style.opacity = "0";
+        };
       }
 
       const redrawBarChart = () => {

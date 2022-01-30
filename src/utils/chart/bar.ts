@@ -265,8 +265,6 @@ export const drawBarChart = (
 
   if (options.tooltip.on && hover?.id !== undefined && hover?.x && hover?.y) {
     drawTooltip(tooltip, hover.x, hover.y, labels[hover.id], datasets[hover.id], options.tooltip);
-  } else {
-    tooltip.style.opacity = "0";
   }
 };
 
@@ -293,7 +291,7 @@ export const barChartMouseOver = (
     const positionY = endY - toDecimal((datasets[i] * drawHeight) / range);
     const height = endY - positionY;
 
-    if (mouseX > positionX && mouseX < positionX + nodeWidth && mouseY > positionY && mouseY < positionY + height) {
+    if (mouseX > positionX && mouseX < positionX + nodeWidth && mouseY >= positionY && mouseY <= positionY + height) {
       hover.id = i;
       hover.x = mouseX;
       hover.y = mouseY;

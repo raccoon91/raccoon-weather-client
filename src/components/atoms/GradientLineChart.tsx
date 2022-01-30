@@ -42,6 +42,10 @@ export const GradientLineChart: FC<IGradientLineChartProps> = ({ labels, dataset
             gradientLineMouseOver(event, box, canvas, tooltip, labels, datasets, dataRange, gradientLineOptions);
           };
         }, gradientLineOptions.animation.duration * 1000);
+
+        canvas.onmouseleave = () => {
+          tooltip.style.opacity = "0";
+        };
       }
 
       const redrawGradientLineChart = () => {

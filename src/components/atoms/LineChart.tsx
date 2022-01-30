@@ -36,6 +36,10 @@ export const LineChart: FC<ILineChartProps> = ({ labels = [], datasets, options 
             lineChartMouseOver(event, box, canvas, tooltip, labels, datasets, dataRange, lineOptions);
           };
         }, lineOptions.animation.duration * 1000);
+
+        canvas.onmouseleave = () => {
+          tooltip.style.opacity = "0";
+        };
       }
 
       const redrawLineChart = () => {

@@ -62,10 +62,10 @@ export const lineChartDefaultOptions = {
   },
   tooltip: {
     on: true,
-    yLabel: "",
-    xLabel: "",
-    yFormatter: (value: number) => `${value}`,
-    xFormatter: (label: string) => label,
+    yLabel: "온도",
+    xLabel: "시간",
+    yFormatter: (value: number) => `${value}°C`,
+    xFormatter: (label: string) => `${label}시`,
   },
 };
 
@@ -136,7 +136,7 @@ export const scatterPlotDefaultOptions = {
     on: true,
     yLabel: "온도",
     xLabel: "년도",
-    yFormatter: (value: number) => `${value}`,
+    yFormatter: (value: number) => `${value}°C`,
     xFormatter: (label: string) => `${label}년`,
   },
 };
@@ -171,7 +171,7 @@ export const gradientLineChartDefaultOptions = {
     on: true,
     yLabel: "온도",
     xLabel: "년도",
-    yFormatter: (value: number) => `${value}`,
+    yFormatter: (value: number) => `${value}°C`,
     xFormatter: (label: string) => `${label}년`,
   },
 };
@@ -186,11 +186,11 @@ export const covidChartOptions = {
   tick: {
     xTickMax: 10,
     xTickMin: 8,
-    yTickIncrement: 1000,
+    yTickIncrement: 5000,
     xTickFormatter: (label: string) => dayjs(label).format("MM"),
   },
   draw: {
-    paddingX: 5,
+    paddingX: 3,
     paddingY: 0,
     dot: false,
   },

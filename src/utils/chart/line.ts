@@ -260,6 +260,10 @@ export const drawLineChart = (
       drawDot(ctx, positionX, positionY, dotOptions);
     }
 
+    if (hover?.id === i) {
+      drawDot(ctx, positionX, positionY, dotOptions);
+    }
+
     if (i > 0 && i < datasets.length) {
       const positionStartX = (i - 1) * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
       const positionStartY = drawEndY - toDecimal(((datasets[i - 1] - min) * drawHeight) / range);
@@ -294,8 +298,6 @@ export const drawLineChart = (
 
   if (options.tooltip.on && labels && hover?.id !== undefined && hover?.x && hover?.y) {
     drawTooltip(tooltip, hover.x, hover.y, labels[hover.id], datasets[hover.id], options.tooltip);
-  } else {
-    tooltip.style.opacity = "0";
   }
 };
 
@@ -323,7 +325,7 @@ export const lineChartMouseOver = (
   for (let i = 0; i < datasets.length; i++) {
     const positionX = i * nodeWidth + drawStartX + toDecimal(nodeWidth / 2);
 
-    if (mouseX > positionX - 4 && mouseX < positionX + 4 && mouseY > drawStartY && mouseY < drawEndY) {
+    if (mouseX > positionX - 4 && mouseX < positionX + 4 && mouseY >= drawStartY && mouseY <= drawEndY) {
       hover.id = i;
       hover.x = mouseX;
       hover.y = mouseY;

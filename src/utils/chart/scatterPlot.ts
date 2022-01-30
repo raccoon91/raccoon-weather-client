@@ -206,8 +206,6 @@ export const drawScatterPlot = (
 
   if (options.tooltip.on && hover?.i !== undefined && hover?.j !== undefined && hover?.x && hover?.y) {
     drawTooltip(tooltip, hover.x, hover.y, labels[hover.i], datasets[hover.i][hover.j], options.tooltip);
-  } else {
-    tooltip.style.opacity = "0";
   }
 };
 

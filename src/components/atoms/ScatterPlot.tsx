@@ -42,6 +42,10 @@ export const ScatterPlot: FC<IScatterPlotProps> = ({ labels, datasets, options }
             scatterPlotMouseOver(event, box, canvas, tooltip, labels, datasets, dataRange, scatterPlotOptions);
           };
         }, scatterPlotOptions.animation.duration * 1000);
+
+        canvas.onmouseleave = () => {
+          tooltip.style.opacity = "0";
+        };
       }
 
       const redrawScatterPlot = () => {

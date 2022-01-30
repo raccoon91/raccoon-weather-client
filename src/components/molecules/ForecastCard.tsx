@@ -64,7 +64,10 @@ export const ForecastCard: FC<IForecastCardProps> = ({ area, isLoad, title, data
               h="calc(100% - 20rem)"
               z="1"
             >
-              <LineChart datasets={datasets?.map((data) => data.temp)} />
+              <LineChart
+                labels={datasets?.map((data) => formatDate(data.date, "HH"))}
+                datasets={datasets?.map((data) => data.temp)}
+              />
             </Box>
 
             {datasets?.map((data) => (
