@@ -19,6 +19,7 @@ interface IWeatherData {
   pm25: number;
   case: number;
   caseIncrement: number;
+  caseDate: string;
 }
 
 interface IForecastData {
@@ -61,6 +62,7 @@ interface IWeather {
   windDirection: number;
   case: number;
   caseIncrement: number;
+  caseDate: string;
 }
 
 interface ITodayWeather {

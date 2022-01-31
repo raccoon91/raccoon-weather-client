@@ -54,6 +54,7 @@ Weather.args = {
     windDirection: 170,
     case: 100,
     caseIncrement: 10,
+    caseDate: "2022-01-01 00:00",
   },
 };
 
