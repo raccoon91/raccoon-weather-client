@@ -1,16 +1,14 @@
 import { geoMercator, geoPath, geoContains } from "d3-geo";
+import { createHiDPICanvas } from "./common";
 import { koreaGeoJson } from "configs";
 import { chartTheme } from "configs";
 
 export const drawMap = (box: HTMLDivElement, canvas: HTMLCanvasElement, cityName: string, hoverCity?: string) => {
+  const ctx = createHiDPICanvas(box, canvas);
+
+  if (!ctx) return;
+
   const { clientWidth, clientHeight } = box;
-  const ctx = canvas.getContext("2d");
-
-  if (!clientWidth || !clientHeight || !ctx) return;
-
-  canvas.width = clientWidth;
-  canvas.height = clientHeight;
-
   const projection = geoMercator().fitSize([clientWidth, clientHeight], koreaGeoJson);
   const pathGenerator = geoPath(projection);
 
