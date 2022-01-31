@@ -4,6 +4,8 @@ import { Grid, ScatterPlot, LineChart, BarChart, GradientLineChart } from "compo
 import { ClimateCard } from "components/molecules";
 import { globalSurfaceAirTemp, covidChartOptions } from "configs";
 
+const globalTempMessage = `출처 : NASA - https://data.giss.nasa.gov/gistemp`;
+
 const ClimateDashboardContainer = styled(Grid)`
   @media ${({ theme }) => theme.device.desktop} {
     gap: 2rem;
@@ -47,7 +49,7 @@ export const ClimateDashboard: FC<IClimateDashboardProps> = ({
       <ClimateCard
         area="covid"
         isLoad={covidDates !== null ? true : false}
-        title="확진자"
+        title="전국 확진자"
         chart={<LineChart labels={covidDates} datasets={caseIncrements} options={covidChartOptions} />}
       />
       <ClimateCard
@@ -59,7 +61,8 @@ export const ClimateDashboard: FC<IClimateDashboardProps> = ({
       <ClimateCard
         area="climate"
         isLoad={years !== null ? true : false}
-        title="기후 변화"
+        title="지구 지표면 온도 변화"
+        caption={globalTempMessage}
         chart={<GradientLineChart labels={globalSurfaceAirTemp.x} datasets={globalSurfaceAirTemp.y} />}
       />
     </ClimateDashboardContainer>

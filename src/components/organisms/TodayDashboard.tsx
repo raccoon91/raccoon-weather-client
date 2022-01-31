@@ -1,4 +1,5 @@
 import { FC } from "react";
+import dayjs from "dayjs";
 import styled from "styled-components";
 import { Grid, Text, Span, ProgressChart, WindIndicator } from "components/atoms";
 import { WeatherCard, ForecastCard } from "components/molecules";
@@ -56,7 +57,8 @@ export const TodayDashboard: FC<ITodayDashboardProps> = ({ weather, forecasts })
       <WeatherCard
         area="covid"
         isLoad={weather ? true : false}
-        title={`${weather?.city?.korName} 신규 확진자`}
+        title={`${weather?.city?.korName} 확진자`}
+        caption={weather?.caseDate ? `${dayjs(weather.caseDate).format("MM월 DD일")} 기준 정보` : null}
         unit="명"
         value={weather?.caseIncrement?.toLocaleString()}
         chart={

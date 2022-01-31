@@ -7,6 +7,7 @@ export * from "./Span";
 export * from "./Button";
 export * from "./Anchor";
 export * from "./NavAnchor";
+export * from "./Caption";
 export * from "./Image";
 export * from "./WeatherIcon";
 export * from "./AnimationIcon";
