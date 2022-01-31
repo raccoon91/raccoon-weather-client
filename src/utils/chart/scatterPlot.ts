@@ -1,6 +1,15 @@
 import { chartTheme } from "configs";
 import { drawTooltip } from ".";
-import { toDecimal, getChartOptions, drawYAxis, drawXAxis, drawChartYTicks, drawChartXTicks, drawDot } from "./common";
+import {
+  createHiDPICanvas,
+  toDecimal,
+  getChartOptions,
+  drawYAxis,
+  drawXAxis,
+  drawChartYTicks,
+  drawChartXTicks,
+  drawDot,
+} from "./common";
 
 interface IScatterPlotFrame {
   x: number;
@@ -68,14 +77,9 @@ export const animateScatterPlot = (
   dataRange: IDataRange,
   options: ICanvasOptions
 ) => {
-  const { clientWidth, clientHeight } = box;
-  const ctx = canvas.getContext("2d");
+  const ctx = createHiDPICanvas(box, canvas);
 
   if (!ctx) return;
-
-  ctx.clearRect(0, 0, clientWidth, clientHeight);
-  canvas.width = clientWidth;
-  canvas.height = clientHeight;
 
   const { min, max, range } = dataRange;
   const { startX, startY, endX, endY, drawStartX, drawEndY, drawHeight, nodeWidth } = getChartOptions({
@@ -140,14 +144,9 @@ export const drawScatterPlot = (
   options: ICanvasOptions,
   hover?: { i?: number; j?: number; x?: number; y?: number }
 ) => {
-  const { clientWidth, clientHeight } = box;
-  const ctx = canvas.getContext("2d");
+  const ctx = createHiDPICanvas(box, canvas);
 
   if (!ctx) return;
-
-  ctx.clearRect(0, 0, clientWidth, clientHeight);
-  canvas.width = clientWidth;
-  canvas.height = clientHeight;
 
   const { min, max, range } = dataRange;
   const { startX, startY, endX, endY, drawStartX, drawEndY, drawHeight, nodeWidth } = getChartOptions({

@@ -1,4 +1,5 @@
 import {
+  createHiDPICanvas,
   toDecimal,
   getChartOptions,
   drawYAxis,
@@ -121,14 +122,9 @@ export const animateBarChart = (
   dataRange: IDataRange,
   options: ICanvasOptions
 ) => {
-  const { clientWidth, clientHeight } = box;
-  const ctx = canvas.getContext("2d");
+  const ctx = createHiDPICanvas(box, canvas);
 
   if (!ctx) return;
-
-  ctx.clearRect(0, 0, clientWidth, clientHeight);
-  canvas.width = clientWidth;
-  canvas.height = clientHeight;
 
   const { min, max, range } = dataRange;
   const { startX, startY, endX, endY, drawStartX, drawEndY, drawHeight, nodeWidth } = getChartOptions({
@@ -199,14 +195,9 @@ export const drawBarChart = (
   options: ICanvasOptions,
   hover?: { id?: number; x?: number; y?: number }
 ) => {
-  const { clientWidth, clientHeight } = box;
-  const ctx = canvas.getContext("2d");
+  const ctx = createHiDPICanvas(box, canvas);
 
   if (!ctx) return;
-
-  ctx.clearRect(0, 0, clientWidth, clientHeight);
-  canvas.width = clientWidth;
-  canvas.height = clientHeight;
 
   const { min, max, range } = dataRange;
   const { startX, startY, endX, endY, drawStartX, drawEndY, drawHeight, nodeWidth } = getChartOptions({

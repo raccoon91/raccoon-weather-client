@@ -86,7 +86,7 @@ export const barChartDefaultOptions = {
   },
   draw: {
     paddingX: 1,
-    paddingY: 0,
+    paddingY: 1,
     barColor: chartTheme.blue,
   },
   data: {
@@ -179,7 +179,7 @@ export const gradientLineChartDefaultOptions = {
 export const covidChartOptions = {
   chart: {
     yAxisWidth: 35,
-    xAxisHeight: 10,
+    xAxisHeight: 12,
     displayYAxis: true,
     displayXAxis: true,
   },

@@ -7,6 +7,25 @@ import {
   lineDefaultOptions,
 } from "configs";
 
+export const createHiDPICanvas = (box: HTMLDivElement, canvas: HTMLCanvasElement) => {
+  const ratio = window.devicePixelRatio || 1;
+  const { clientWidth, clientHeight } = box;
+
+  canvas.width = clientWidth * ratio;
+  canvas.height = clientHeight * ratio;
+  canvas.style.width = clientWidth + "px";
+  canvas.style.height = clientHeight + "px";
+
+  const ctx = canvas.getContext("2d");
+
+  if (ctx) {
+    ctx.clearRect(0, 0, clientWidth, clientHeight);
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+    return ctx;
+  }
+};
+
 export const toDecimal = (value: number, digits = 2) => {
   return Number(value.toFixed(digits));
 };
@@ -124,8 +143,8 @@ export const drawYAxis = (
   ctx.strokeStyle = style;
 
   ctx.beginPath();
-  ctx.moveTo(startX + 0.5, startY);
-  ctx.lineTo(startX + 0.5, endY);
+  ctx.moveTo(startX, startY);
+  ctx.lineTo(startX, endY);
   ctx.stroke();
 };
 
@@ -142,8 +161,8 @@ export const drawXAxis = (
   ctx.strokeStyle = style;
 
   ctx.beginPath();
-  ctx.moveTo(startX, endY + 0.5);
-  ctx.lineTo(endX, endY + 0.5);
+  ctx.moveTo(startX, endY);
+  ctx.lineTo(endX, endY);
   ctx.stroke();
 };
 
@@ -164,8 +183,8 @@ export const drawYTick = (
   ctx.globalAlpha = strokeAlpha;
   ctx.strokeStyle = strokeStyle;
   ctx.beginPath();
-  ctx.moveTo(startX - 5, positionY + 0.5);
-  ctx.lineTo(startX, positionY + 0.5);
+  ctx.moveTo(startX - 5, positionY);
+  ctx.lineTo(startX, positionY);
   ctx.stroke();
 };
 
@@ -186,8 +205,8 @@ export const drawXTick = (
   ctx.globalAlpha = strokeAlpha;
   ctx.strokeStyle = strokeStyle;
   ctx.beginPath();
-  ctx.moveTo(positionX + 0.5, endY);
-  ctx.lineTo(positionX + 0.5, endY + 5);
+  ctx.moveTo(positionX, endY);
+  ctx.lineTo(positionX, endY + 5);
   ctx.stroke();
 };
 
@@ -286,7 +305,7 @@ export const drawBar = (
 
   ctx.globalAlpha = strokeAlpha || barAlpha || 1;
   ctx.strokeStyle = strokeColor || barColor || chartTheme.blue;
-  ctx.lineWidth = strokeWidth || 0.5;
+  ctx.lineWidth = strokeWidth || 1;
   ctx.strokeRect(positionX, positionY, width, height);
 };
 
@@ -304,8 +323,8 @@ export const drawLine = (
   ctx.strokeStyle = color || chartTheme.blue;
 
   ctx.beginPath();
-  ctx.moveTo(startX, startY + 0.5);
-  ctx.lineTo(endX, endY + 0.5);
+  ctx.moveTo(startX, startY);
+  ctx.lineTo(endX, endY);
   ctx.stroke();
 };
 
