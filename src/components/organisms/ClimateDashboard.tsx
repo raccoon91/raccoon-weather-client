@@ -36,14 +36,14 @@ interface IClimateDashboardProps {
 }
 
 export const ClimateDashboard: FC<IClimateDashboardProps> = ({
-  climate: { years, maxTempClimates, rainClimates, covidDates, caseIncrements },
+  climate: { city, years, maxTempClimates, rainClimates, covidDates, caseIncrements },
 }) => {
   return (
     <ClimateDashboardContainer o="hidden auto" w="100%" h="100%">
       <ClimateCard
         area="feel"
         isLoad={years !== null ? true : false}
-        title="최고온도"
+        title={city?.korName ? `${city.korName} 최고온도` : "최고온도"}
         chart={<ScatterPlot labels={years} datasets={maxTempClimates} />}
       />
       <ClimateCard
@@ -55,13 +55,13 @@ export const ClimateDashboard: FC<IClimateDashboardProps> = ({
       <ClimateCard
         area="rain"
         isLoad={years !== null ? true : false}
-        title="강수량"
+        title={city?.korName ? `${city.korName} 강수량` : "강수량"}
         chart={<BarChart labels={years} datasets={rainClimates} />}
       />
       <ClimateCard
         area="climate"
         isLoad={years !== null ? true : false}
-        title="지구 지표면 온도 변화"
+        title="지구 표면 온도 변화"
         caption={globalTempMessage}
         chart={<GradientLineChart labels={globalSurfaceAirTemp.x} datasets={globalSurfaceAirTemp.y} />}
       />

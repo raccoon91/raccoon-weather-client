@@ -3,6 +3,7 @@ import { serverApi } from "api";
 import type { AxiosResponse } from "axios";
 
 const initialClimateState: IClimate = {
+  city: null,
   years: null,
   tempClimates: null,
   maxTempClimates: null,
@@ -37,8 +38,10 @@ export const climateSlice = createSlice({
     builder.addCase(getClimate.fulfilled, (state, action) => {
       if (!action.payload) return;
 
-      const { years, tempClimates, maxTempClimates, rainClimates, covidDates, cases, caseIncrements } = action.payload;
+      const { city, years, tempClimates, maxTempClimates, rainClimates, covidDates, cases, caseIncrements } =
+        action.payload;
 
+      state.city = city;
       state.years = years;
       state.tempClimates = tempClimates;
       state.maxTempClimates = maxTempClimates;

@@ -72,6 +72,7 @@ interface ITodayWeather {
 }
 
 interface IClimate {
+  city: ICity | null;
   years: string[] | null;
   tempClimates: number[][] | null;
   maxTempClimates: number[][] | null;
