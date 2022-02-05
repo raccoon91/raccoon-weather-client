@@ -18,6 +18,8 @@ const MobileNavAnchor = styled(NavAnchor)`
   flex-direction: column;
   align-items: center;
   z-index: 5;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
 
   svg {
     width: 3.5rem;
@@ -66,7 +68,7 @@ const MobileNavAnchor = styled(NavAnchor)`
     }
 
     ${Text} {
-      margin: 2rem 0 0;
+      margin: 3rem 0 0;
     }
   }
 `;

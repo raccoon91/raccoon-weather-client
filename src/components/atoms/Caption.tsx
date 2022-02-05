@@ -9,6 +9,8 @@ const CaptionContainer = styled(Box)`
     width: 1.8rem;
     height: 1.8rem;
     cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
   }
 
   ${Text} {

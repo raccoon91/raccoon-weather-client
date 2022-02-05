@@ -9,7 +9,6 @@ const DashboardTemplateContainer = styled(Box)`
 
   @media ${({ theme }) => theme.device.mobile} {
     height: calc(100% - 7rem);
-    padding: 0 0 1rem;
   }
 `;
 
