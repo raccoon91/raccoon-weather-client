@@ -58,6 +58,7 @@ export const MyDashboard: FC<IMyDashboardProps> = ({ weather, forecasts }) => {
 
     setMyDashboardItems(parsedMyDashboardItems);
     setDesktopItemGrid(newDesktopItemGrid);
+    setMobileItemGrid([]);
   }, []);
 
   const replaceMyDashboard = (startIndex: number | null, enterIndex: number | null) => {
