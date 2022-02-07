@@ -64,7 +64,7 @@ export const Caption: FC<ICaptionProps> = ({ message }) => {
         tabIndex={-1}
         po="absolute"
         r="0"
-        b="2rem"
+        b="1.8rem"
         p="1rem 1.6rem"
         br="0.5rem"
         bgc="white"

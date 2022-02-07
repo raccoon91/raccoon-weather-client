@@ -1,6 +1,7 @@
 export * from "./Box";
 export * from "./Grid";
 export * from "./Flex";
+export * from "./DashboardGrid";
 export * from "./Title";
 export * from "./Text";
 export * from "./Span";

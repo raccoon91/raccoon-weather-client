@@ -186,7 +186,7 @@ export const covidChartOptions = {
   tick: {
     xTickMax: 10,
     xTickMin: 8,
-    yTickIncrement: 5000,
+    yTickIncrement: 20000,
     xTickFormatter: (label: string) => dayjs(label).format("MM"),
   },
   draw: {

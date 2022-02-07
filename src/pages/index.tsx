@@ -4,6 +4,7 @@ import { useAppDispatch, useLayout } from "hooks";
 import { getWeather, getForecast } from "stores/slices/todaySlice";
 import { getClimate } from "stores/slices/climateSlice";
 import { WeatherPageTemplate } from "components/templates";
+// import { MyPage } from "./MyPage";
 import { TodayPage } from "./TodayPage";
 import { ClimatePage } from "./ClimatePage";
 import { MobileMapPage } from "./MobileMapPage";
@@ -22,10 +23,10 @@ const Pages: FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/today" />} />
         <Route path="404" element={<NotFoundPage />} />
 
         <Route element={<WeatherPageTemplate device={device} />}>
+          <Route path="/" element={<Navigate to="/today" />} />
           <Route path="today" element={<TodayPage />} />
           <Route path="climate" element={<ClimatePage />} />
           <Route path="map" element={<MobileMapPage device={device} />} />
