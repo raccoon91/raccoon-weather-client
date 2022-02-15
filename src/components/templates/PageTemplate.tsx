@@ -1,16 +1,24 @@
 import { FC } from "react";
-import { Box, Flex } from "components/atoms";
+import { Flex } from "components/atoms";
 
 interface IPageTemplateProps {
-  children: React.ReactNode;
+  header?: React.ReactNode;
+  main?: React.ReactNode;
+  footer?: React.ReactNode;
 }
 
-export const PageTemplate: FC<IPageTemplateProps> = ({ children }) => {
+export const PageTemplate: FC<IPageTemplateProps> = ({ header, main, footer }) => {
   return (
-    <Box w="100vw" h="100vh" bgc="background">
-      <Flex d="column" a="center" j="center" w="100%" maxw="1920px" h="100%" m="0 auto" bgc="skyBlue">
-        {children}
-      </Flex>
-    </Box>
+    <Flex d="column" w="100vw" h="100vh" bgc="skyBlue">
+      {header ? header : null}
+
+      {main ? (
+        <Flex f="1" w="100%" a="center" j="center" p="0 1rem">
+          {main}
+        </Flex>
+      ) : null}
+
+      {footer ? footer : null}
+    </Flex>
   );
 };

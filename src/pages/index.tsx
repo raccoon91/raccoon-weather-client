@@ -8,6 +8,8 @@ import { WeatherPageTemplate } from "components/templates";
 import { TodayPage } from "./TodayPage";
 import { ClimatePage } from "./ClimatePage";
 import { MobileMapPage } from "./MobileMapPage";
+import { SignInPage } from "./SignInPage";
+import { SignUpPage } from "./SignUpPage";
 import { NotFoundPage } from "./NotFoundPage";
 
 const Pages: FC = () => {
@@ -26,11 +28,13 @@ const Pages: FC = () => {
         <Route path="404" element={<NotFoundPage />} />
 
         <Route element={<WeatherPageTemplate device={device} />}>
-          <Route path="/" element={<Navigate to="/today" />} />
-          <Route path="today" element={<TodayPage />} />
+          <Route path="/" element={<TodayPage />} />
           <Route path="climate" element={<ClimatePage />} />
           <Route path="map" element={<MobileMapPage device={device} />} />
         </Route>
+
+        <Route path="sign-in" element={<SignInPage />} />
+        <Route path="sign-up" element={<SignUpPage />} />
 
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
