@@ -8,6 +8,8 @@ const color: { [key in TColor]: string } = {
   gray: "#e8e8e8",
   darkGray: "#a9a9a9",
   background: "#f8f8f8",
+  red: "red",
+  green: "green",
 };
 
 const textSize: { [key in TTextSize]: string } = {
