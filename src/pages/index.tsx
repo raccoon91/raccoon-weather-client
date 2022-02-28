@@ -4,12 +4,9 @@ import { useAppDispatch, useLayout } from "hooks";
 import { getWeather, getForecast } from "stores/slices/todaySlice";
 import { getClimate } from "stores/slices/climateSlice";
 import { WeatherPageTemplate } from "components/templates";
-// import { MyPage } from "./MyPage";
 import { TodayPage } from "./TodayPage";
 import { ClimatePage } from "./ClimatePage";
 import { MobileMapPage } from "./MobileMapPage";
-import { SignInPage } from "./SignInPage";
-import { SignUpPage } from "./SignUpPage";
 import { NotFoundPage } from "./NotFoundPage";
 
 const Pages: FC = () => {
@@ -32,9 +29,6 @@ const Pages: FC = () => {
           <Route path="climate" element={<ClimatePage />} />
           <Route path="map" element={<MobileMapPage device={device} />} />
         </Route>
-
-        <Route path="sign-in" element={<SignInPage />} />
-        <Route path="sign-up" element={<SignUpPage />} />
 
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
