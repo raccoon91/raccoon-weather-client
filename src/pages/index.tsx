@@ -4,7 +4,6 @@ import { useAppDispatch, useLayout } from "hooks";
 import { getWeather, getForecast } from "stores/slices/todaySlice";
 import { getClimate } from "stores/slices/climateSlice";
 import { WeatherPageTemplate } from "components/templates";
-// import { MyPage } from "./MyPage";
 import { TodayPage } from "./TodayPage";
 import { ClimatePage } from "./ClimatePage";
 import { MobileMapPage } from "./MobileMapPage";
