@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import styled from "styled-components";
 import { Box, Flex, Text, WeatherIcon, WindIndicator, LineChart } from "components/atoms";
 import { formatDate } from "utils";
@@ -23,7 +23,7 @@ interface IForecastChartProps {
   datasets?: IForecast[] | null;
 }
 
-export const ForecastChart: FC<IForecastChartProps> = ({ datasets }) => {
+const ForecastChartComponent: FC<IForecastChartProps> = ({ datasets }) => {
   return (
     <Flex w="100%" h="100%" p="0 0 1rem">
       <ForecastIndex d="column" a="center" w="6rem" h="100%">
@@ -83,3 +83,5 @@ export const ForecastChart: FC<IForecastChartProps> = ({ datasets }) => {
     </Flex>
   );
 };
+
+export const ForecastChart = memo(ForecastChartComponent);
