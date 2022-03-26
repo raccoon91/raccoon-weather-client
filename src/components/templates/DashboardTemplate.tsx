@@ -19,7 +19,7 @@ interface IDashboardTemplateProps {
 export const DashboardTemplate: FC<IDashboardTemplateProps> = ({ children }) => {
   return (
     <Box h="100%">
-      <DashboardTemplateContainer>{children}</DashboardTemplateContainer>
+      <DashboardTemplateContainer h="100%">{children}</DashboardTemplateContainer>
     </Box>
   );
 };

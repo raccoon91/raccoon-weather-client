@@ -57,11 +57,25 @@ export const GlobalStyle = createGlobalStyle`
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     font-family: 'Noto Sans KR', sans-serif;
+
+    width: 100%;
+    height: 99.9%;
+    overflow: hidden;
+  }
+  body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
   *, *:before, *:after {
     -webkit-box-sizing: inherit;
     -moz-box-sizing: inherit;
     box-sizing: inherit;
+  }
+  #root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 
   
