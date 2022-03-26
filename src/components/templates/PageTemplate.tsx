@@ -9,7 +9,7 @@ interface IPageTemplateProps {
 
 export const PageTemplate: FC<IPageTemplateProps> = ({ header, main, footer }) => {
   return (
-    <Flex d="column" w="100vw" h="100vh" bgc="skyBlue">
+    <Flex d="column" w="100%" h="100%" bgc="skyBlue">
       {header ? header : null}
 
       {main ? (

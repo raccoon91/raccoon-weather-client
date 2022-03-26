@@ -13,14 +13,14 @@ const DashboardWrapper = styled(Box)`
 
 const WeatherPageTemplateContainer = styled(Grid)`
   @media ${({ theme }) => theme.device.desktop} {
-    grid-template-columns: 26rem calc(100vw - 26rem);
-    grid-template-rows: 100vh;
+    grid-template-columns: 26rem calc(100% - 26rem);
+    grid-template-rows: 100%;
     grid-template-areas: "current dashboard";
   }
 
   @media ${({ theme }) => theme.device.mobile} {
-    grid-template-columns: 100vw;
-    grid-template-rows: 16rem calc(100vh - 18rem);
+    grid-template-columns: 100%;
+    grid-template-rows: 16rem calc(100% - 18rem);
     grid-template-areas: "current" "dashboard";
   }
 `;
@@ -58,7 +58,7 @@ export const WeatherPageTemplate: FC<IWeatherPageTemplateProps> = ({ device }) =
         </ModalTemplate>
       ) : null}
 
-      <WeatherPageTemplateContainer o="hidden" maxw="1920px" m="0 auto" bgc="blue">
+      <WeatherPageTemplateContainer o="hidden" maxw="1920px" h="100%" m="0 auto" bgc="blue">
         <Box ga="current">
           <CurrentWeather
             weather={weather}
@@ -77,7 +77,7 @@ export const WeatherPageTemplate: FC<IWeatherPageTemplateProps> = ({ device }) =
           <Outlet />
 
           {device === "mobile" ? (
-            <Box po="fixed" l="0" b="0" w="100vw" h="9rem" z="10" p="1rem 0 0">
+            <Box po="fixed" l="0" b="0" w="100%" h="9rem" z="10" p="1rem 0 0">
               <MobileNavigation />
             </Box>
           ) : null}
