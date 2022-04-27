@@ -15,6 +15,12 @@ describe("utils", () => {
 
   describe("style", () => {
     test("remToPixel", () => {
+      document.documentElement.style.fontSize = "9px";
+
+      expect(remToPixel(1)).toEqual(9);
+
+      document.documentElement.style.fontSize = "10px";
+
       expect(remToPixel(1)).toEqual(10);
     });
   });
