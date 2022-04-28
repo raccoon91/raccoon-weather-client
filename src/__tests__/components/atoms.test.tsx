@@ -8,20 +8,20 @@ const renderComponent = (components: ReactNode) => render(<ThemeProvider theme={
 
 describe("atoms", () => {
   describe("<Box />", () => {
-    it("matches snapshot", () => {
+    test("matches snapshot", () => {
       const screen = renderComponent(<Box w="100px" h="50px" bgc="white" />);
 
       expect(screen.container).toMatchSnapshot();
     });
 
-    it("shows the props correctly", () => {
+    test("shows the props correctly", () => {
       const screen = renderComponent(<Box data-testid="box" w="100px" h="50px" bgc="white" />);
       const box = screen.getByTestId("box");
 
       expect(box).toHaveStyle(`
         width: 100px;
         height: 50px;
-        background-color: #ffffff;
+        background-color: ${theme.color.white};
       `);
     });
   });

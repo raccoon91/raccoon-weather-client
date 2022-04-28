@@ -8,19 +8,19 @@ const renderComponent = (components: ReactNode) => render(<ThemeProvider theme={
 
 describe("molecules", () => {
   describe("<UnitText />", () => {
-    it("matches snapshot", () => {
+    test("matches snapshot", () => {
       const screen = renderComponent(<UnitText value="100" unit="%" />);
 
       expect(screen.container).toMatchSnapshot();
     });
 
-    it("shows the props correctly", () => {
+    test("shows the props correctly", () => {
       const screen = renderComponent(<UnitText value="100" unit="%" />);
       const text = screen.getByText("100");
       const unit = screen.getByText("%");
 
-      expect(text).toBeTruthy();
-      expect(unit).toBeTruthy();
+      expect(text).toBeInTheDocument();
+      expect(unit).toBeInTheDocument();
       expect(text).toHaveStyle("color: #000000");
       expect(unit).toHaveStyle("color: #000000");
     });

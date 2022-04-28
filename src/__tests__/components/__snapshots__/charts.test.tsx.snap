@@ -1,0 +1,206 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`atoms <ProgressChart chartOptions={percentChartOptions} /> matches snapshot 1`] = `
+<div>
+  <div
+    class="sc-dkPtRN eTnZdG"
+    d="row"
+  >
+    <p
+      class="sc-bBHxTw gToZAm"
+    >
+      0
+    </p>
+    <p
+      class="sc-bBHxTw kkFOco"
+    >
+      20
+    </p>
+    <p
+      class="sc-bBHxTw fSduaW"
+    >
+      40
+    </p>
+    <p
+      class="sc-bBHxTw fVfjvE"
+    >
+      60
+    </p>
+    <p
+      class="sc-bBHxTw dazPtq"
+    >
+      80
+    </p>
+    <p
+      class="sc-bBHxTw kWiBXH"
+    >
+      100
+    </p>
+    <div
+      class="sc-fKVqWL fWOvVN"
+      color="#4d99f0"
+      width="20"
+    />
+    <div
+      class="sc-fKVqWL jtulFa"
+      color="#4d99f0"
+      width="20"
+    />
+    <div
+      class="sc-fKVqWL bEmCMt"
+      color="#4d99f0"
+      width="20"
+    />
+    <div
+      class="sc-fKVqWL kOvQEH"
+      color="#4d99f0"
+      width="20"
+    />
+    <div
+      class="sc-fKVqWL jXSWRc"
+      color="#4d99f0"
+      width="20"
+    />
+  </div>
+</div>
+`;
+
+exports[`atoms <ProgressChart chartOptions={pm10ChartOptions} /> matches snapshot 1`] = `
+<div>
+  <div
+    class="sc-dkPtRN eTnZdG"
+    d="row"
+  >
+    <p
+      class="sc-bBHxTw gToZAm"
+    >
+      0
+    </p>
+    <p
+      class="sc-bBHxTw gpVUpN"
+    >
+      30
+    </p>
+    <p
+      class="sc-bBHxTw bogfzn"
+    >
+      80
+    </p>
+    <p
+      class="sc-bBHxTw gIwJA"
+    >
+      150
+    </p>
+    <p
+      class="sc-bBHxTw kWiBXH"
+    >
+      200
+    </p>
+    <div
+      class="sc-fKVqWL leyZbY"
+      color="#4d99f0"
+      width="25"
+    />
+    <div
+      class="sc-fKVqWL hmTeTH"
+      color="#31a354"
+      width="25"
+    />
+    <div
+      class="sc-fKVqWL fGnyLC"
+      color="#ffd60a"
+      width="25"
+    />
+    <div
+      class="sc-fKVqWL gUwXWW"
+      color="#dc2f02"
+      width="25"
+    />
+  </div>
+</div>
+`;
+
+exports[`atoms <ProgressChart chartOptions={pm25ChartOptions} /> matches snapshot 1`] = `
+<div>
+  <div
+    class="sc-dkPtRN eTnZdG"
+    d="row"
+  >
+    <p
+      class="sc-bBHxTw gToZAm"
+    >
+      0
+    </p>
+    <p
+      class="sc-bBHxTw gpVUpN"
+    >
+      15
+    </p>
+    <p
+      class="sc-bBHxTw bogfzn"
+    >
+      35
+    </p>
+    <p
+      class="sc-bBHxTw gIwJA"
+    >
+      75
+    </p>
+    <p
+      class="sc-bBHxTw kWiBXH"
+    >
+      100
+    </p>
+    <div
+      class="sc-fKVqWL bQaplC"
+      color="#4d99f0"
+      width="25"
+    />
+    <div
+      class="sc-fKVqWL hmTeTH"
+      color="#31a354"
+      width="25"
+    />
+    <div
+      class="sc-fKVqWL fGnyLC"
+      color="#ffd60a"
+      width="25"
+    />
+    <div
+      class="sc-fKVqWL gUwXWW"
+      color="#dc2f02"
+      width="25"
+    />
+  </div>
+</div>
+`;
+
+exports[`atoms <ProgressChart chartOptions={tempChartOptions} /> matches snapshot 1`] = `
+<div>
+  <div
+    class="sc-dkPtRN eTnZdG"
+    d="row"
+  >
+    <p
+      class="sc-bBHxTw gToZAm"
+    >
+      -20
+    </p>
+    <p
+      class="sc-bBHxTw kWiBXH"
+    >
+      35
+    </p>
+    <p
+      class="sc-bBHxTw hlxyYs"
+    >
+      0
+    </p>
+    <div
+      class="sc-fKVqWL gHMJwB"
+      color="#4d99f0"
+      width="100"
+    />
+  </div>
+</div>
+`;
