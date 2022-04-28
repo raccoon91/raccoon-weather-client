@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`molecules <UnitText /> matches snapshot 1`] = `
+<div>
+  <div
+    class="sc-dkPtRN gqONxx"
+  >
+    <h4
+      class="sc-iCfMLu QtPJI"
+      color="black"
+    >
+      100
+    </h4>
+    <p
+      class="sc-jrQzAO idwZDg"
+      color="black"
+    >
+      %
+    </p>
+  </div>
+</div>
+`;
